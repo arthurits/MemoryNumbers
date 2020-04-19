@@ -29,6 +29,13 @@
         private void InitializeComponent()
         {
             this.tabSettings = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.radFixed = new System.Windows.Forms.RadioButton();
+            this.radIncremental = new System.Windows.Forms.RadioButton();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.radSequential = new System.Windows.Forms.RadioButton();
+            this.radRandom = new System.Windows.Forms.RadioButton();
             this.tabSettingsGame = new System.Windows.Forms.TabPage();
             this.numMaxDigit = new System.Windows.Forms.NumericUpDown();
             this.numMinDigit = new System.Windows.Forms.NumericUpDown();
@@ -51,14 +58,13 @@
             this.lblCountRatio = new System.Windows.Forms.Label();
             this.btnAccept = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.radSequential = new System.Windows.Forms.RadioButton();
-            this.radRandom = new System.Windows.Forms.RadioButton();
-            this.radFixed = new System.Windows.Forms.RadioButton();
-            this.radIncremental = new System.Windows.Forms.RadioButton();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lblTimeIncrement = new System.Windows.Forms.Label();
+            this.numTimeIncrement = new System.Windows.Forms.NumericUpDown();
+            this.trackTimeIncrement = new System.Windows.Forms.TrackBar();
             this.tabSettings.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.tabSettingsGame.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxDigit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMinDigit)).BeginInit();
@@ -72,9 +78,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numBorderRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numNumbersRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCountRatio)).BeginInit();
-            this.tabPage1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numTimeIncrement)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackTimeIncrement)).BeginInit();
             this.SuspendLayout();
             // 
             // tabSettings
@@ -89,9 +94,90 @@
             this.tabSettings.Size = new System.Drawing.Size(575, 345);
             this.tabSettings.TabIndex = 0;
             // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.groupBox2);
+            this.tabPage1.Controls.Add(this.groupBox1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(567, 316);
+            this.tabPage1.TabIndex = 2;
+            this.tabPage1.Text = "Play mode";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.radFixed);
+            this.groupBox2.Controls.Add(this.radIncremental);
+            this.groupBox2.Location = new System.Drawing.Point(267, 53);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(237, 143);
+            this.groupBox2.TabIndex = 5;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Time";
+            // 
+            // radFixed
+            // 
+            this.radFixed.AutoSize = true;
+            this.radFixed.Location = new System.Drawing.Point(47, 42);
+            this.radFixed.Name = "radFixed";
+            this.radFixed.Size = new System.Drawing.Size(89, 21);
+            this.radFixed.TabIndex = 2;
+            this.radFixed.TabStop = true;
+            this.radFixed.Text = "Fixed time";
+            this.radFixed.UseVisualStyleBackColor = true;
+            // 
+            // radIncremental
+            // 
+            this.radIncremental.AutoSize = true;
+            this.radIncremental.Location = new System.Drawing.Point(47, 90);
+            this.radIncremental.Name = "radIncremental";
+            this.radIncremental.Size = new System.Drawing.Size(129, 21);
+            this.radIncremental.TabIndex = 3;
+            this.radIncremental.Text = "Incremental time";
+            this.radIncremental.UseVisualStyleBackColor = true;
+            this.radIncremental.CheckedChanged += new System.EventHandler(this.radIncremental_CheckedChanged);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.radSequential);
+            this.groupBox1.Controls.Add(this.radRandom);
+            this.groupBox1.Location = new System.Drawing.Point(28, 53);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(188, 143);
+            this.groupBox1.TabIndex = 4;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Numeric sequence";
+            // 
+            // radSequential
+            // 
+            this.radSequential.AutoSize = true;
+            this.radSequential.Location = new System.Drawing.Point(35, 42);
+            this.radSequential.Name = "radSequential";
+            this.radSequential.Size = new System.Drawing.Size(92, 21);
+            this.radSequential.TabIndex = 0;
+            this.radSequential.TabStop = true;
+            this.radSequential.Text = "Ascending";
+            this.radSequential.UseVisualStyleBackColor = true;
+            // 
+            // radRandom
+            // 
+            this.radRandom.AutoSize = true;
+            this.radRandom.Location = new System.Drawing.Point(35, 90);
+            this.radRandom.Name = "radRandom";
+            this.radRandom.Size = new System.Drawing.Size(79, 21);
+            this.radRandom.TabIndex = 1;
+            this.radRandom.TabStop = true;
+            this.radRandom.Text = "Random";
+            this.radRandom.UseVisualStyleBackColor = true;
+            // 
             // tabSettingsGame
             // 
             this.tabSettingsGame.BackColor = System.Drawing.Color.White;
+            this.tabSettingsGame.Controls.Add(this.trackTimeIncrement);
+            this.tabSettingsGame.Controls.Add(this.numTimeIncrement);
+            this.tabSettingsGame.Controls.Add(this.lblTimeIncrement);
             this.tabSettingsGame.Controls.Add(this.numMaxDigit);
             this.tabSettingsGame.Controls.Add(this.numMinDigit);
             this.tabSettingsGame.Controls.Add(this.numMaxAttempts);
@@ -111,21 +197,21 @@
             // 
             // numMaxDigit
             // 
-            this.numMaxDigit.Location = new System.Drawing.Point(179, 167);
+            this.numMaxDigit.Location = new System.Drawing.Point(179, 215);
             this.numMaxDigit.Name = "numMaxDigit";
             this.numMaxDigit.Size = new System.Drawing.Size(50, 23);
             this.numMaxDigit.TabIndex = 12;
             // 
             // numMinDigit
             // 
-            this.numMinDigit.Location = new System.Drawing.Point(179, 133);
+            this.numMinDigit.Location = new System.Drawing.Point(179, 181);
             this.numMinDigit.Name = "numMinDigit";
             this.numMinDigit.Size = new System.Drawing.Size(50, 23);
             this.numMinDigit.TabIndex = 11;
             // 
             // numMaxAttempts
             // 
-            this.numMaxAttempts.Location = new System.Drawing.Point(179, 99);
+            this.numMaxAttempts.Location = new System.Drawing.Point(179, 147);
             this.numMaxAttempts.Name = "numMaxAttempts";
             this.numMaxAttempts.Size = new System.Drawing.Size(50, 23);
             this.numMaxAttempts.TabIndex = 10;
@@ -147,7 +233,7 @@
             // lblMaxDigit
             // 
             this.lblMaxDigit.AutoSize = true;
-            this.lblMaxDigit.Location = new System.Drawing.Point(49, 169);
+            this.lblMaxDigit.Location = new System.Drawing.Point(49, 217);
             this.lblMaxDigit.Name = "lblMaxDigit";
             this.lblMaxDigit.Size = new System.Drawing.Size(100, 17);
             this.lblMaxDigit.TabIndex = 4;
@@ -156,7 +242,7 @@
             // lblMinDigit
             // 
             this.lblMinDigit.AutoSize = true;
-            this.lblMinDigit.Location = new System.Drawing.Point(49, 135);
+            this.lblMinDigit.Location = new System.Drawing.Point(49, 183);
             this.lblMinDigit.Name = "lblMinDigit";
             this.lblMinDigit.Size = new System.Drawing.Size(97, 17);
             this.lblMinDigit.TabIndex = 3;
@@ -165,7 +251,7 @@
             // lblMaxAttempts
             // 
             this.lblMaxAttempts.AutoSize = true;
-            this.lblMaxAttempts.Location = new System.Drawing.Point(49, 101);
+            this.lblMaxAttempts.Location = new System.Drawing.Point(49, 149);
             this.lblMaxAttempts.Name = "lblMaxAttempts";
             this.lblMaxAttempts.Size = new System.Drawing.Size(124, 17);
             this.lblMaxAttempts.TabIndex = 2;
@@ -347,83 +433,38 @@
             this.btnCancel.Text = "&Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // tabPage1
+            // lblTimeIncrement
             // 
-            this.tabPage1.Controls.Add(this.groupBox2);
-            this.tabPage1.Controls.Add(this.groupBox1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(567, 316);
-            this.tabPage1.TabIndex = 2;
-            this.tabPage1.Text = "Play mode";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.lblTimeIncrement.AutoSize = true;
+            this.lblTimeIncrement.Location = new System.Drawing.Point(49, 90);
+            this.lblTimeIncrement.Name = "lblTimeIncrement";
+            this.lblTimeIncrement.Size = new System.Drawing.Size(74, 17);
+            this.lblTimeIncrement.TabIndex = 13;
+            this.lblTimeIncrement.Text = "Increment:";
             // 
-            // radSequential
+            // numTimeIncrement
             // 
-            this.radSequential.AutoSize = true;
-            this.radSequential.Location = new System.Drawing.Point(35, 42);
-            this.radSequential.Name = "radSequential";
-            this.radSequential.Size = new System.Drawing.Size(92, 21);
-            this.radSequential.TabIndex = 0;
-            this.radSequential.TabStop = true;
-            this.radSequential.Text = "Ascending";
-            this.radSequential.UseVisualStyleBackColor = true;
+            this.numTimeIncrement.Location = new System.Drawing.Point(125, 88);
+            this.numTimeIncrement.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numTimeIncrement.Name = "numTimeIncrement";
+            this.numTimeIncrement.Size = new System.Drawing.Size(61, 23);
+            this.numTimeIncrement.TabIndex = 14;
+            this.numTimeIncrement.ValueChanged += new System.EventHandler(this.numTimeIncrement_ValueChanged);
             // 
-            // radRandom
+            // trackTimeIncrement
             // 
-            this.radRandom.AutoSize = true;
-            this.radRandom.Location = new System.Drawing.Point(35, 90);
-            this.radRandom.Name = "radRandom";
-            this.radRandom.Size = new System.Drawing.Size(79, 21);
-            this.radRandom.TabIndex = 1;
-            this.radRandom.TabStop = true;
-            this.radRandom.Text = "Random";
-            this.radRandom.UseVisualStyleBackColor = true;
-            // 
-            // radFixed
-            // 
-            this.radFixed.AutoSize = true;
-            this.radFixed.Location = new System.Drawing.Point(47, 42);
-            this.radFixed.Name = "radFixed";
-            this.radFixed.Size = new System.Drawing.Size(89, 21);
-            this.radFixed.TabIndex = 2;
-            this.radFixed.TabStop = true;
-            this.radFixed.Text = "Fixed time";
-            this.radFixed.UseVisualStyleBackColor = true;
-            // 
-            // radIncremental
-            // 
-            this.radIncremental.AutoSize = true;
-            this.radIncremental.Location = new System.Drawing.Point(47, 90);
-            this.radIncremental.Name = "radIncremental";
-            this.radIncremental.Size = new System.Drawing.Size(129, 21);
-            this.radIncremental.TabIndex = 3;
-            this.radIncremental.TabStop = true;
-            this.radIncremental.Text = "Incremental time";
-            this.radIncremental.UseVisualStyleBackColor = true;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.radSequential);
-            this.groupBox1.Controls.Add(this.radRandom);
-            this.groupBox1.Location = new System.Drawing.Point(28, 53);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(188, 143);
-            this.groupBox1.TabIndex = 4;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Numeric sequence";
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.radFixed);
-            this.groupBox2.Controls.Add(this.radIncremental);
-            this.groupBox2.Location = new System.Drawing.Point(267, 53);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(237, 143);
-            this.groupBox2.TabIndex = 5;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Time";
+            this.trackTimeIncrement.Location = new System.Drawing.Point(197, 88);
+            this.trackTimeIncrement.Maximum = 1000;
+            this.trackTimeIncrement.Name = "trackTimeIncrement";
+            this.trackTimeIncrement.Size = new System.Drawing.Size(268, 45);
+            this.trackTimeIncrement.SmallChange = 10;
+            this.trackTimeIncrement.TabIndex = 15;
+            this.trackTimeIncrement.TickFrequency = 100;
+            this.trackTimeIncrement.ValueChanged += new System.EventHandler(this.trackTimeIncrement_ValueChanged);
             // 
             // frmSettings
             // 
@@ -442,6 +483,11 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "MemoryNumbers - Settings";
             this.tabSettings.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.tabSettingsGame.ResumeLayout(false);
             this.tabSettingsGame.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxDigit)).EndInit();
@@ -457,11 +503,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numBorderRatio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numNumbersRatio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCountRatio)).EndInit();
-            this.tabPage1.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numTimeIncrement)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackTimeIncrement)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -498,5 +541,8 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton radSequential;
         private System.Windows.Forms.RadioButton radRandom;
+        private System.Windows.Forms.TrackBar trackTimeIncrement;
+        private System.Windows.Forms.NumericUpDown numTimeIncrement;
+        private System.Windows.Forms.Label lblTimeIncrement;
     }
 }

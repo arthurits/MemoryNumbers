@@ -65,6 +65,16 @@ namespace MemoryNumbers
             if (trackTime.Value != (int)numTime.Value) trackTime.Value = Convert.ToInt32(numTime.Value);
         }
 
+        private void trackTimeIncrement_ValueChanged(object sender, EventArgs e)
+        {
+            if (numTimeIncrement.Value != trackTimeIncrement.Value) numTimeIncrement.Value = trackTimeIncrement.Value;
+        }
+
+        private void numTimeIncrement_ValueChanged(object sender, EventArgs e)
+        {
+            if (trackTimeIncrement.Value != (int)numTimeIncrement.Value) trackTimeIncrement.Value = Convert.ToInt32(numTimeIncrement.Value);
+        }
+
         private void trackCountRatio_ValueChanged(object sender, EventArgs e)
         {
             decimal ratio = Decimal.Round((decimal)trackCountRatio.Value / 100, 2, MidpointRounding.AwayFromZero);
@@ -101,7 +111,19 @@ namespace MemoryNumbers
             if (trackBorderRatio.Value != ratio) trackBorderRatio.Value = ratio;
         }
 
-
+        private void radIncremental_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radIncremental.Checked==true)
+            {
+                numTimeIncrement.Enabled = true;
+                trackTimeIncrement.Enabled = true;
+            }
+            else
+            {
+                numTimeIncrement.Enabled = false;
+                trackTimeIncrement.Enabled = false;
+            }
+        }
 
         // https://stackoverrun.com/es/q/1915473
     }

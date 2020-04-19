@@ -177,7 +177,7 @@
             // 
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 38.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(30, 81);
+            this.label1.Location = new System.Drawing.Point(12, 108);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
             this.label1.Size = new System.Drawing.Size(39, 57);
@@ -188,9 +188,9 @@
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Location = new System.Drawing.Point(286, 56);
+            this.pictureBox1.Location = new System.Drawing.Point(286, 108);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(174, 158);
+            this.pictureBox1.Size = new System.Drawing.Size(108, 106);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
@@ -222,7 +222,7 @@
             this.countDown1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.countDown1.Font = new System.Drawing.Font("Microsoft Sans Serif", 35F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.countDown1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.countDown1.Location = new System.Drawing.Point(429, 56);
+            this.countDown1.Location = new System.Drawing.Point(417, 124);
             this.countDown1.Margin = new System.Windows.Forms.Padding(20, 18, 20, 18);
             this.countDown1.Name = "countDown1";
             this.countDown1.Size = new System.Drawing.Size(100, 100);
@@ -238,19 +238,24 @@
             // board1
             // 
             this.board1.BackColor = System.Drawing.Color.Azure;
-            this.board1.BorderColor = System.Drawing.Color.DeepSkyBlue;
-            this.board1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.board1.BorderColor = System.Drawing.Color.Black;
             this.board1.BorderRatio = 4F;
+            this.board1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.board1.CountDownRatio = 0.37F;
             this.board1.Diameter = 67;
             this.board1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.board1.FillColor = System.Drawing.Color.Transparent;
+            this.board1.FontRatio = 0.6F;
             this.board1.Location = new System.Drawing.Point(0, 70);
             this.board1.MaxNumber = 9;
             this.board1.MinNumber = 0;
             this.board1.Name = "board1";
+            this.board1.NumbersRatio = 0.25F;
+            this.board1.ResultRatio = 0.56F;
             this.board1.Size = new System.Drawing.Size(538, 271);
             this.board1.TabIndex = 3;
             this.board1.TabStop = false;
+            this.board1.Time = 700;
             // 
             // Form1
             // 

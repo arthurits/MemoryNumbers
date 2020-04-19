@@ -334,7 +334,8 @@ namespace Controls
         // https://stackoverflow.com/questions/2367718/automating-the-invokerequired-code-pattern
         private void OnCountDownEnding(object sender, TimerEndingEventArgs e)
         {
-            
+            // This event is fired by a System.Timer, which runs on another thread (not the GUI thread)
+            // so we need to invoque in order to modify the GUI
             if (this.InvokeRequired)
             {
                 //this.Invoke(new Action(() => OnCountDownEnding(sender, e)));

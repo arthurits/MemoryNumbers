@@ -9,13 +9,26 @@ namespace MemoryNumbers
 {
     public class Game
     {
-        private int _nMaxScore = 10;
-        private int _nMinScore = 0;
+        #region Private variables
+
+        private int _nMaxDigit = 10;
+        private int _nMinDigit = 0;
         private int _nScore = 0;
         private int _nSubScore = 0;
         private int _nMaxAttempts = 10;
+        private int _nCurrAttempt = 0;
         private int _nMinLength = 2;
         private int[] _nSequence;
+
+        private enum PlayMode
+        {
+            TimeFixed = 1,
+            TimeIncremental = 2,
+            SequenceAscending = 4,
+            SequenceRandom = 8
+        }
+
+        #endregion Private variables
 
         #region Public properties
 
@@ -33,8 +46,9 @@ namespace MemoryNumbers
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int MinimumLength { get => _nMinLength; set => _nMinLength = value < 1 ? 1 : value; }
 
-        public int MaxScore { get => _nMaxScore; set => _nMaxScore = value < _nMinScore ? _nMinScore : value; }
-        public int MinScore { get => _nMinScore; set => _nMinScore = value < 0 ? 0 : value; }
+        public int MaxScore { get => _nMaxDigit; set => _nMaxDigit = value < _nMinDigit ? _nMinDigit : value; }
+        public int MinScore { get => _nMinDigit; set => _nMinDigit = value < 0 ? 0 : value; }
+        public int CurrentScore { get => _nScore; set => _nScore = value < 0 ? 0 : value; }
 
         [Description("Get the numeric sequence to represent (read only)"),
         Category("Sequence properties"),
@@ -111,41 +125,45 @@ namespace MemoryNumbers
             //_nScore = 5;
         }
 
-        public void Start()
+        public bool Start()
         {
-            SetSequence();
-            return;
+            return SetSequence();
         }
 
         public void ReSet()
         {
             _nScore = 0;
             _nSubScore = 0;
-            // Clear the array if it's not empty
-            if (_nSequence.Length > 0) Array.Clear(_nSequence, 0, _nSequence.Length);
+            _nCurrAttempt = 0;
+            _nSequence = null;
         }
 
-        private void SetSequence()
+        /// <summary>
+        /// Generates a numeric secuence
+        /// </summary>
+        private bool SetSequence()
         {
-            int nLength = _nSequence == null ? 0 : _nSequence.Length;
-            int nNewLength = _nScore + 1;
-            Random rnd = new Random();
-
-            // Clear the array if it's not empty
-            if (nLength > 0) Array.Clear(_nSequence, 0, nLength);
-
-            _nSequence = (new int[nNewLength]).Select(i => _nMaxScore).ToArray<int>();
-            _nSubScore = 0;
-
-            for (int i = 0; i < nNewLength; i++)
+            // Check we didn't reach the _nMaxAttempts limits and that we are whithin the allowed digits limits
+            int nArrayLength = _nScore + 1;
+            if((_nCurrAttempt > _nMaxAttempts) || nArrayLength > (_nMaxDigit - _nMinDigit))
             {
-                _nSequence[i] = _nMinScore - 1;
+                _nSequence = null;
+                return false;
+            }
+            
+            // Else, create and fill the array
+            _nSequence = new int[nArrayLength];
+            for (int i = 0; i < nArrayLength; i++)
+            {
+                _nSequence[i] = _nMinDigit - 1;
                 _nSequence[i] = GetRandomNumber();
             }
+            Array.Sort(_nSequence); // This is not necessary since the number would be random scattered in the board control
 
-            Array.Sort(_nSequence);
-
-            return;
+            // Increment the current attemp counter            
+            _nCurrAttempt++;
+       
+            return true;
         }
 
         public void Sequence(int length)
@@ -161,7 +179,7 @@ namespace MemoryNumbers
             // Clear the array if it's not empty
             if (nLength > 0) Array.Clear(_nSequence, 0, nLength);
 
-            _nSequence = (new int[nNewLength]).Select(i => _nMaxScore).ToArray<int>();
+            _nSequence = (new int[nNewLength]).Select(i => _nMaxDigit).ToArray<int>();
             _nSubScore = 0;
 
             for (int i = 0; i < nNewLength; i++)
@@ -174,10 +192,15 @@ namespace MemoryNumbers
             return;
         }
 
+        /// <summary>
+        /// Generates a random number between _nMinDigit (included) and _nMaxDigit (excluded) which is not yet part of _nSequence[]
+        /// </summary>
+        /// <returns>A random number</returns>
         private int GetRandomNumber()
         {
             Random rnd = new Random();
-            int val;
+            int nNumber;
+
             Func<int, bool> Contains = (value) =>
             {
                 for (int i = 0; i < _nSequence.Length; i++)
@@ -189,12 +212,12 @@ namespace MemoryNumbers
 
             while (true)
             {
-                val = rnd.Next(_nMinScore, _nMaxScore);
-                if (!Contains(val)) break;
+                nNumber = rnd.Next(_nMinDigit, _nMaxDigit);
+                if (!Contains(nNumber)) break;
                 
             }
 
-            return val;
+            return nNumber;
         }
 
         public void Check(int value)
@@ -208,7 +231,7 @@ namespace MemoryNumbers
                 if (CorrectSequence != null) OnCorrectSequence(new CorrectEventArgs(_nScore));
             }
 
-            if (_nScore>(_nMinScore+_nMaxScore+1))
+            if (_nScore>(_nMinDigit+_nMaxDigit+1))
             {
                 if (GameOver != null) OnGameOver(new OverEventArgs(_nScore - 1));
                 ReSet();

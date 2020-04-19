@@ -175,18 +175,19 @@ namespace MemoryNumbers
 
         private void OnCorrectSequence(object sender, Board.SequenceEventArgs e)
         {
+            // Show the score in the status bar
             this.toolStripStatusLabel_Secuence.Text = e.SequenceLength.ToString();
             this.toolStripStatusLabel_Secuence.Invalidate();
-            //board1.Invoke((new Action(() => board1.CreateButtons(_game.GetSequence))));
-            //board1.Invoke((new Action(() => board1.Start(_game.GetSequence))));
-            if (_game.MaximumAttempts <= _game.MaxScore)
+            
+            // Keep the game going on
+            _game.CurrentScore = e.SequenceLength;
+            if (!_game.Start())
             {
-                _game.Sequence(e.SequenceLength);
-                board1.Start(_game.GetSequence);
+                MessageBox.Show("You reached the\nend of the game", "Congratulations!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
             }
-            else
-                _game.Sequence(1);
-            //board1.CreateButtons(_game.GetSequence);
+            board1.Start(_game.GetSequence);
+
         }
 
         private void OnWrongSequence(object sender, Board.SequenceEventArgs e)
@@ -226,9 +227,12 @@ namespace MemoryNumbers
         private void toolStripMain_Start_Click(object sender, EventArgs e)
         {
             //countDown1.Start();
-            //_game.Start();
-            _game.Sequence(1);
-            //board1.CreateButtons(_game.GetSequence);
+            _game.CurrentScore = _game.MinimumLength - 1;
+            if (!_game.Start())
+            {
+                MessageBox.Show("Could not start the game\nUnexpected error.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             board1.Visible = true;
             board1.Start(_game.GetSequence);
         }
