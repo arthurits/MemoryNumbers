@@ -1,0 +1,13 @@
+Text size
+https://stackoverflow.com/questions/38924551/c-sharp-resize-font-to-fit-container
+
+https://michaelscodingspot.com/2018/04/24/how-to-resolve-net-reference-and-nuget-package-version-conflicts/
+https://stackoverflow.com/questions/51211160/build-dll-to-a-separate-folder/51211161#51211161
+https://stackoverflow.com/questions/2445556/c-sharp-putting-the-required-dlls-somewhere-other-than-the-root-of-the-output?noredirect=1&lq=1
+https://docs.microsoft.com/en-us/dotnet/framework/configure-apps/file-schema/runtime/probing-element
+ 
+https://social.msdn.microsoft.com/Forums/vstudio/en-US/cfd1594d-06ed-4b5c-9940-d1b02939aff5/collision-detection-between-a-circle-and-rectangle?forum=csharpgeneral
+
+
+https://stackoverflow.com/questions/661561/how-do-i-update-the-gui-from-another-thread
+https://stephenhaunts.com/2014/10/14/using-async-and-await-to-update-the-ui-thread/
