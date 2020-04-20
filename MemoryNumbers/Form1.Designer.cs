@@ -42,14 +42,11 @@
             this.toolStripMain_Settings = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMain_About = new System.Windows.Forms.ToolStripButton();
-            this.label1 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.roundButton1 = new Controls.RoundButton();
             this.countDown1 = new Controls.CountDown();
             this.board1 = new Controls.Board();
             this.statusStrip.SuspendLayout();
             this.toolStripMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.board1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -173,29 +170,6 @@
             this.toolStripMain_About.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripMain_About.Click += new System.EventHandler(this.toolStripMain_About_Click);
             // 
-            // label1
-            // 
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 38.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 108);
-            this.label1.Name = "label1";
-            this.label1.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            this.label1.Size = new System.Drawing.Size(39, 57);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "5";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Location = new System.Drawing.Point(286, 108);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(108, 106);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 6;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Visible = false;
-            // 
             // roundButton1
             // 
             this.roundButton1.BackColor = System.Drawing.Color.Transparent;
@@ -264,14 +238,12 @@
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(538, 366);
             this.Controls.Add(this.board1);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.roundButton1);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.toolStripMain);
             this.Controls.Add(this.tspBottom);
             this.Controls.Add(this.tspTop);
             this.Controls.Add(this.countDown1);
-            this.Controls.Add(this.pictureBox1);
             this.MinimumSize = new System.Drawing.Size(550, 400);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -283,7 +255,6 @@
             this.statusStrip.PerformLayout();
             this.toolStripMain.ResumeLayout(false);
             this.toolStripMain.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.board1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -291,8 +262,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label1;
         private Controls.RoundButton roundButton1;
         private Controls.CountDown countDown1;
         private Controls.Board board1;
@@ -301,8 +270,6 @@
         private System.Windows.Forms.ToolStripPanel tspBottom;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStrip toolStripMain;
-        //private System.Windows.Forms.MenuStrip mnuMainFrm;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ToolStripButton toolStripMain_Exit;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton toolStripMain_Start;

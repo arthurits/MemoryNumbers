@@ -28,24 +28,23 @@ namespace MemoryNumbers
             _path = Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
             if (File.Exists(_path + @"\images\logo.ico")) this.Icon = new Icon(_path + @"\images\logo.ico");
 
+            // Initialize components
             InitializeComponent();
             InitializeToolStripPanel();
             InitializeToolStrip();
             InitializeMenuStrip();
             InitializeStatusStrip();
 
-            //this.Controls.Add(this.btn);
-            //this.btn.Location = new System.Drawing.Point(10, 10);
+            // Subscribe to events
             countDown1.TimerEnding += new EventHandler<Controls.TimerEndingEventArgs>(OnTimerEnding);
-            this.board1.ButtonClick += new EventHandler<Board.ButtonClickEventArgs>(OnButtonClick);
-            this.board1.RightSequence += new EventHandler<Board.SequenceEventArgs>(OnCorrectSequence);
-            this.board1.WrongSequence += new EventHandler<Board.SequenceEventArgs>(OnWrongSequence);
-
+            board1.ButtonClick += new EventHandler<Board.ButtonClickEventArgs>(OnButtonClick);
+            board1.RightSequence += new EventHandler<Board.SequenceEventArgs>(OnCorrectSequence);
+            board1.WrongSequence += new EventHandler<Board.SequenceEventArgs>(OnWrongSequence);
             _game.CorrectSequence += new EventHandler<Game.CorrectEventArgs>(OnCorrectSequence);
             _game.WrongSequence += new EventHandler<Game.WrongEventArgs>(OnWrongSequence);
-            pictureBox1.Image = Image.FromFile("C:\\Users\\Arthurit\\Documents\\Visual Studio 2017\\Projects\\MemoryNumbers\\MemoryNumbers\\images\\logologo@128.png");
+            _game.GameOver += new EventHandler<Game.OverEventArgs>(OnGameOver);
 
-            // Read the program settings file
+            // Read the program settings file and apply them
             _programSettings = new ProgramSettings<string, string>();
             LoadProgramSettings();
             ApplySettings();
@@ -181,28 +180,32 @@ namespace MemoryNumbers
             
             // Keep the game going on
             _game.CurrentScore = e.SequenceLength;
-            if (!_game.Start())
+            if (_game.Start())
             {
-                MessageBox.Show("You reached the\nend of the game", "Congratulations!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
+                board1.Start(_game.GetSequence);
             }
-            board1.Start(_game.GetSequence);
+            
 
+        }
+
+        private void OnCorrectSequence(object sender, Game.CorrectEventArgs e)
+        {
+
+        }
+        private void OnWrongSequence(object sender, Game.WrongEventArgs e)
+        {
+
+        }
+        private void OnGameOver(object sender, Game.OverEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("OnGameOver subscription event");
+            MessageBox.Show("You reached the\nend of the game", "Congratulations!", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void OnWrongSequence(object sender, Board.SequenceEventArgs e)
         {
             MessageBox.Show("Wrong sequence","Error");
             OnCorrectSequence(sender, e);
-        }
-
-        private void OnCorrectSequence(object sender, Game.CorrectEventArgs e)
-        {
-            
-        }
-        private void OnWrongSequence(object sender, Game.WrongEventArgs e)
-        {
-
         }
 
         private void OnButtonClick(object sender, Board.ButtonClickEventArgs e)

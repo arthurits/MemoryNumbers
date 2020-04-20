@@ -364,6 +364,10 @@ namespace Controls
             }*/
         }
         
+        /// <summary>
+        /// Show the buttons, wait Time ms, and hide only the digits
+        /// </summary>
+        /// <param name="sender"></param>
         private async void ShowButtons(object sender)
         {
             ((CountDown)sender).Visible = false;

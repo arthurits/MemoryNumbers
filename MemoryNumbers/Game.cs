@@ -189,6 +189,9 @@ namespace MemoryNumbers
             if((_nCurrAttempt > _nMaxAttempts) || nArrayLength > (_nMaxDigit - _nMinDigit))
             {
                 _nSequence = null;
+                System.Diagnostics.Debug.WriteLine("SetSequence before event");
+                OnGameOver(new OverEventArgs(_nScore));
+                System.Diagnostics.Debug.WriteLine("SetSequence after event");
                 return false;
             }
             
