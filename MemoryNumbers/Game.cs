@@ -31,7 +31,10 @@ namespace MemoryNumbers
         #endregion Private variables
 
         #region Public properties
-
+        /// <summary>
+        /// Maximum attempts allowed to the player.
+        /// Only positive numbers > 0. Default is 10.
+        /// </summary>
         [Description("Maximum attempts (minimum 1 attempt)"),
         Category("Sequence properties"),
         Browsable(true),
@@ -39,17 +42,55 @@ namespace MemoryNumbers
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int MaximumAttempts { get => _nMaxAttempts; set => _nMaxAttempts = value < 1 ? 1 : value; }
 
-        [Description("Minimum digits (minimum 1 digit)"),
+        /// <summary>
+        /// Minimum length of the initial sequence: minimum numbers of digits to display at the begining of the game.
+        /// Only positive numbers > 0. Default is 2.
+        /// </summary>
+        [Description("Minimum initial length (minimum 1 digit)"),
         Category("Sequence properties"),
         Browsable(true),
         EditorBrowsable(EditorBrowsableState.Always),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int MinimumLength { get => _nMinLength; set => _nMinLength = value < 1 ? 1 : value; }
 
-        public int MaxScore { get => _nMaxDigit; set => _nMaxDigit = value < _nMinDigit ? _nMinDigit : value; }
-        public int MinScore { get => _nMinDigit; set => _nMinDigit = value < 0 ? 0 : value; }
+        /// <summary>
+        /// Maximum excluded number (digit) of the sequence.
+        /// Only positive numbers > 0 and >= MinimumDigit. Default is 10.
+        /// </summary>
+        [Description("Maximum excluded number (digit) of the sequence"),
+        Category("Sequence properties"),
+        Browsable(true),
+        EditorBrowsable(EditorBrowsableState.Always),
+        DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public int MaximumDigit { get => _nMaxDigit; set => _nMaxDigit = value < _nMinDigit ? _nMinDigit : value; }
+
+        /// <summary>
+        /// Minimum included number (digit) of the sequence.
+        /// Only positive numbers >= 0. Default is 0.
+        /// </summary>
+        [Description("Minimum initial length (minimum 1 digit)"),
+        Category("Sequence properties"),
+        Browsable(true),
+        EditorBrowsable(EditorBrowsableState.Always),
+        DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public int MinimumDigit { get => _nMinDigit; set => _nMinDigit = value < 0 ? 0 : value; }
+
+        /// <summary>
+        /// Current score of the game: the length of the sequence correctly guessed by the player (the length of the array).
+        /// Only positive numbers >= 0.
+        /// </summary>
+        /// [Description("Minimum digits (minimum 1 digit)"),
+        [Description("Current score (length og the numeric sequence"),
+        Category("Sequence properties"),
+        Browsable(true),
+        EditorBrowsable(EditorBrowsableState.Always),
+        DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int CurrentScore { get => _nScore; set => _nScore = value < 0 ? 0 : value; }
 
+        /// <summary>
+        /// (Read only) Gets the numeric array containing the current sequence.
+        /// Its length corresponds to the CurrentScore property.
+        /// </summary>
         [Description("Get the numeric sequence to represent (read only)"),
         Category("Sequence properties"),
         Browsable(true),
