@@ -336,6 +336,8 @@ namespace Controls
         // https://docs.microsoft.com/en-us/dotnet/framework/winforms/automatic-scaling-in-windows-forms
         protected override void OnResize(EventArgs e)
         {
+            this.SuspendLayout();
+
             int minDimension = Math.Min(this.Width, this.Height);
             _nDiameter = (int)(minDimension * _fNumbersFactor);
 
@@ -368,7 +370,11 @@ namespace Controls
                     this.pctWrong.Region = new Region(GetRegionFromTransparentBitmap(bitmap));
                 }
             }
+
             base.OnResize(e);
+
+            this.ResumeLayout(false);
+            this.PerformLayout();
         }
 
         public async Task Start(int[] numbers)
@@ -655,7 +661,7 @@ namespace Controls
         {
             Svg.SvgDocument document;
             System.Drawing.Bitmap svgBitmap = null;
-
+            
             if (System.IO.File.Exists(path))
             {
                 document = SvgDocument.Open(path);
@@ -664,12 +670,61 @@ namespace Controls
             return svgBitmap;
         }
 
+        /// <summary>
+        /// Gets a region pixel by pixel from the non-transparent pixels of the bitmap
+        /// More information here: https://www.codeproject.com/Articles/617613/Fast-pixel-operations-in-NET-with-and-without-unsa
+        /// and here: https://www.codeproject.com/Articles/406045/Why-the-use-of-GetPixel-and-SetPixel-is-so-ineffic
+        /// </summary>
+        /// <param name="bitmap"></param>
+        /// <returns></returns>
         private System.Drawing.Drawing2D.GraphicsPath GetRegionFromTransparentBitmap (System.Drawing.Bitmap bitmap)
         {
             System.Drawing.Drawing2D.GraphicsPath region = new System.Drawing.Drawing2D.GraphicsPath();
 
+            // Check that we have a bitmap
             if (bitmap == null) return null;
 
+            System.Drawing.Imaging.BitmapData imageData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                                                                            System.Drawing.Imaging.ImageLockMode.ReadWrite,
+                                                                            bitmap.PixelFormat);
+
+            int bytesPerPixel = (Image.GetPixelFormatSize(bitmap.PixelFormat)) >> 3;
+
+            unsafe
+            {
+                byte* PixelComponent = (byte*)imageData.Scan0;
+                for (int j = 0; j < imageData.Height; j++)
+                {
+                    byte* row = (byte*)imageData.Scan0 + (j * imageData.Stride);
+
+                    for (int i = 0; i < imageData.Width; i++)
+                    {
+                        if (row[i * bytesPerPixel + 3] > 0) region.AddRectangle(new Rectangle(i, j, 1, 1));
+                    }
+                }
+            }
+
+            bitmap.UnlockBits(imageData);
+
+            /*
+            // Marshal
+            byte[] imageBytes = new byte[Math.Abs(imageData.Stride) * bitmap.Height];
+            IntPtr scan0 = imageData.Scan0;
+
+            System.Runtime.InteropServices.Marshal.Copy(scan0, imageBytes, 0, imageBytes.Length);
+
+            for (int i = 0; i < imageBytes.Length; i += 4)
+            {
+                //if (imageBytes[i + 3] > 0) region.AddRectangle((uint)(i / imageData.Stride), , 1, 1);
+            }
+
+            System.Runtime.InteropServices.Marshal.Copy(imageBytes, 0, scan0, imageBytes.Length);
+
+            bitmap.UnlockBits(imageData);
+            */
+
+            /*
+            // Slow for big images
             for (int j = 0; j < bitmap.Height; j++)
             {
                 for (int i = 0; i < bitmap.Width; i++)
@@ -677,7 +732,7 @@ namespace Controls
                     if (bitmap.GetPixel(i, j).A > 0) region.AddRectangle(new Rectangle(i, j, 1, 1));
                 }
             }
-
+            */
             return region;
         }
 
