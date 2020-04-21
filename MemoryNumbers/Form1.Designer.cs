@@ -39,14 +39,14 @@
             this.toolStripMain_Start = new System.Windows.Forms.ToolStripButton();
             this.toolStripMain_Stop = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripMain_Settings = new System.Windows.Forms.ToolStripButton();
+            this.toolStripMain_Sound = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMain_Settings = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMain_About = new System.Windows.Forms.ToolStripButton();
             this.roundButton1 = new Controls.RoundButton();
             this.countDown1 = new Controls.CountDown();
             this.board1 = new Controls.Board();
-            this.toolStripMain_Sound = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.statusStrip.SuspendLayout();
             this.toolStripMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.board1)).BeginInit();
@@ -152,6 +152,25 @@
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 70);
             // 
+            // toolStripMain_Sound
+            // 
+            this.toolStripMain_Sound.Checked = true;
+            this.toolStripMain_Sound.CheckOnClick = true;
+            this.toolStripMain_Sound.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolStripMain_Sound.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMain_Sound.Image")));
+            this.toolStripMain_Sound.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripMain_Sound.Name = "toolStripMain_Sound";
+            this.toolStripMain_Sound.Size = new System.Drawing.Size(52, 67);
+            this.toolStripMain_Sound.Text = "Sound";
+            this.toolStripMain_Sound.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripMain_Sound.ToolTipText = "Game sounds on";
+            this.toolStripMain_Sound.CheckedChanged += new System.EventHandler(this.toolStripMain_Sound_CheckedChanged);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 70);
+            // 
             // toolStripMain_Settings
             // 
             this.toolStripMain_Settings.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMain_Settings.Image")));
@@ -162,10 +181,10 @@
             this.toolStripMain_Settings.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripMain_Settings.Click += new System.EventHandler(this.toolStripMain_Settings_Click);
             // 
-            // toolStripSeparator3
+            // toolStripSeparator4
             // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 70);
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 70);
             // 
             // toolStripMain_About
             // 
@@ -238,24 +257,7 @@
             this.board1.TabIndex = 3;
             this.board1.TabStop = false;
             this.board1.Time = 700;
-            // 
-            // toolStripMain_Sound
-            // 
-            this.toolStripMain_Sound.Checked = true;
-            this.toolStripMain_Sound.CheckOnClick = true;
-            this.toolStripMain_Sound.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.toolStripMain_Sound.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMain_Sound.Image")));
-            this.toolStripMain_Sound.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripMain_Sound.Name = "toolStripMain_Sound";
-            this.toolStripMain_Sound.Size = new System.Drawing.Size(52, 67);
-            this.toolStripMain_Sound.Text = "Sound";
-            this.toolStripMain_Sound.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.toolStripMain_Sound.ToolTipText = "Game sounds on";
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 70);
+            this.board1.TimeIncrement = 300;
             // 
             // Form1
             // 

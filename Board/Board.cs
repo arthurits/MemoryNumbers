@@ -28,6 +28,7 @@ namespace Controls
         private int _nMaxNum = 9;
         private int _nMinNum = 0;
         private int _nTime = 700;
+        private int _nTimeIncrement = 300;
         private float _fBorderWidth = 1f;
         private float _fCountDownFactor = 0.37f;
         private float _fNumbersFactor = 0.25f;
@@ -36,6 +37,7 @@ namespace Controls
         private Color _cBorderColor = Color.Black;
         private Color _cBackColor = Color.Transparent;
         private string _path;
+        private bool _sound;
         private System.Media.SoundPlayer[] _soundPlayer;
         private enum AudioSoundType
         {
@@ -56,6 +58,10 @@ namespace Controls
 
         #region Public properties
 
+        /// <summary>
+        /// Diameter of the corners of the button. For a perfect circunference, this should be 1/2 of the heigth/width.
+        /// For a perfect rectangle, this should be 0
+        /// </summary>
         [Description("Diameter of the circunference (0 means rectangle)"),
         Category("Digit button properties"),
         Browsable(true),
@@ -67,6 +73,9 @@ namespace Controls
             set { _nDiameter = value < 0 ? 0 : value; Invalidate(); }
         }
 
+        /// <summary>
+        /// Maximum number (excluded) for the buttons (must be >=0")
+        /// </summary>
         [Description("Maximum value of the buttons (must be >=0"),
         Category("Digit button properties"),
         Browsable(true),
@@ -78,6 +87,9 @@ namespace Controls
             set { _nMaxNum = value < 0 ? 0 : value; }
         }
 
+        /// <summary>
+        /// Minimum number (included) for the buttons (must be >=0")
+        /// </summary>
         [Description("Minimum value of the buttons (must be >=0)"),
         Category("Digit button properties"),
         Browsable(true),
@@ -89,6 +101,9 @@ namespace Controls
             set { _nMinNum = value < 0 ? 0 : value; }
         }
 
+        /// <summary>
+        /// The time interval (miliseconds) for flashing the sequence to the player
+        /// </summary>
         [Description("Time flashing the digits (must be >=0)"),
         Category("Digit button properties"),
         Browsable(true),
@@ -100,6 +115,24 @@ namespace Controls
             set { _nTime = value < 0 ? 0 : value; }
         }
 
+        /// <summary>
+        /// Provides a time increment (miliseconds) for the flashing interval that it's added to Time after each sequence is correct.
+        /// If the sequence is incorrect, then this increment is substracted from Time
+        /// </summary>
+        [Description("Time-flashing increment after each sequence (must be >=0)"),
+        Category("Digit button properties"),
+        Browsable(true),
+        EditorBrowsable(EditorBrowsableState.Always),
+        DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public int TimeIncrement
+        {
+            get { return _nTimeIncrement; }
+            set { _nTimeIncrement = value < 0 ? 0 : value; }
+        }
+
+        /// <summary>
+        /// Ratio of the width with respect to the heigth/width of the button
+        /// </summary>
         [Description("Width of the border (0 means no border)"),
         Category("Digit button properties"),
         Browsable(true),
@@ -111,6 +144,9 @@ namespace Controls
             set { _fBorderWidth = value < 0 ? 0f : value; Invalidate(); }
         }
 
+        /// <summary>
+        /// Ratio of the heigth/width of the coun-down control with respect to the heigth/width of the board
+        /// </summary>
         [Description("Ratio of the count down control"),
         Category("Digit button properties"),
         Browsable(true),
@@ -122,6 +158,9 @@ namespace Controls
             set { _fCountDownFactor = value < 0 ? 0f : value; Invalidate(); }
         }
 
+        /// <summary>
+        /// Ratio of the heigth/width of the button with respect to the heigth/width of the board
+        /// </summary>
         [Description("Ratio of the digits control"),
         Category("Digit button properties"),
         Browsable(true),
@@ -133,6 +172,9 @@ namespace Controls
             set { _fNumbersFactor = value < 0 ? 0f : value; Invalidate(); }
         }
 
+        /// <summary>
+        /// Ratio of the size of the button with respect to the heigth/width of the button
+        /// </summary>
         [Description("Ratio of the font for the round controls (CountDown and Digits)"),
         Category("Digit button properties"),
         Browsable(true),
@@ -144,6 +186,9 @@ namespace Controls
             set { _fFontSize = value < 0 ? 0f : value; Invalidate(); }
         }
 
+        /// <summary>
+        /// Ratio of the heigth/width of the results picture with respect to the heigth/width of the board
+        /// </summary>
         [Description("Ratio of the picture-result controls"),
         Category("Digit button properties"),
         Browsable(true),
@@ -155,6 +200,9 @@ namespace Controls
             set { _fPictureCorrect = value < 0 ? 0f : value; Invalidate(); }
         }
 
+        /// <summary>
+        /// Border color of the circunference of the button
+        /// </summary>
         [Description("Border color of the circunference"),
         Category("Digit button properties"),
         Browsable(true),
@@ -166,6 +214,9 @@ namespace Controls
             set { _cBorderColor = value; Invalidate(); }
         }
 
+        /// <summary>
+        /// Back color of the circunference
+        /// </summary>
         [Description("Back color of the circunference"),
         Category("Digit button properties"),
         Browsable(true),
@@ -175,6 +226,20 @@ namespace Controls
         {
             get { return _cBackColor; }
             set { _cBackColor = value; Invalidate(); }
+        }
+
+        /// <summary>
+        /// Specifies whether game sounds are played (true) or not (false)
+        /// </summary>
+        [Description("Back color of the circunference"),
+        Category("Specifies whether game sounds are played (true) or not (false)"),
+        Browsable(true),
+        EditorBrowsable(EditorBrowsableState.Always),
+        DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool PlaySounds
+        {
+            get { return _sound; }
+            set { _sound = value; }
         }
         #endregion Public properties
 
@@ -345,24 +410,8 @@ namespace Controls
             else
             {
                 ShowButtons(sender);
-                /*
-                ((CountDown)sender).Visible = false;
-                foreach (RoundButton btn in roundDigit)
-                {
-                    btn.Visible = true;
-                }
-                */
             }
             
-            //this.Invoke(new Action(() => ShowButtons(sender)));
-            /*
-            ((CountDown)sender).Invoke((new Action(() => ((CountDown)sender).Visible = false)));
-                        
-            foreach (RoundButton btn in roundDigit)
-            {
-                this.Invoke((new Action(() => btn.Visible = true)));
-                btn.Visible = true;
-            }*/
         }
         
         /// <summary>
@@ -550,6 +599,8 @@ namespace Controls
 
         private async Task PlayAudioFile(AudioSoundType type, AudioSoundMode mode)
         {
+            // If no sounds are to be played, then exit
+            if (!_sound) return;
 
             switch (type)
             {

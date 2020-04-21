@@ -223,10 +223,15 @@ namespace MemoryNumbers
             // Since the Sytem.Timer runs in another thread, we need to use Invoke to get back to the control thread (which is the UI thread)
             ((Controls.CountDown)sender).Invoke((new Action(() => ((Controls.CountDown)sender).Visible = false)));
         }
-        
+
         #endregion Events subscription
 
         #region toolStripMain
+
+        private void toolStripMain_Exit_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
 
         private void toolStripMain_Start_Click(object sender, EventArgs e)
         {
@@ -241,9 +246,9 @@ namespace MemoryNumbers
             board1.Start(_game.GetSequence);
         }
 
-        private void toolStripMain_Exit_Click(object sender, EventArgs e)
+        private void toolStripMain_Sound_CheckedChanged(object sender, EventArgs e)
         {
-            Close();
+            this.board1.PlaySounds = toolStripMain_Sound.Checked;
         }
 
         private void toolStripMain_Settings_Click(object sender, EventArgs e)
@@ -313,32 +318,19 @@ namespace MemoryNumbers
             _programSettings["WindowWidth"] = this.ClientSize.Width.ToString();
             _programSettings["WindowHeight"] = this.ClientSize.Height.ToString();
 
+            _programSettings["MaximumAttempts"] = this._game.MaximumAttempts.ToString();
             _programSettings["MaximumDigit"] = this.board1.MaxNumber.ToString();
             _programSettings["MinimumDigit"] = this.board1.MinNumber.ToString();
+
             _programSettings["Time"] = this.board1.Time.ToString();
+            _programSettings["TimeIncrement"] = this.board1.TimeIncrement.ToString();
             _programSettings["BorderRatio"] = this.board1.BorderRatio.ToString();
             _programSettings["CountDownRatio"] = this.board1.CountDownRatio.ToString();
             _programSettings["NumbersRatio"] = this.board1.NumbersRatio.ToString();
             _programSettings["FontRatio"] = this.board1.FontRatio.ToString();
             _programSettings["ResultsRatio"] = this.board1.ResultRatio.ToString();
 
-            _programSettings["MaximumAttempts"] = this._game.MaximumAttempts.ToString();
-
-
-            //_programSettings["MirrorChecked"] = (this.toolStripMain_Mirror.Checked ? 1 : 0).ToString();
-            //_programSettings["PlotsChecked"] = (this.toolStripMain_Plots.Checked ? 1 : 0).ToString();
-            //_programSettings["SkeletonChecked"] = (this.toolStripMain_Skeleton.Checked ? 1 : 0).ToString();
-            //_programSettings["SkeletonColor"]
-            //_programSettings["SkeletonWidth"] = ((Int32)this.toolStripMain_SkeletonWidth.NumericUpDownControl.Value).ToString();
-            //_programSettings["JointChecked"] = (this.toolStripMain_Joint.Checked ? 1 : 0).ToString(); ;
-            //_programSettings["JointColor"] = this._jointColor.ToArgb().ToString();
-            //_programSettings["JointSize"] = this._jointSize.ToString();
-            //_programSettings["AngleChecked"] = (this.toolStripMain_Angle.Checked ? 1 : 0).ToString();
-            //_programSettings["AngleColor"] = this._angleColor.ToArgb().ToString();
-            //_programSettings["AngleFill"] = this._angleFill.ToArgb().ToString();
-            //_programSettings["AngleSize"] = this._angleSize.ToString();
-            // _programSettings[""] =
-
+            _programSettings["Sound"] = this.toolStripMain_Sound.Checked == true ? "1" : "0";
 
             // Save window settings.
             TextWriter textWriter = StreamWriter.Null;
@@ -372,46 +364,24 @@ namespace MemoryNumbers
         /// </summary>
         private void ApplySettings()
         {
-            /*
+            
             this.StartPosition = FormStartPosition.Manual;
             this.DesktopLocation = new Point(Convert.ToInt32(_programSettings["WindowLeft"]), Convert.ToInt32(_programSettings["WindowTop"]));
             this.ClientSize = new Size(Convert.ToInt32(_programSettings["WindowWidth"]), Convert.ToInt32(_programSettings["WindowHeight"]));
-            this.toolStripMain_Video.Checked = Convert.ToInt32(_programSettings["DisplayFrame"]) == 1 ? true : false;
-            statusStripLabelVideo.Enabled = toolStripMain_Video.Checked;
-            this.toolStripMain_Mirror.Checked = Convert.ToInt32(_programSettings["MirrorChecked"]) == 1 ? true : false;
-            statusStripLabelMirror.Enabled = toolStripMain_Mirror.Checked;
-            this.toolStripMain_Plots.Checked = Convert.ToInt32(_programSettings["PlotsChecked"]) == 1 ? true : false;
-            statusStripLabelPlots.Enabled = toolStripMain_Plots.Checked;
 
+            this._game.MaximumAttempts = Convert.ToInt32(_programSettings["MaximumAttempts"]);
+            this._game.MaximumDigit = Convert.ToInt32(_programSettings["MaximumDigit"]);
+            this._game.MinimumDigit = Convert.ToInt32(_programSettings["MinimumDigit"]);
+            this.board1.Time = Convert.ToInt32(_programSettings["Time"]);
+            this.board1.TimeIncrement = _programSettings.ContainsKey("TimeIncrement") ? Convert.ToInt32(_programSettings["TimeIncrement"]) : 0;
+            this.board1.BorderRatio = Convert.ToSingle(_programSettings["BorderRatio"]);
+            this.board1.CountDownRatio = Convert.ToSingle(_programSettings["CountDownRatio"]);
+            this.board1.NumbersRatio = Convert.ToSingle(_programSettings["NumbersRatio"]);
+            this.board1.FontRatio = Convert.ToSingle(_programSettings["FontRatio"]);
+            this.board1.ResultRatio = Convert.ToSingle(_programSettings["ResultsRatio"]);
 
-            this._boneColor = Color.FromArgb(Convert.ToInt32(_programSettings["SkeletonColor"]));
-            this._boneThickness = Convert.ToInt32(_programSettings["SkeletonWidth"]);
-            this._boneDraw = Convert.ToInt32(_programSettings["SkeletonChecked"]) == 1 ? true : false;
-            this.toolStripMain_Skeleton.Checked = _boneDraw;
-            statusStripLabelSkeleton.Enabled = _boneDraw;
-            Graphics.FromImage(this.toolStripMain_Skeleton.Image).Clear(_boneColor);
-            this.toolStripMain_SkeletonWidth.NumericUpDownControl.Value = Convert.ToInt32(_boneThickness);
-            this.toolStripMain_Skeleton.Invalidate();
-
-            this._jointColor = Color.FromArgb(Convert.ToInt32(_programSettings["JointColor"]));
-            this._jointSize = Convert.ToInt32(_programSettings["JointSize"]);
-            this._jointDraw = Convert.ToInt32(_programSettings["JointChecked"]) == 1 ? true : false;
-            this.toolStripMain_Joint.Checked = _jointDraw;
-            statusStripLabelJoint.Enabled = _jointDraw;
-            Graphics.FromImage(this.toolStripMain_Joint.Image).Clear(_jointColor);
-            this.toolStripMain_JointWidth.NumericUpDownControl.Value = Convert.ToInt32(_jointSize);
-            this.toolStripMain_Joint.Invalidate();
-
-            this._angleFill = Color.FromArgb(Convert.ToInt32(_programSettings["AngleFill"]));
-            this._angleColor = Color.FromArgb(Convert.ToInt32(_programSettings["AngleColor"]));
-            this._angleSize = Convert.ToInt32(_programSettings["AngleSize"]);
-            this._angleDraw = Convert.ToInt32(_programSettings["AngleChecked"]) == 1 ? true : false;
-            this.toolStripMain_Angle.Checked = _angleDraw;
-            statusStripLabelAngle.Enabled = _angleDraw;
-            Graphics.FromImage(this.toolStripMain_Angle.Image).Clear(_angleColor);
-            this.toolStripMain_AngleWidth.NumericUpDownControl.Value = Convert.ToInt32(_angleSize);
-            this.toolStripMain_Angle.Invalidate();
-            */
+            this.toolStripMain_Sound.Checked = _programSettings.ContainsKey("Sound") ? (Convert.ToInt32(_programSettings["Sound"]) == 1 ? true : false) : true;
+            this.board1.PlaySounds = this.toolStripMain_Sound.Checked;
         }
 
         /// <summary>
@@ -424,25 +394,26 @@ namespace MemoryNumbers
             _programSettings["WindowTop"] = this.DesktopLocation.Y.ToString();
             _programSettings["WindowWidth"] = this.ClientSize.Width.ToString();    // Get current form size
             _programSettings["WindowHeight"] = this.ClientSize.Height.ToString();
-            //_programSettings["DisplayFrame"] = "1";     // Checked
-            //_programSettings["MirrorChecked"] = "0";    // Unchecked
-            //_programSettings["PlotsChecked"] = "1";     // Checked
-            //_programSettings["SkeletonChecked"] = "1";  // Checked
-            //_programSettings["SkeletonColor"] = Color.Red.ToArgb().ToString();
-            //_programSettings["SkeletonWidth"] = "3";
-            //_programSettings["JointChecked"] = "1";     // Checked
-            //_programSettings["JointColor"] = Color.Purple.ToArgb().ToString();
-            //_programSettings["JointSize"] = "5";
-            //_programSettings["AngleChecked"] = "1";     // Checked
-            //_programSettings["AngleColor"] = Color.Green.ToArgb().ToString();
-            //_programSettings["AngleFill"] = Color.FromArgb(127, Color.Green).ToArgb().ToString();
-            //_programSettings["AngleSize"] = "3";
+
+            _programSettings["MaximumAttempts"] = "10";
+            _programSettings["MaximumDigit"] = "10";
+            _programSettings["MinimumDigit"] = "0";
+            _programSettings["Time"] = "700";
+            _programSettings["TimeIncrement"] = "0";
+
+            _programSettings["BorderRatio"] = "0.3";
+            _programSettings["CountDownRatio"] = "0.37";
+            _programSettings["NumbersRatio"] = "0.25";
+            _programSettings["FontRatio"] = "0.60";
+            _programSettings["ResultsRatio"] = "0.56";
+
+            _programSettings["Sound"] = "1";     // Checked
         }
 
 
 
-        #endregion Application settings
 
+        #endregion Application settings
 
     }
 }
