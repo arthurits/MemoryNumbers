@@ -45,6 +45,8 @@
             this.roundButton1 = new Controls.RoundButton();
             this.countDown1 = new Controls.CountDown();
             this.board1 = new Controls.Board();
+            this.toolStripMain_Sound = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.statusStrip.SuspendLayout();
             this.toolStripMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.board1)).BeginInit();
@@ -97,8 +99,10 @@
             this.toolStripMain_Start,
             this.toolStripMain_Stop,
             this.toolStripSeparator2,
-            this.toolStripMain_Settings,
+            this.toolStripMain_Sound,
             this.toolStripSeparator3,
+            this.toolStripMain_Settings,
+            this.toolStripSeparator4,
             this.toolStripMain_About});
             this.toolStripMain.Location = new System.Drawing.Point(0, 0);
             this.toolStripMain.Name = "toolStripMain";
@@ -114,6 +118,7 @@
             this.toolStripMain_Exit.Size = new System.Drawing.Size(52, 67);
             this.toolStripMain_Exit.Text = "Exit";
             this.toolStripMain_Exit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripMain_Exit.ToolTipText = "Exit application";
             this.toolStripMain_Exit.Click += new System.EventHandler(this.toolStripMain_Exit_Click);
             // 
             // toolStripSeparator1
@@ -129,6 +134,7 @@
             this.toolStripMain_Start.Size = new System.Drawing.Size(52, 67);
             this.toolStripMain_Start.Text = "Start";
             this.toolStripMain_Start.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripMain_Start.ToolTipText = "Start the game";
             this.toolStripMain_Start.Click += new System.EventHandler(this.toolStripMain_Start_Click);
             // 
             // toolStripMain_Stop
@@ -139,6 +145,7 @@
             this.toolStripMain_Stop.Size = new System.Drawing.Size(52, 67);
             this.toolStripMain_Stop.Text = "Stop";
             this.toolStripMain_Stop.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripMain_Stop.ToolTipText = "Stop the game";
             // 
             // toolStripSeparator2
             // 
@@ -168,6 +175,7 @@
             this.toolStripMain_About.Size = new System.Drawing.Size(52, 67);
             this.toolStripMain_About.Text = "About";
             this.toolStripMain_About.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripMain_About.ToolTipText = "About this software";
             this.toolStripMain_About.Click += new System.EventHandler(this.toolStripMain_About_Click);
             // 
             // roundButton1
@@ -231,6 +239,24 @@
             this.board1.TabStop = false;
             this.board1.Time = 700;
             // 
+            // toolStripMain_Sound
+            // 
+            this.toolStripMain_Sound.Checked = true;
+            this.toolStripMain_Sound.CheckOnClick = true;
+            this.toolStripMain_Sound.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolStripMain_Sound.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMain_Sound.Image")));
+            this.toolStripMain_Sound.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripMain_Sound.Name = "toolStripMain_Sound";
+            this.toolStripMain_Sound.Size = new System.Drawing.Size(52, 67);
+            this.toolStripMain_Sound.Text = "Sound";
+            this.toolStripMain_Sound.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripMain_Sound.ToolTipText = "Game sounds on";
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 70);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -279,6 +305,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton toolStripMain_About;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel_Secuence;
+        private System.Windows.Forms.ToolStripButton toolStripMain_Sound;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 
         /*
         private System.Windows.Forms.ToolStripButton toolStrip_Exit;

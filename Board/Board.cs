@@ -268,6 +268,7 @@ namespace Controls
             this.Controls.Add(pctWrong);
         }
 
+        // https://docs.microsoft.com/en-us/dotnet/framework/winforms/automatic-scaling-in-windows-forms
         protected override void OnResize(EventArgs e)
         {
             int minDimension = Math.Min(this.Width, this.Height);
