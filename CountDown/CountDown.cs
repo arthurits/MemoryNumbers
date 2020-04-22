@@ -14,19 +14,21 @@ namespace Controls
     [Designer("System.Windows.Forms.Design.ParentControlDesigner, System.Design", typeof(System.ComponentModel.Design.IDesigner))]
     public partial class CountDown: Controls.RoundButton
     {
-        private System.Timers.Timer t;
+        private readonly System.Timers.Timer t;
         private float _fStart = 10f;
         private float _fEnd = 0f;
         private double _dInterval = 1000; // 1 s
         private double _dCounter;
-        private string _path;
+        private bool _sound;
         private System.Media.SoundPlayer _soundPlayer;
 
         public event EventHandler<TimerEndingEventArgs> TimerEnding;
 
         #region Public properties
-
-        [Description("Starting time (generally seconds) of the countdown"),
+        /// <summary>
+        /// Starting time (typically in seconds) of the countdown
+        /// </summary>
+        [Description("Starting time (typically in seconds) of the countdown"),
         Category("Countdown properties"),
         Browsable(true),
         EditorBrowsable(EditorBrowsableState.Always),
@@ -37,7 +39,10 @@ namespace Controls
             set { _fStart = value < 0 ? 0f : value; _dCounter = _fStart; this.Text = _fStart.ToString(); }
         }
 
-        [Description("Ending time (generally seconds) of the countdown"),
+        /// <summary>
+        /// Ending time (typically in seconds) of the countdown
+        /// </summary>
+        [Description("Ending time (typically in seconds) of the countdown"),
         Category("Countdown properties"),
         Browsable(true),
         EditorBrowsable(EditorBrowsableState.Always),
@@ -48,7 +53,10 @@ namespace Controls
             set { _fEnd = value < 0 ? 0f : value; }
         }
 
-        [Description("Time interval of the countdown in seconds"),
+        /// <summary>
+        /// Time interval of the countdown in seconds
+        /// </summary>
+        [Description("Time interval of the countdown in seconds. Typically it would be 1 second."),
         Category("Countdown properties"),
         Browsable(true),
         EditorBrowsable(EditorBrowsableState.Always),
@@ -56,7 +64,21 @@ namespace Controls
         public double TimeInterval
         {
             get { return _dInterval; }
-            set { _dInterval = value*1000 < 0 ? 0f : value; t.Interval = _dInterval; }
+            set { _dInterval = value * 1000 < 0 ? 0f : value; t.Interval = _dInterval; }
+        }
+
+        /// <summary>
+        /// Specifies whether game sounds are played (true) or not (false) during the countdown
+        /// </summary>
+        [Description("Specifies whether game sounds are played (true) or not (false)"),
+        Category("Countdown properties"),
+        Browsable(true),
+        EditorBrowsable(EditorBrowsableState.Always),
+        DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public bool PlaySounds
+        {
+            get { return _sound; }
+            set { _sound = value; }
         }
 
         #endregion Public properties
@@ -69,8 +91,8 @@ namespace Controls
             t = new System.Timers.Timer();
             t.Elapsed += onTimeEvent;
 
-            _path = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
-            _soundPlayer = new System.Media.SoundPlayer(_path + @"\audio\Count down.wav");
+            string _path = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
+            _soundPlayer = System.IO.File.Exists(_path + @"\audio\Count down.wav") ? new System.Media.SoundPlayer(_path + @"\audio\Count down.wav") : null;
 
             // Anchor the rounded rectangle for resizing purposes
             //roundButton1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
@@ -95,7 +117,7 @@ namespace Controls
             }
             else
             {
-                _soundPlayer.Play();
+                if (_sound == true && _soundPlayer != null) _soundPlayer.Play();
                 if (this.InvokeRequired)
                 {
                     Invoke(new Action(() =>
@@ -114,7 +136,7 @@ namespace Controls
         public void Start()
         {
             t.Start();
-            _soundPlayer.Play();
+            if (_sound == true && _soundPlayer != null) _soundPlayer.Play();
             return;
         }
 

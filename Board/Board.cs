@@ -239,7 +239,7 @@ namespace Controls
         public bool PlaySounds
         {
             get { return _sound; }
-            set { _sound = value; }
+            set { _sound = value; countDown.PlaySounds = value; }
         }
         #endregion Public properties
 
@@ -277,16 +277,16 @@ namespace Controls
         {
             // WinForms automatic initialization
             InitializeComponent();
-
+            
             // Load the sounds
             _path = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
-            _soundPlayer = new System.Media.SoundPlayer[(int)AudioSoundType.EndGame + 1];
-            _soundPlayer[0] = new System.Media.SoundPlayer(_path + @"\audio\Correct number.wav");
-            _soundPlayer[1] = new System.Media.SoundPlayer(_path + @"\audio\Wrong number.wav");
-            _soundPlayer[2] = new System.Media.SoundPlayer(_path + @"\audio\Correct sequence.wav");
-            _soundPlayer[3] = new System.Media.SoundPlayer(_path + @"\audio\Wrong sequence.wav");
-            _soundPlayer[4] = new System.Media.SoundPlayer(_path + @"\audio\Count down.wav");
-            _soundPlayer[5] = new System.Media.SoundPlayer(_path + @"\audio\End game.wav");
+            _soundPlayer = new System.Media.SoundPlayer[Enum.GetNames(typeof(AudioSoundType)).Length];                                              // https://stackoverflow.com/questions/856154/total-number-of-items-defined-in-an-enum
+            _soundPlayer[0] = System.IO.File.Exists(_path + @"\audio\Correct number.wav") ? new System.Media.SoundPlayer(_path + @"\audio\Correct number.wav") : null;
+            _soundPlayer[1] = System.IO.File.Exists(_path + @"\audio\Wrong number.wav") ? new System.Media.SoundPlayer(_path + @"\audio\Wrong number.wav") : null;
+            _soundPlayer[2] = System.IO.File.Exists(_path + @"\audio\Correct sequence.wav") ? new System.Media.SoundPlayer(_path + @"\audio\Correct sequence.wav") : null;
+            _soundPlayer[3] = System.IO.File.Exists(_path + @"\audio\Wrong sequence.wav") ? new System.Media.SoundPlayer(_path + @"\audio\Wrong sequence.wav") : null;
+            _soundPlayer[4] = System.IO.File.Exists(_path + @"\audio\Count down.wav") ? new System.Media.SoundPlayer(_path + @"\audio\Count down.wav") : null;
+            _soundPlayer[5] = System.IO.File.Exists(_path + @"\audio\End game.wav") ? new System.Media.SoundPlayer(_path + @"\audio\End game.wav") : null;
 
             // Set the array of buttons to 0 elements
             _roundButton = new Controls.RoundButton[0];
@@ -351,10 +351,11 @@ namespace Controls
             }
             if (pctCorrect != null)
             {
-                Bitmap bitmap;
+                Bitmap bitmap = null;
                 this.pctCorrect.Size = new Size((int)(this.Size.Height * _fPictureCorrect), (int)(this.Size.Height * _fPictureCorrect));
                 this.pctCorrect.Location = new System.Drawing.Point((this.Size.Width - pctCorrect.Size.Width) / 2, (this.Size.Height - pctCorrect.Size.Height) / 2);
-                bitmap = GetBitmapFromSVG(_path + @"\images\Sequence correct.svg", this.pctCorrect.Width, this.pctCorrect.Height);
+                if(System.IO.File.Exists(_path + @"\images\Sequence correct.svg"))
+                    bitmap = GetBitmapFromSVG(_path + @"\images\Sequence correct.svg", this.pctCorrect.Width, this.pctCorrect.Height);
                 if (bitmap != null)
                 {
                     this.pctCorrect.Image = bitmap;
@@ -363,7 +364,8 @@ namespace Controls
 
                 this.pctWrong.Size = new Size((int)(this.Size.Height * _fPictureCorrect), (int)(this.Size.Height * _fPictureCorrect));
                 this.pctWrong.Location = new System.Drawing.Point((this.Size.Width - pctWrong.Size.Width) / 2, (this.Size.Height - pctWrong.Size.Height) / 2);
-                bitmap = GetBitmapFromSVG(_path + @"\images\Sequence Wrong.svg", this.pctWrong.Width, this.pctWrong.Height);
+                if (System.IO.File.Exists(_path + @"\images\Sequence wrong.svg"))
+                    bitmap = GetBitmapFromSVG(_path + @"\images\Sequence wrong.svg", this.pctWrong.Width, this.pctWrong.Height);
                 if (bitmap != null)
                 {
                     this.pctWrong.Image = bitmap;
@@ -373,7 +375,7 @@ namespace Controls
 
             base.OnResize(e);
 
-            this.ResumeLayout(false);
+            this.ResumeLayout(true);
             this.PerformLayout();
         }
 
@@ -603,39 +605,23 @@ namespace Controls
 
         }
 
+        /// <summary>
+        /// Plays a game sound
+        /// </summary>
+        /// <param name="type">The type of the audio sound to play</param>
+        /// <param name="mode">Whether the sound is played syncrounsly or asyncronously</param>
+        /// <returns></returns>
         private async Task PlayAudioFile(AudioSoundType type, AudioSoundMode mode)
         {
             // If no sounds are to be played, then exit
             if (!_sound) return;
 
-            switch (type)
+            // Else, play the selected sound in the selected mode
+            if (_soundPlayer[(int)type] != null)
             {
-                case AudioSoundType.NumberCorrect:
-                    if (mode==AudioSoundMode.Sync) _soundPlayer[0].PlaySync();
-                    else if (mode==AudioSoundMode.Async) _soundPlayer[0].Play();
-                    break;
-                case AudioSoundType.NumberWrong:
-                    if (mode == AudioSoundMode.Sync) _soundPlayer[1].PlaySync();
-                    else if (mode == AudioSoundMode.Async) _soundPlayer[1].Play();
-                    break;
-                case AudioSoundType.SequenceCorrect:
-                    if (mode == AudioSoundMode.Sync) _soundPlayer[2].PlaySync();
-                    else if (mode == AudioSoundMode.Async) _soundPlayer[2].Play();
-                    break;
-                case AudioSoundType.SequenceWrong:
-                    if (mode == AudioSoundMode.Sync) _soundPlayer[3].PlaySync();
-                    else if (mode == AudioSoundMode.Async) _soundPlayer[3].Play();
-                    break;
-                case AudioSoundType.CountDown:
-                    if (mode == AudioSoundMode.Sync) _soundPlayer[4].PlaySync();
-                    else if (mode == AudioSoundMode.Async) _soundPlayer[4].Play();
-                    break;
-                case AudioSoundType.EndGame:
-                    if (mode == AudioSoundMode.Sync) _soundPlayer[5].PlaySync();
-                    else if (mode == AudioSoundMode.Async) _soundPlayer[5].Play();
-                    break;
+                if (mode == AudioSoundMode.Sync) _soundPlayer[(int)type].PlaySync();
+                else if (mode == AudioSoundMode.Async) _soundPlayer[(int)type].Play();
             }
-
         }
 
         private async Task ResultCorrect()
