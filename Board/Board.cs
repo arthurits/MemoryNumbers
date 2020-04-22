@@ -423,7 +423,7 @@ namespace Controls
         }
         
         /// <summary>
-        /// Show the buttons, wait Time ms, and hide only the digits
+        /// Show the buttons, wait Time (in ms), and hide only the digits
         /// </summary>
         /// <param name="sender"></param>
         private async void ShowButtons(object sender)
