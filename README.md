@@ -1,7 +1,9 @@
 # MemoryNumbers
 A short-term memory game.
 
-This is a multiproject .NET C# WinForms game to train your short-term memory.
+This is a multiproject .NET C# WinForms game to train your short-term memory. It was inspired by this video
+
+[![Counting monkey video](https://img.youtube.com/vi/VM5QS_adrIQ/0.jpg)](https://www.youtube.com/watch?v=VM5QS_adrIQ)
 
 Copyright © 2020 by arthurits
 
