@@ -15,7 +15,7 @@ Copyright © 2020 by arthurits
 <img src="/Media/Screenshot 04.png?raw=true" width="100%" height="100%"/>
 
 ##### There are many options and play modes to adapt the game to any level!
-<img src="/Media/Screenshot 04.png?raw=true" width="100%" height="100%"/>
+<img src="/Media/Screenshot 05.png?raw=true" width="100%" height="100%"/>
 
 ### External dependencies
 This project uses the SVG.NET Library, from the following Git:
