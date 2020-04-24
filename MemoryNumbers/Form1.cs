@@ -38,7 +38,8 @@ namespace MemoryNumbers
             // Subscribe to events
             countDown1.TimerEnding += new EventHandler<Controls.TimerEndingEventArgs>(OnTimerEnding);
             board1.ButtonClick += new EventHandler<Board.ButtonClickEventArgs>(OnButtonClick);
-            board1.RightSequence += new EventHandler<Board.SequenceEventArgs>(OnCorrectSequence);
+            //board1.RightSequence += new EventHandler<Board.SequenceEventArgs>(OnCorrectSequence);
+            board1.RightSequence += async (object s, Board.SequenceEventArgs e) => await OnCorrectSequence(s, e);
             board1.WrongSequence += new EventHandler<Board.SequenceEventArgs>(OnWrongSequence);
             _game.CorrectSequence += new EventHandler<Game.CorrectEventArgs>(OnCorrectSequence);
             _game.WrongSequence += new EventHandler<Game.WrongEventArgs>(OnWrongSequence);
@@ -83,6 +84,7 @@ namespace MemoryNumbers
             if (File.Exists(_path + @"\images\start.ico")) this.toolStripMain_Start.Image = new Icon(_path + @"\images\start.ico", 48, 48).ToBitmap();
             if (File.Exists(_path + @"\images\stop.ico")) this.toolStripMain_Stop.Image = new Icon(_path + @"\images\stop.ico", 48, 48).ToBitmap();
             if (File.Exists(_path + @"\images\sound.ico")) this.toolStripMain_Sound.Image = new Icon(_path + @"\images\sound.ico", 48, 48).ToBitmap();
+            if (File.Exists(_path + @"\images\graph.ico")) this.toolStripMain_Graph.Image = new Icon(_path + @"\images\graph.ico", 48, 48).ToBitmap();
             if (File.Exists(_path + @"\images\settings.ico")) this.toolStripMain_Settings.Image = new Icon(_path + @"\images\settings.ico", 48, 48).ToBitmap();
             //if (File.Exists(path + @"\images\save.ico")) this.toolStripMain_Data.Image = new Icon(path + @"\images\save.ico", 48, 48).ToBitmap();
             //if (File.Exists(path + @"\images\picture.ico")) this.toolStripMain_Picture.Image = new Icon(path + @"\images\picture.ico", 48, 48).ToBitmap();
@@ -96,10 +98,6 @@ namespace MemoryNumbers
                 g.Clear(Color.PowderBlue);
             }
             */
-
-            //this.toolStripMain_Disconnect.Enabled = false;
-            //this.toolStripMain_SkeletonWidth.NumericUpDownControl.Maximum = 20;
-            //this.toolStripMain_SkeletonWidth.NumericUpDownControl.Minimum = 1;
 
             // Exit the method
             return;
@@ -173,19 +171,23 @@ namespace MemoryNumbers
 
         #region Events subscription
 
-        private void OnCorrectSequence(object sender, Board.SequenceEventArgs e)
+        private async Task OnCorrectSequence(object sender, Board.SequenceEventArgs e)
         {
+            // Wait before starting a new sequence
+            await Task.Delay(100);
+
             // Show the score in the status bar
             this.toolStripStatusLabel_Secuence.Text = e.SequenceLength.ToString();
             this.toolStripStatusLabel_Secuence.Invalidate();
-            
+
             // Keep the game going on
             _game.CurrentScore = e.SequenceLength;
+            System.Diagnostics.Debug.WriteLine("Form in OnCorrectSequence");
             if (_game.Start())
             {
                 board1.Start(_game.GetSequence);
             }
-            
+            System.Diagnostics.Debug.WriteLine("Form after ReStart");
 
         }
 

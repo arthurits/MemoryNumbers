@@ -47,6 +47,7 @@
             this.roundButton1 = new Controls.RoundButton();
             this.countDown1 = new Controls.CountDown();
             this.board1 = new Controls.Board();
+            this.toolStripMain_Graph = new System.Windows.Forms.ToolStripButton();
             this.statusStrip.SuspendLayout();
             this.toolStripMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.board1)).BeginInit();
@@ -100,6 +101,7 @@
             this.toolStripMain_Stop,
             this.toolStripSeparator2,
             this.toolStripMain_Sound,
+            this.toolStripMain_Graph,
             this.toolStripSeparator3,
             this.toolStripMain_Settings,
             this.toolStripSeparator4,
@@ -226,6 +228,7 @@
             this.countDown1.Location = new System.Drawing.Point(417, 124);
             this.countDown1.Margin = new System.Windows.Forms.Padding(20, 18, 20, 18);
             this.countDown1.Name = "countDown1";
+            this.countDown1.PlaySounds = false;
             this.countDown1.Size = new System.Drawing.Size(100, 100);
             this.countDown1.StartingTime = 5F;
             this.countDown1.TabIndex = 2;
@@ -252,12 +255,23 @@
             this.board1.MinNumber = 0;
             this.board1.Name = "board1";
             this.board1.NumbersRatio = 0.25F;
+            this.board1.PlaySounds = false;
             this.board1.ResultRatio = 0.56F;
             this.board1.Size = new System.Drawing.Size(538, 271);
             this.board1.TabIndex = 3;
             this.board1.TabStop = false;
             this.board1.Time = 700;
             this.board1.TimeIncrement = 300;
+            // 
+            // toolStripMain_Graph
+            // 
+            this.toolStripMain_Graph.CheckOnClick = true;
+            this.toolStripMain_Graph.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMain_Graph.Image")));
+            this.toolStripMain_Graph.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripMain_Graph.Name = "toolStripMain_Graph";
+            this.toolStripMain_Graph.Size = new System.Drawing.Size(52, 67);
+            this.toolStripMain_Graph.Text = "Graph";
+            this.toolStripMain_Graph.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             // 
             // Form1
             // 
@@ -309,6 +323,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel_Secuence;
         private System.Windows.Forms.ToolStripButton toolStripMain_Sound;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripButton toolStripMain_Graph;
 
         /*
         private System.Windows.Forms.ToolStripButton toolStrip_Exit;

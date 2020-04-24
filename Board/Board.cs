@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Svg;
+using System.Runtime.CompilerServices;
 
 namespace Controls
 {
@@ -255,10 +256,16 @@ namespace Controls
             public ButtonClickEventArgs(int button) { ButtonValue = button; }
         }
 
+        // Async events https://stackoverflow.com/questions/12451609/how-to-await-raising-an-eventhandler-event
+        // https://github.com/Microsoft/SimpleStubs/issues/35
+        // https://codereview.stackexchange.com/questions/133464/use-of-async-await-for-eventhandlers
+        // https://stackoverflow.com/questions/1916095/how-do-i-make-an-eventhandler-run-asynchronously
+        //public delegate Task AsyncEventHandler<TEventArgs>(object sender, SequenceEventArgs e);
+        //public AsyncEventHandler<SequenceEventArgs> RightSequence;
         public event EventHandler<SequenceEventArgs> RightSequence;
         protected virtual void OnRightSequence(Board.SequenceEventArgs e)
         {
-            if (RightSequence != null) RightSequence(this, e);
+            if (RightSequence != null) RightSequence.Invoke(this, e);
         }
         public class SequenceEventArgs : EventArgs
         {
@@ -266,6 +273,7 @@ namespace Controls
             public SequenceEventArgs(int length) { SequenceLength = length; }
         }
 
+        // public delegate void EventHandler<TEventArgs>(object sender, TEventArgs e);
         public event EventHandler<SequenceEventArgs> WrongSequence;
         protected virtual void OnWrongSequence(Board.SequenceEventArgs e)
         {
@@ -338,7 +346,10 @@ namespace Controls
         {
             this.SuspendLayout();
 
+            base.OnResize(e);
             int minDimension = Math.Min(this.Width, this.Height);
+            if (minDimension == 0) return;
+
             _nDiameter = (int)(minDimension * _fNumbersFactor);
 
             if (countDown != null)
@@ -372,8 +383,6 @@ namespace Controls
                     this.pctWrong.Region = new Region(GetRegionFromTransparentBitmap(bitmap));
                 }
             }
-
-            base.OnResize(e);
 
             this.ResumeLayout(true);
             this.PerformLayout();
@@ -542,7 +551,7 @@ namespace Controls
 
                 return;
             }
-
+            
             // If the user is correct
             _nSequenceCounter++;
 
@@ -556,8 +565,10 @@ namespace Controls
                 pctCorrect.Visible = true;
                 pctCorrect.Update();
                 await PlayAudioFile(AudioSoundType.SequenceCorrect, AudioSoundMode.Sync);
-                await Task.Delay(100);
+
+                System.Diagnostics.Debug.WriteLine("Board before OnRightSequence");
                 OnRightSequence(new SequenceEventArgs(_nSequenceCounter));
+                System.Diagnostics.Debug.WriteLine("Board after OnRightSequence");
             }
 
         }
