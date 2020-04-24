@@ -45,5 +45,17 @@ namespace Controls
                 }
             }
         }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // PictureBoxTransparent
+            // 
+            this.DoubleBuffered = true;
+            this.Name = "PictureBoxTransparent";
+            this.ResumeLayout(false);
+
+        }
     }
 }

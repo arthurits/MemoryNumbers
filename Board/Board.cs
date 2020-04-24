@@ -285,7 +285,9 @@ namespace Controls
         {
             // WinForms automatic initialization
             InitializeComponent();
-            
+            // this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
+            this.DoubleBuffered = true;
+
             // Load the sounds
             _path = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
             _soundPlayer = new System.Media.SoundPlayer[Enum.GetNames(typeof(AudioSoundType)).Length];                                              // https://stackoverflow.com/questions/856154/total-number-of-items-defined-in-an-enum
@@ -671,6 +673,7 @@ namespace Controls
         /// Gets a region pixel by pixel from the non-transparent pixels of the bitmap
         /// More information here: https://www.codeproject.com/Articles/617613/Fast-pixel-operations-in-NET-with-and-without-unsa
         /// and here: https://www.codeproject.com/Articles/406045/Why-the-use-of-GetPixel-and-SetPixel-is-so-ineffic
+        /// and here: // https://social.msdn.microsoft.com/Forums/office/en-US/5d8220b8-a7fa-4b49-8567-7a39da8f79b7/vb2010-how-can-i-make-the-picturebox-realy-transparent?forum=vbgeneral
         /// </summary>
         /// <param name="bitmap"></param>
         /// <returns></returns>
