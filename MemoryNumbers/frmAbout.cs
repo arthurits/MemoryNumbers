@@ -96,7 +96,7 @@ namespace MemoryNumbers
         public frmAbout()
         {
             InitializeComponent();
-            this.Text = String.Format("About {0}", AssemblyTitle);
+            // this.Text = String.Format("About {0}", AssemblyTitle);
             this.labelProductName.Text = AssemblyProduct;
             this.labelVersion.Text = String.Format("Versión {0}", AssemblyVersion);
             this.labelCopyright.Text = AssemblyCopyright;
@@ -105,10 +105,10 @@ namespace MemoryNumbers
             
             // Set form icons and images
             var path = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
-            if (System.IO.File.Exists(path + @"\images\about.ico")) this.Icon = new Icon(path + @"\images\about.ico");
+            //if (System.IO.File.Exists(path + @"\images\about.ico")) this.Icon = new Icon(path + @"\images\about.ico");
 
-            Bitmap imagen = new Icon(path + @"\images\logo.ico", 256, 256).ToBitmap();
-            if (System.IO.File.Exists(path + @"\images\logo.ico")) this.logoPictureBox.Image = imagen;
+            //Bitmap image = new Icon(path + @"\images\logo.ico", 256, 256).ToBitmap();
+            if (System.IO.File.Exists(path + @"\images\logo@256.png")) this.logoPictureBox.Image = new Bitmap(path + @"\images\logo@256.png");
         }
 
         

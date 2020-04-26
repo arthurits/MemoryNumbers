@@ -214,7 +214,7 @@ namespace MemoryNumbers
         private void OnButtonClick(object sender, Board.ButtonClickEventArgs e)
         {
 
-            _game.Check(e.ButtonValue);
+            //_game.Check(e.ButtonValue);
             // hide button
         }
 

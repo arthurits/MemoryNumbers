@@ -40,6 +40,7 @@
             this.toolStripMain_Stop = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMain_Sound = new System.Windows.Forms.ToolStripButton();
+            this.toolStripMain_Graph = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMain_Settings = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -47,7 +48,6 @@
             this.roundButton1 = new Controls.RoundButton();
             this.countDown1 = new Controls.CountDown();
             this.board1 = new Controls.Board();
-            this.toolStripMain_Graph = new System.Windows.Forms.ToolStripButton();
             this.statusStrip.SuspendLayout();
             this.toolStripMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.board1)).BeginInit();
@@ -168,6 +168,16 @@
             this.toolStripMain_Sound.ToolTipText = "Game sounds on";
             this.toolStripMain_Sound.CheckedChanged += new System.EventHandler(this.toolStripMain_Sound_CheckedChanged);
             // 
+            // toolStripMain_Graph
+            // 
+            this.toolStripMain_Graph.CheckOnClick = true;
+            this.toolStripMain_Graph.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMain_Graph.Image")));
+            this.toolStripMain_Graph.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripMain_Graph.Name = "toolStripMain_Graph";
+            this.toolStripMain_Graph.Size = new System.Drawing.Size(52, 67);
+            this.toolStripMain_Graph.Text = "Graph";
+            this.toolStripMain_Graph.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
@@ -242,8 +252,9 @@
             // board1
             // 
             this.board1.BackColor = System.Drawing.Color.Azure;
+            this.board1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.board1.BorderColor = System.Drawing.Color.Black;
-            this.board1.BorderRatio = 4F;
+            this.board1.BorderRatio = 0.115F;
             this.board1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.board1.CountDownRatio = 0.37F;
             this.board1.Diameter = 67;
@@ -262,16 +273,6 @@
             this.board1.TabStop = false;
             this.board1.Time = 700;
             this.board1.TimeIncrement = 300;
-            // 
-            // toolStripMain_Graph
-            // 
-            this.toolStripMain_Graph.CheckOnClick = true;
-            this.toolStripMain_Graph.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMain_Graph.Image")));
-            this.toolStripMain_Graph.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripMain_Graph.Name = "toolStripMain_Graph";
-            this.toolStripMain_Graph.Size = new System.Drawing.Size(52, 67);
-            this.toolStripMain_Graph.Text = "Graph";
-            this.toolStripMain_Graph.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             // 
             // Form1
             // 

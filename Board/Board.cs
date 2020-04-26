@@ -30,7 +30,7 @@ namespace Controls
         private int _nMinNum = 0;
         private int _nTime = 700;
         private int _nTimeIncrement = 300;
-        private float _fBorderWidth = 1f;
+        private float _fBorderWidth = 0.12f;
         private float _fCountDownFactor = 0.37f;
         private float _fNumbersFactor = 0.25f;
         private float _fPictureCorrect = 0.56f;
@@ -248,7 +248,8 @@ namespace Controls
         public event EventHandler<Board.ButtonClickEventArgs> ButtonClick;
         protected virtual void OnButtonClick(Board.ButtonClickEventArgs e)
         {
-            if (ButtonClick != null) ButtonClick(this, e);
+            //if (ButtonClick != null) ButtonClick(this, e);
+            ButtonClick?.Invoke(this, e);
         }
         public class ButtonClickEventArgs : EventArgs
         {
@@ -325,8 +326,9 @@ namespace Controls
             //this.countDown.Parent = this;
             this.countDown.TimerEnding += new EventHandler<TimerEndingEventArgs>(this.OnCountDownEnding);
             this.Controls.Add(countDown);
-            
+
             // Set the PictureBoxes
+            // https://stackoverflow.com/questions/53832933/fade-ws-ex-layered-form
             pctCorrect = new System.Windows.Forms.PictureBox()
             {
                 BackColor = Color.Transparent,
@@ -342,13 +344,23 @@ namespace Controls
             this.Controls.Add(pctCorrect);
             this.Controls.Add(pctWrong);
         }
+        
+        // https://stackoverflow.com/questions/4446478/how-do-i-create-a-colored-border-on-a-picturebox-control
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            //ControlPaint.DrawBorder(e.Graphics, e.ClipRectangle, Color.Black, ButtonBorderStyle.Solid);
+        }
 
         // https://docs.microsoft.com/en-us/dotnet/framework/winforms/automatic-scaling-in-windows-forms
         protected override void OnResize(EventArgs e)
         {
             this.SuspendLayout();
 
-            base.OnResize(e);
+            //base.OnResize(e);
+            if (Parent == null) return;
+            if (((Form)Parent).WindowState == FormWindowState.Minimized) return;
+
             int minDimension = Math.Min(this.Width, this.Height);
             if (minDimension == 0) return;
 
@@ -524,6 +536,7 @@ namespace Controls
 
         private async void ButtonClicked(object sender, RoundButton.ButtonClickEventArgs e)
         {
+            //OnButtonClick(new ButtonClickEventArgs(e.ButtonValue));
             //System.Diagnostics.Debug.WriteLine("Button clicked");
 
             //Application.DoEvents();
@@ -689,38 +702,56 @@ namespace Controls
                                                                             bitmap.PixelFormat);
 
             int bytesPerPixel = (Image.GetPixelFormatSize(bitmap.PixelFormat)) >> 3;
-
+            /*
             unsafe
             {
                 byte* PixelComponent = (byte*)imageData.Scan0;
+                byte* row = (byte*)imageData.Scan0;
                 for (int j = 0; j < imageData.Height; j++)
                 {
-                    byte* row = (byte*)imageData.Scan0 + (j * imageData.Stride);
-
+                    //byte* row = (byte*)imageData.Scan0 + (j * imageData.Stride);
                     for (int i = 0; i < imageData.Width; i++)
                     {
+                        // row[0] = Blue, row[1] = Green, row[2] = Red, row[3] = Alpha,
                         if (row[i * bytesPerPixel + 3] > 0) region.AddRectangle(new Rectangle(i, j, 1, 1));
                     }
+                    row += imageData.Stride;
                 }
             }
+            */
+            //bitmap.UnlockBits(imageData);
+
+            // Marshal
+            byte[] imageBytes = new byte[Math.Abs(imageData.Stride) * bitmap.Height];
+            IntPtr scan0 = imageData.Scan0;
+            System.Runtime.InteropServices.Marshal.Copy(scan0, imageBytes, 0, imageBytes.Length);
+            int row = 0;
+            int col = 0;
+            for (int j = 0; j < imageData.Height; j++)
+            {
+                col = 0;
+                for (int i = 0; i < imageData.Width; i++)
+                {
+                    if (imageBytes[(row + col) + 3] > 0) region.AddRectangle(new Rectangle(i, j, 1, 1));
+                    col += bytesPerPixel;
+                }
+                row += imageData.Stride;
+            }
+            System.Runtime.InteropServices.Marshal.Copy(imageBytes, 0, scan0, imageBytes.Length);
 
             bitmap.UnlockBits(imageData);
 
             /*
-            // Marshal
-            byte[] imageBytes = new byte[Math.Abs(imageData.Stride) * bitmap.Height];
-            IntPtr scan0 = imageData.Scan0;
-
+            // Another Marshal option. Slower than the previous
             System.Runtime.InteropServices.Marshal.Copy(scan0, imageBytes, 0, imageBytes.Length);
-
-            for (int i = 0; i < imageBytes.Length; i += 4)
+            int row = 0;
+            int col = 0;
+            for (int i = 0; i < imageBytes.Length; i += bytesPerPixel)
             {
-                //if (imageBytes[i + 3] > 0) region.AddRectangle((uint)(i / imageData.Stride), , 1, 1);
+                row = (int)(i / imageData.Stride);
+                col = (i - fila * imageData.Stride) / bytesPerPixel;
+                if (imageBytes[i + 3] > 0) region.AddRectangle(new Rectangle(row, col, 1, 1));
             }
-
-            System.Runtime.InteropServices.Marshal.Copy(imageBytes, 0, scan0, imageBytes.Length);
-
-            bitmap.UnlockBits(imageData);
             */
 
             /*
