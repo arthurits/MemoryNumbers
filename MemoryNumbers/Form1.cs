@@ -41,9 +41,12 @@ namespace MemoryNumbers
             //board1.RightSequence += new EventHandler<Board.SequenceEventArgs>(OnCorrectSequence);
             board1.RightSequence += async (object s, Board.SequenceEventArgs e) => await OnCorrectSequence(s, e);
             board1.WrongSequence += new EventHandler<Board.SequenceEventArgs>(OnWrongSequence);
-            _game.CorrectSequence += new EventHandler<Game.CorrectEventArgs>(OnCorrectSequence);
-            _game.WrongSequence += new EventHandler<Game.WrongEventArgs>(OnWrongSequence);
-            _game.GameOver += new EventHandler<Game.OverEventArgs>(OnGameOver);
+            //_game.CorrectSequence += new EventHandler<Game.CorrectEventArgs>(OnCorrectSequence);
+            //_game.WrongSequence += new EventHandler<Game.WrongEventArgs>(OnWrongSequence);
+            //_game.GameOver += new EventHandler<Game.OverEventArgs>(OnGameOver);
+            _game.CorrectSequence += async (object s, Game.CorrectEventArgs e) => await OnCorrectSequence(s, e);
+            _game.WrongSequence += async (object s, Game.WrongEventArgs e) => await OnWrongSequence(s, e);
+            _game.GameOver += async (object s, Game.OverEventArgs e) => await OnGameOver(s, e);
 
             // Read the program settings file and apply them
             _programSettings = new ProgramSettings<string, string>();
@@ -191,19 +194,48 @@ namespace MemoryNumbers
 
         }
 
-        private void OnCorrectSequence(object sender, Game.CorrectEventArgs e)
+        private async Task OnCorrectSequence(object sender, Game.CorrectEventArgs e)
         {
+            board1.SequenceRight();
+
+            // Show the score in the status bar
+            this.toolStripStatusLabel_Secuence.Text = e.Score.ToString();
+            this.toolStripStatusLabel_Secuence.Invalidate();
+
+            // Wait before starting a new sequence
+            await Task.Delay(100);
+
+            // Keep the game going on
+            //_game.CurrentScore = e.Score;
+            System.Diagnostics.Debug.WriteLine("Form in OnCorrectSequence");
+            if (_game.Start())
+            {
+                board1.Start(_game.GetSequence);
+            }
+            System.Diagnostics.Debug.WriteLine("Form after ReStart");
 
         }
-        private void OnWrongSequence(object sender, Game.WrongEventArgs e)
+        private async Task OnWrongSequence(object sender, Game.WrongEventArgs e)
         {
+            await board1.ButtonWrong();
+            MessageBox.Show("Wrong sequence", "Error");
 
+            // Show the score in the status bar
+            this.toolStripStatusLabel_Secuence.Text = e.Score.ToString();
+            this.toolStripStatusLabel_Secuence.Invalidate();
+
+            // Wait before starting a new sequence
+            await Task.Delay(100);
+
+            _game.CurrentScore -= 2;
+            if (_game.Start()) board1.Start(_game.GetSequence);
         }
-        private void OnGameOver(object sender, Game.OverEventArgs e)
+        private async Task OnGameOver(object sender, Game.OverEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("OnGameOver subscription event");
             MessageBox.Show("You reached the\nend of the game", "Congratulations!", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
 
         private void OnWrongSequence(object sender, Board.SequenceEventArgs e)
         {
@@ -214,7 +246,7 @@ namespace MemoryNumbers
         private void OnButtonClick(object sender, Board.ButtonClickEventArgs e)
         {
 
-            //_game.Check(e.ButtonValue);
+            if (_game.Check(e.ButtonValue)) board1.ButtonRight();
             // hide button
         }
 
@@ -238,7 +270,9 @@ namespace MemoryNumbers
         private void toolStripMain_Start_Click(object sender, EventArgs e)
         {
             //countDown1.Start();
-            _game.CurrentScore = _game.MinimumLength - 1;
+            //_game.CurrentScore = _game.MinimumLength - 1;
+            _game.ReSet();
+
             if (!_game.Start())
             {
                 MessageBox.Show("Could not start the game\nUnexpected error.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);

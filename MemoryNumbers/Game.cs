@@ -13,11 +13,12 @@ namespace MemoryNumbers
 
         private int _nMaxDigit = 10;
         private int _nMinDigit = 0;
-        private int _nScore = 0;
-        private int _nSubScore = 0;
+        /// It's the current length of the _nSequence array
+        private int _nSequenceLength = 0; 
+        private int _nSequenceIndex = 0;    // index (button clicked) whithin the _nSequence array
         private int _nMaxAttempts = 10;
-        private int _nCurrAttempt = 0;
-        private int _nMinLength = 2;
+        private int _nCurrAttempt = 0;      // The accumulated number of attempts
+        private int _nMinLength = 2;        // The minimum length of the initial _nSequence array
         private int[] _nSequence;
 
         private enum PlayMode
@@ -85,7 +86,7 @@ namespace MemoryNumbers
         Browsable(true),
         EditorBrowsable(EditorBrowsableState.Always),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        public int CurrentScore { get => _nScore; set => _nScore = value < 0 ? 0 : value; }
+        public int CurrentScore { get => _nSequenceLength; set => _nSequenceLength = value < 0 ? 0 : value; }
 
         /// <summary>
         /// (Read only) Gets the numeric array containing the current sequence.
@@ -103,30 +104,31 @@ namespace MemoryNumbers
         #region Events
 
             #region Events definitions
-        public event EventHandler<TickEventArgs> Tick;
-        public event EventHandler<WrongEventArgs> WrongSequence;
-        public event EventHandler<CorrectEventArgs> CorrectSequence;
-        public event EventHandler<OverEventArgs> GameOver;
+            public event EventHandler<TickEventArgs> Tick;
+            public event EventHandler<WrongEventArgs> WrongSequence;
+            public event EventHandler<CorrectEventArgs> CorrectSequence;
+            public event EventHandler<OverEventArgs> GameOver;
             #endregion Events definitions
 
             #region Events encapsulation
-        protected virtual void OnTick(TickEventArgs e)
-        {
-            if (Tick != null) Tick(this, e);
-        }
-        protected virtual void OnWrongSequence(WrongEventArgs e)
-        {
-            if (WrongSequence != null) WrongSequence(this, e);
-        }
-        protected virtual void OnCorrectSequence(CorrectEventArgs e)
-        {
-            if (CorrectSequence != null) CorrectSequence(this, e);
-        }
-        protected virtual void OnGameOver(OverEventArgs e)
-        {
-            if (GameOver != null) GameOver(this, e);
-        }
-        #endregion Events encapsulation
+
+            protected virtual void OnTick(TickEventArgs e)
+            {
+                if (Tick != null) Tick(this, e);
+            }
+            protected virtual void OnWrongSequence(WrongEventArgs e)
+            {
+                if (WrongSequence != null) WrongSequence(this, e);
+            }
+            protected virtual void OnCorrectSequence(CorrectEventArgs e)
+            {
+                if (CorrectSequence != null) CorrectSequence(this, e);
+            }
+            protected virtual void OnGameOver(OverEventArgs e)
+            {
+                if (GameOver != null) GameOver(this, e);
+            }
+            #endregion Events encapsulation
 
             #region EventArgs definitions
         public class TickEventArgs : EventArgs
@@ -168,13 +170,27 @@ namespace MemoryNumbers
 
         public bool Start()
         {
+            // Check we didn't reach the _nMaxAttempts limits and that the sequence length is whithin the allowed digits limits
+            _nSequenceLength += 1;
+            // Increment the current attempts counter            
+            _nCurrAttempt++;
+
+            if ((_nCurrAttempt > _nMaxAttempts) || _nSequenceLength > (_nMaxDigit - _nMinDigit + 1))
+            {
+                _nSequence = null;
+                System.Diagnostics.Debug.WriteLine("SetSequence before event");
+                OnGameOver(new OverEventArgs(_nSequenceLength - 1));
+                System.Diagnostics.Debug.WriteLine("SetSequence after event");
+                return false;
+            }
+            _nSequenceIndex = 0;
             return SetSequence();
         }
 
         public void ReSet()
         {
-            _nScore = 0;
-            _nSubScore = 0;
+            _nSequenceLength = _nMinLength - 1;
+            _nSequenceIndex = 0;
             _nCurrAttempt = 0;
             _nSequence = null;
         }
@@ -184,28 +200,14 @@ namespace MemoryNumbers
         /// </summary>
         private bool SetSequence()
         {
-            // Check we didn't reach the _nMaxAttempts limits and that we are whithin the allowed digits limits
-            int nArrayLength = _nScore + 1;
-            if((_nCurrAttempt > _nMaxAttempts) || nArrayLength > (_nMaxDigit - _nMinDigit))
-            {
-                _nSequence = null;
-                System.Diagnostics.Debug.WriteLine("SetSequence before event");
-                OnGameOver(new OverEventArgs(_nScore));
-                System.Diagnostics.Debug.WriteLine("SetSequence after event");
-                return false;
-            }
-            
-            // Else, create and fill the array
-            _nSequence = new int[nArrayLength];
-            for (int i = 0; i < nArrayLength; i++)
+            // Create and fill the array
+            _nSequence = new int[_nSequenceLength];
+            for (int i = 0; i < _nSequenceLength; i++)
             {
                 _nSequence[i] = _nMinDigit - 1;
                 _nSequence[i] = GetRandomNumber();
             }
-            Array.Sort(_nSequence); // This is not necessary since the number would be random scattered in the board control
-
-            // Increment the current attemp counter            
-            _nCurrAttempt++;
+            Array.Sort(_nSequence); // This is not necessary since the numbers would be random scattered in the board control
        
             return true;
         }
@@ -224,7 +226,7 @@ namespace MemoryNumbers
             if (nLength > 0) Array.Clear(_nSequence, 0, nLength);
 
             _nSequence = (new int[nNewLength]).Select(i => _nMaxDigit).ToArray<int>();
-            _nSubScore = 0;
+            _nSequenceIndex = 0;
 
             for (int i = 0; i < nNewLength; i++)
             {
@@ -256,7 +258,7 @@ namespace MemoryNumbers
 
             while (true)
             {
-                nNumber = rnd.Next(_nMinDigit, _nMaxDigit);
+                nNumber = rnd.Next(_nMinDigit, _nMaxDigit + 1);
                 if (!Contains(nNumber)) break;
                 
             }
@@ -264,24 +266,40 @@ namespace MemoryNumbers
             return nNumber;
         }
 
-        public void Check(int value)
+        /// <summary>
+        /// Checks the button value clicked by the user and fires the corresponding event if necessary
+        /// </summary>
+        /// <param name="value">Number of the button clicked</param>
+        public bool Check(int value)
         {
-            if (_nSequence[_nSubScore] != value) OnWrongSequence(new WrongEventArgs(value));
-            else _nSubScore++;
-
-            if (_nSubScore > _nScore)
+            // First check if the value clicked is correct
+            if (_nSequence[_nSequenceIndex] != value)
             {
-                _nScore++;
-                if (CorrectSequence != null) OnCorrectSequence(new CorrectEventArgs(_nScore));
+                OnWrongSequence(new WrongEventArgs(value));
+                return false;
+            }
+            
+            // Increase the counter whithin the _nSequence
+            _nSequenceIndex++;
+
+            // Check if this is the last button, i.e. the last value of _nSequence
+            if (_nSequenceIndex > _nSequence.Length-1)
+            {
+                //_nSequenceLength++;
+                OnCorrectSequence(new CorrectEventArgs(_nSequenceLength));
+                return false;
             }
 
-            if (_nScore>(_nMinDigit+_nMaxDigit+1))
+
+            /*
+            if (_nGameScore>(_nMinDigit+_nMaxDigit+1))
             {
-                if (GameOver != null) OnGameOver(new OverEventArgs(_nScore - 1));
+                OnGameOver(new OverEventArgs(_nGameScore - 1));
                 ReSet();
             }
-
-            return;
+            */
+            // If we get here, it means the player guessed correctly and that there are still numbers left in the sequence
+            return true;
         }
 
     }

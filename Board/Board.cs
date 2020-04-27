@@ -12,7 +12,7 @@ using System.Runtime.CompilerServices;
 
 namespace Controls
 {
-    [Designer("System.Windows.Forms.Design.ParentControlDesigner, System.Design", typeof(System.ComponentModel.Design.IDesigner))]
+    //[Designer("System.Windows.Forms.Design.ParentControlDesigner, System.Design", typeof(System.ComponentModel.Design.IDesigner))]
     public partial class Board: PictureBox
     {
         #region Private variables
@@ -301,28 +301,29 @@ namespace Controls
 
             // Set the array of buttons to 0 elements
             _roundButton = new Controls.RoundButton[0];
-            
+
             // Set the CountDown control
             countDown = new Controls.CountDown()
-                {
-                    //BorderColor = System.Drawing.Color.Black,
-                    BackColor = Color.Transparent,
-                    BorderWidth = 4F,
-                    EndingTime = 0F,
-                    //FillColor = System.Drawing.Color.Transparent,
-                    Name = "CountDown",
-                    Parent = this,
-                    Size = new System.Drawing.Size(100, 100),
-                    StartingTime = 3F,
-                    //TabIndex = 0,
-                    //Text = "3",
-                    TimeInterval = 1000D,
-                    Visible = false,
-                    VisibleBorder = true,
-                    VisibleText = true,
-                    xRadius = 50F,
-                    yRadius = 50F
-                };
+            {
+                Anchor = AnchorStyles.None,
+                //BorderColor = System.Drawing.Color.Black,
+                BackColor = Color.Transparent,
+                BorderWidth = 4F,
+                EndingTime = 0F,
+                //FillColor = System.Drawing.Color.Transparent,
+                Name = "CountDown",
+                Parent = this,
+                Size = new System.Drawing.Size(100, 100),
+                StartingTime = 3F,
+                //TabIndex = 0,
+                //Text = "3",
+                TimeInterval = 1000D,
+                Visible = false,
+                VisibleBorder = true,
+                VisibleText = true,
+                xRadius = 50F,
+                yRadius = 50F
+            };
             //this.countDown.Parent = this;
             this.countDown.TimerEnding += new EventHandler<TimerEndingEventArgs>(this.OnCountDownEnding);
             this.Controls.Add(countDown);
@@ -331,13 +332,17 @@ namespace Controls
             // https://stackoverflow.com/questions/53832933/fade-ws-ex-layered-form
             pctCorrect = new System.Windows.Forms.PictureBox()
             {
+                Anchor=AnchorStyles.None,
                 BackColor = Color.Transparent,
+                Dock = DockStyle.None,
                 Parent = this,
                 Visible = false
             };
             pctWrong = new System.Windows.Forms.PictureBox()
             {
+                Anchor = AnchorStyles.None,
                 BackColor = Color.Transparent,
+                Dock=DockStyle.None,
                 Parent = this,
                 Visible = false
             };
@@ -534,9 +539,34 @@ namespace Controls
             return;
         }
 
+        public async Task ButtonRight()
+        {
+            await PlayAudioFile(AudioSoundType.NumberCorrect, AudioSoundMode.Async);
+        }
+
+        public async Task ButtonWrong()
+        {
+            await PlayAudioFile(AudioSoundType.NumberWrong, AudioSoundMode.Sync);
+            pctWrong.Visible = true;
+            pctWrong.Update();
+            Task taskError = ShowError(_nSequenceCounter);
+            await PlayAudioFile(AudioSoundType.SequenceWrong, AudioSoundMode.Async);
+            await Task.Delay(100);
+
+            await taskError;
+        }
+
+        public async Task SequenceRight()
+        {
+            await PlayAudioFile(AudioSoundType.NumberCorrect, AudioSoundMode.Sync);
+            pctCorrect.Visible = true;
+            pctCorrect.Update();
+            await PlayAudioFile(AudioSoundType.SequenceCorrect, AudioSoundMode.Sync);
+        }
+
         private async void ButtonClicked(object sender, RoundButton.ButtonClickEventArgs e)
         {
-            //OnButtonClick(new ButtonClickEventArgs(e.ButtonValue));
+            
             //System.Diagnostics.Debug.WriteLine("Button clicked");
 
             //Application.DoEvents();
@@ -546,7 +576,10 @@ namespace Controls
             roundButton.VisibleText = true;
             roundButton.Update();
             //_roundButton[_nSequenceCounter].VisibleBorder = false;
-            
+
+            OnButtonClick(new ButtonClickEventArgs(e.ButtonValue));
+            if (true) return;
+
             // Check whether the user clicked the correct button in the sequence
             bool result = int.Parse(_roundButton[_nSequenceCounter].Text) == e.ButtonValue ? true : false;
 
