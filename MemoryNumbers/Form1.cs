@@ -51,7 +51,7 @@ namespace MemoryNumbers
             // Read the program settings file and apply them
             _programSettings = new ProgramSettings<string, string>();
             LoadProgramSettings();
-            ApplySettings();
+            ApplySettings(true);
         }
 
         #region Initialization ToolStrip
@@ -174,28 +174,9 @@ namespace MemoryNumbers
 
         #region Events subscription
 
-        private async Task OnCorrectSequence(object sender, Board.SequenceEventArgs e)
-        {
-            // Wait before starting a new sequence
-            await Task.Delay(100);
-
-            // Show the score in the status bar
-            this.toolStripStatusLabel_Secuence.Text = e.SequenceLength.ToString();
-            this.toolStripStatusLabel_Secuence.Invalidate();
-
-            // Keep the game going on
-            _game.CurrentScore = e.SequenceLength;
-            System.Diagnostics.Debug.WriteLine("Form in OnCorrectSequence");
-            if (_game.Start())
-            {
-                board1.Start(_game.GetSequence);
-            }
-            System.Diagnostics.Debug.WriteLine("Form after ReStart");
-
-        }
-
         private async Task OnCorrectSequence(object sender, Game.CorrectEventArgs e)
         {
+            // Perform the GUI tasks corresponding to a right sequence (sounds, images, buttons, etc)
             board1.SequenceRight();
 
             // Show the score in the status bar
@@ -217,7 +198,8 @@ namespace MemoryNumbers
         }
         private async Task OnWrongSequence(object sender, Game.WrongEventArgs e)
         {
-            await board1.ButtonWrong();
+            // Perform the GUI tasks corresponding to a wrong sequence (sounds, images, buttons, etc)
+            board1.ButtonWrong();
             MessageBox.Show("Wrong sequence", "Error");
 
             // Show the score in the status bar
@@ -230,13 +212,34 @@ namespace MemoryNumbers
             _game.CurrentScore -= 2;
             if (_game.Start()) board1.Start(_game.GetSequence);
         }
+
         private async Task OnGameOver(object sender, Game.OverEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("OnGameOver subscription event");
+            //System.Diagnostics.Debug.WriteLine("OnGameOver subscription event");
             MessageBox.Show("You reached the\nend of the game", "Congratulations!", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
 
+        // This four methods are not used. They should be deleted along with their definitions on lines 39, 40, 42 and 43 and the definitions in Board.cs
+        private async Task OnCorrectSequence(object sender, Board.SequenceEventArgs e)
+        {
+            // Wait before starting a new sequence
+            await Task.Delay(100);
+
+            // Show the score in the status bar
+            this.toolStripStatusLabel_Secuence.Text = e.SequenceLength.ToString();
+            this.toolStripStatusLabel_Secuence.Invalidate();
+
+            // Keep the game going on
+            _game.CurrentScore = e.SequenceLength;
+            System.Diagnostics.Debug.WriteLine("Form in OnCorrectSequence");
+            if (_game.Start())
+            {
+                board1.Start(_game.GetSequence);
+            }
+            System.Diagnostics.Debug.WriteLine("Form after ReStart");
+
+        }
         private void OnWrongSequence(object sender, Board.SequenceEventArgs e)
         {
             MessageBox.Show("Wrong sequence","Error");
@@ -294,6 +297,7 @@ namespace MemoryNumbers
             if (form.DialogResult == DialogResult.OK)
             {
                 _programSettings = form.settings;
+                ApplySettings(false);
             }
         }
 
@@ -396,14 +400,17 @@ namespace MemoryNumbers
         }
 
         /// <summary>
-        /// Update UI with settings 
+        /// Update UI with settings
         /// </summary>
-        private void ApplySettings()
+        /// <param name="WindowSettings">True if the window position and size should be applied. False if omitted</param>
+        private void ApplySettings(bool WindowSettings = false)
         {
-            
-            this.StartPosition = FormStartPosition.Manual;
-            this.DesktopLocation = new Point(Convert.ToInt32(_programSettings["WindowLeft"]), Convert.ToInt32(_programSettings["WindowTop"]));
-            this.ClientSize = new Size(Convert.ToInt32(_programSettings["WindowWidth"]), Convert.ToInt32(_programSettings["WindowHeight"]));
+            if (WindowSettings)
+            {
+                this.StartPosition = FormStartPosition.Manual;
+                this.DesktopLocation = new Point(Convert.ToInt32(_programSettings["WindowLeft"]), Convert.ToInt32(_programSettings["WindowTop"]));
+                this.ClientSize = new Size(Convert.ToInt32(_programSettings["WindowWidth"]), Convert.ToInt32(_programSettings["WindowHeight"]));
+            }
 
             this._game.MaximumAttempts = Convert.ToInt32(_programSettings["MaximumAttempts"]);
             this._game.MaximumDigit = Convert.ToInt32(_programSettings["MaximumDigit"]);

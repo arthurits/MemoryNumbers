@@ -436,7 +436,7 @@ namespace Controls
         // https://stackoverflow.com/questions/2367718/automating-the-invokerequired-code-pattern
         private void OnCountDownEnding(object sender, TimerEndingEventArgs e)
         {
-            // This event is fired by a System.Timer, which runs on another thread (not the GUI thread)
+            // This event is fired by a System.Timer, which runs on a separated thread (not the GUI thread)
             // so we need to invoque in order to modify the GUI
             if (this.InvokeRequired)
             {
@@ -473,7 +473,6 @@ namespace Controls
         {
             bool bIntersection = false;
             Random rnd = new Random();
-            //_roundButton = new Controls.RoundButton[numbers.Length];
             Region regTotal = new Region();
             Region regIntersec = new Region();
             Graphics g = this.CreateGraphics();
@@ -494,7 +493,7 @@ namespace Controls
                     Parent = this,
                     FillColor = _cBackColor,
                     BorderColor = _cBorderColor,
-                    BorderWidth = _fBorderWidth,
+                    BorderWidth = _nDiameter * _fBorderWidth,
                     Size = new Size(_nDiameter, _nDiameter),
                     xRadius = _nDiameter / 2,
                     yRadius = _nDiameter / 2,
@@ -502,8 +501,8 @@ namespace Controls
                     VisibleBorder = false,
                     Visible = false
                 };
-                _roundButton[i].Font = new Font(_roundButton[i].Font.FontFamily, _fFontSize * (_nDiameter - 2 * _fBorderWidth));
-
+                _roundButton[i].Font = new Font(_roundButton[i].Font.FontFamily, _fFontSize * (_nDiameter - 2 * _nDiameter * _fBorderWidth));
+                
                 do
                 {
                     regIntersec = regTotal.Clone();
@@ -578,59 +577,7 @@ namespace Controls
             //_roundButton[_nSequenceCounter].VisibleBorder = false;
 
             OnButtonClick(new ButtonClickEventArgs(e.ButtonValue));
-            if (true) return;
 
-            // Check whether the user clicked the correct button in the sequence
-            bool result = int.Parse(_roundButton[_nSequenceCounter].Text) == e.ButtonValue ? true : false;
-
-            // If the user missed then raise the event
-            if (!result)
-            {               
-                await PlayAudioFile(AudioSoundType.NumberWrong, AudioSoundMode.Sync);
-                pctWrong.Visible = true;
-                pctWrong.Update();
-                Task taskError = ShowError(_nSequenceCounter);
-                await PlayAudioFile(AudioSoundType.SequenceWrong, AudioSoundMode.Async);
-                await Task.Delay(100);
-
-                OnWrongSequence(new SequenceEventArgs(_nSequenceLength - 2));
-
-                await taskError;
-
-                return;
-            }
-            
-            // If the user is correct
-            _nSequenceCounter++;
-
-            if (_nSequenceCounter < _nSequenceLength)
-            {
-                PlayAudioFile(AudioSoundType.NumberCorrect, AudioSoundMode.Async);
-            }
-            else if (_nSequenceCounter >= _nSequenceLength)
-            {
-                await PlayAudioFile(AudioSoundType.NumberCorrect, AudioSoundMode.Sync);
-                pctCorrect.Visible = true;
-                pctCorrect.Update();
-                await PlayAudioFile(AudioSoundType.SequenceCorrect, AudioSoundMode.Sync);
-
-                System.Diagnostics.Debug.WriteLine("Board before OnRightSequence");
-                OnRightSequence(new SequenceEventArgs(_nSequenceCounter));
-                System.Diagnostics.Debug.WriteLine("Board after OnRightSequence");
-            }
-
-        }
-
-        private async Task PlayAudioWrong()
-        {
-            await PlayAudioFile(AudioSoundType.NumberWrong, AudioSoundMode.Sync);
-            await PlayAudioFile(AudioSoundType.SequenceWrong, AudioSoundMode.Sync);
-        }
-
-        private async Task PlayAudioCorrect()
-        {
-            await PlayAudioFile(AudioSoundType.NumberCorrect, AudioSoundMode.Sync);
-            await PlayAudioFile(AudioSoundType.SequenceCorrect, AudioSoundMode.Sync);
         }
 
         private async Task ShowError(int sequenceError)
@@ -681,17 +628,12 @@ namespace Controls
                 if (mode == AudioSoundMode.Sync) _soundPlayer[(int)type].PlaySync();
                 else if (mode == AudioSoundMode.Async) _soundPlayer[(int)type].Play();
             }
+            else
+            {
+                Task.Delay(100);
+            }
         }
 
-        private async Task ResultCorrect()
-        {
-
-        }
-
-        private async Task ResultWrong()
-        {
-
-        }
 
         #region Private routines
 

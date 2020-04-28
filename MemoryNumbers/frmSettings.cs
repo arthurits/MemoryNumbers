@@ -35,10 +35,10 @@ namespace MemoryNumbers
 
             this.numCountRatio.Value = Convert.ToDecimal(_settings["CountDownRatio"]);
             this.numNumbersRatio.Value = Convert.ToDecimal(_settings["NumbersRatio"]);
-            //this.numBorderRatio.Value = Convert.ToDecimal(_settings["BorderRatio"]);
+            this.numBorderRatio.Value = Convert.ToDecimal(_settings["BorderRatio"]);
 
             settings = _settings;
-            
+            //_programSettings.ContainsKey("Sound") ?
         }
 
         private void btnAccept_Click(object sender, EventArgs e)
@@ -50,7 +50,7 @@ namespace MemoryNumbers
 
             settings["CountDownRatio"] = this.numCountRatio.Value.ToString();
             settings["NumbersRatio"] = this.numNumbersRatio.Value.ToString();
-            //settings["BorderRatio"] = this.numBorderRatio.Value.ToString();
+            settings["BorderRatio"] = this.numBorderRatio.Value.ToString();
 
             Close(); 
         }

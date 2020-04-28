@@ -245,7 +245,8 @@ namespace Controls
 
                 pen.Alignment = PenAlignment.Inset;
                 Graphics dc = e.Graphics;
-                dc.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                dc.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                dc.PixelOffsetMode = PixelOffsetMode.Half;
                 dc.FillPath(new SolidBrush(_cFillColor), path);
                 if (_showBorder) dc.DrawPath(pen, path);
                 this.Region = new Region(path);
@@ -256,24 +257,20 @@ namespace Controls
             
         }
 
+        protected override void OnClick(EventArgs e)
+        {
+            //_showBorder = !_showBorder;
+            //Invalidate();
+            OnButtonClick(new ButtonClickEventArgs(int.Parse(lblText.Text)));
+
+            //base.OnClick(e);
+        }
+
         private void lblText_Click(object sender, EventArgs e)
         {
             //_showBorder = !_showBorder;
             //Invalidate();
             //if (ButtonClick != null) OnButtonClick(new ButtonClickEventArgs(int.Parse(lblText.Text)));
-        }
-
-
-        protected override void OnClick(EventArgs e)
-        {
-            // System.Diagnostics.Debug.WriteLine("Click button");
-            _showBorder = !_showBorder;
-            Invalidate();
-            if (ButtonClick != null) OnButtonClick(new ButtonClickEventArgs(int.Parse(lblText.Text)));
-
-            //_showBorder = !_showBorder;
-            //Invalidate();
-            //base.OnClick(e);
         }
 
         /// <summary>
