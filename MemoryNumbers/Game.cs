@@ -7,6 +7,15 @@ using System.ComponentModel;
 
 namespace MemoryNumbers
 {
+    [Flags]
+    public enum PlayMode
+    {
+        TimeFixed = 0b_0000_0001,
+        TimeIncremental = 0b_0000_0010,
+        SequenceProgressive = 0b_0000_0100,
+        SequenceRandom = 0b_0000_1000
+    }
+
     public class Game
     {
         #region Private variables
@@ -21,13 +30,7 @@ namespace MemoryNumbers
         private int _nMinLength = 2;        // The minimum length of the initial _nSequence array
         private int[] _nSequence;
 
-        private enum PlayMode
-        {
-            TimeFixed = 1,
-            TimeIncremental = 2,
-            SequenceAscending = 4,
-            SequenceRandom = 8
-        }
+
 
         #endregion Private variables
 

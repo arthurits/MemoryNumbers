@@ -28,22 +28,42 @@ namespace MemoryNumbers
         public frmSettings(ProgramSettings<string, string> _settings)
             :this()
         {
-            this.numTime.Value = Convert.ToInt32(_settings["Time"]);
-            this.numMaxDigit.Value = Convert.ToInt32(_settings["MaximumDigit"]);
-            this.numMinDigit.Value = Convert.ToInt32(_settings["MinimumDigit"]);
-            this.numMaxAttempts.Value = Convert.ToInt32(_settings["MaximumAttempts"]);
+            try
+            {
+                this.numTime.Value = Convert.ToInt32(_settings["Time"]);
+                this.numTimeIncrement.Value = Convert.ToInt32(_settings["TimeIncrement"]);
+                this.numMaxDigit.Value = Convert.ToInt32(_settings["MaximumDigit"]);
+                this.numMinDigit.Value = Convert.ToInt32(_settings["MinimumDigit"]);
+                this.numMaxAttempts.Value = Convert.ToInt32(_settings["MaximumAttempts"]);
 
-            this.numCountRatio.Value = Convert.ToDecimal(_settings["CountDownRatio"]);
-            this.numNumbersRatio.Value = Convert.ToDecimal(_settings["NumbersRatio"]);
-            this.numBorderRatio.Value = Convert.ToDecimal(_settings["BorderRatio"]);
+                this.numCountRatio.Value = Convert.ToDecimal(_settings["CountDownRatio"]);
+                this.numNumbersRatio.Value = Convert.ToDecimal(_settings["NumbersRatio"]);
+                this.numBorderRatio.Value = Convert.ToDecimal(_settings["BorderRatio"]);
+                this.numFontRatio.Value = Convert.ToDecimal(_settings["FontRatio"]);
+                this.numResultsRatio.Value = Convert.ToDecimal(_settings["ResultsRatio"]);
+
+                PlayMode play = (PlayMode)Convert.ToInt32(_settings["PlayMode"]);
+
+                this.radProgressive.Checked = ((play & PlayMode.SequenceProgressive) == PlayMode.SequenceProgressive);
+                this.radRandom.Checked = ((play & PlayMode.SequenceRandom) == PlayMode.SequenceRandom);
+                this.radFixed.Checked = ((play & PlayMode.TimeFixed) == PlayMode.TimeFixed);
+                this.radIncremental.Checked = ((play & PlayMode.TimeIncremental) == PlayMode.TimeIncremental);
+
+            }
+            catch (KeyNotFoundException e)
+            {
+
+            }
 
             settings = _settings;
             //_programSettings.ContainsKey("Sound") ?
+
         }
 
         private void btnAccept_Click(object sender, EventArgs e)
         {
             settings["Time"] = this.numTime.Value.ToString();
+            settings["TimeIncrement"] = this.numTimeIncrement.Value.ToString();
             settings["MaximumDigit"] = this.numMaxDigit.Value.ToString();
             settings["MinimumDigit"] = this.numMinDigit.Value.ToString();
             settings["MaximumAttempts"] = this.numMaxAttempts.Value.ToString();
@@ -51,6 +71,15 @@ namespace MemoryNumbers
             settings["CountDownRatio"] = this.numCountRatio.Value.ToString();
             settings["NumbersRatio"] = this.numNumbersRatio.Value.ToString();
             settings["BorderRatio"] = this.numBorderRatio.Value.ToString();
+            settings["FontRatio"] = this.numFontRatio.Value.ToString();
+            settings["ResultsRatio"] = this.numResultsRatio.Value.ToString();
+
+            settings["PlayMode"] = (
+                                    (this.radFixed.Checked ? 1 : 0) * 1 +
+                                    (this.radIncremental.Checked ? 1 : 0) * 2 +
+                                    (this.radProgressive.Checked ? 1 : 0) * 4 +
+                                    (this.radRandom.Checked ? 1 : 0) * 8
+                                    ).ToString();
 
             Close(); 
         }
@@ -109,6 +138,18 @@ namespace MemoryNumbers
         {
             int ratio = Convert.ToInt32(100 * numBorderRatio.Value);
             if (trackBorderRatio.Value != ratio) trackBorderRatio.Value = ratio;
+        }
+
+        private void trackFontRatio_ValueChanged(object sender, EventArgs e)
+        {
+            decimal ratio = Decimal.Round((decimal)trackFontRatio.Value / 100, 2, MidpointRounding.AwayFromZero);
+            if (numFontRatio.Value != ratio) numFontRatio.Value = ratio;
+        }
+
+        private void numFontRatio_ValueChanged(object sender, EventArgs e)
+        {
+            int ratio = Convert.ToInt32(100 * numFontRatio.Value);
+            if (trackFontRatio.Value != ratio) trackFontRatio.Value = ratio;
         }
 
         private void radIncremental_CheckedChanged(object sender, EventArgs e)

@@ -240,18 +240,32 @@ namespace Controls
 
             using (Pen pen = new Pen(new SolidBrush(_cBorderColor), _fBorderWidth))
             {
-                RectangleF rect = new RectangleF(0.5f, 0.5f, this.ClientRectangle.Width - 1, this.ClientRectangle.Height - 1);
-                GraphicsPath path = MakeRoundedRect(rect, _xRadius, _yRadius, true, true, true, true);
-
-                pen.Alignment = PenAlignment.Inset;
                 Graphics dc = e.Graphics;
                 dc.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-                dc.PixelOffsetMode = PixelOffsetMode.Half;
+
+                RectangleF rectOut = new RectangleF(0.5f, 0.5f, this.ClientRectangle.Width - 1, this.ClientRectangle.Height - 1);
+                RectangleF rectIn = RectangleF.Inflate(rectOut, -_fBorderWidth, -_fBorderWidth);
+                RectangleF rectRegion = RectangleF.Inflate(rectOut, 0.5f, 0.5f);
+                
+                //GraphicsPath path = MakeRoundedRect(rectOut, _xRadius , _yRadius , true, true, true, true);
+                GraphicsPath path = MakeRoundedRect(rectIn, _xRadius - _fBorderWidth, _yRadius - _fBorderWidth, true, true, true, true);
                 dc.FillPath(new SolidBrush(_cFillColor), path);
-                if (_showBorder) dc.DrawPath(pen, path);
-                this.Region = new Region(path);
-                this.lblText.Padding = new Padding((int)(this.lblText.Font.SizeInPoints / 7), 0, 0, 0);
-                this.lblText.Region = this.Region;
+
+                if (_showBorder)
+                {
+                    path.AddPath(MakeRoundedRect(rectOut, _xRadius, _yRadius, true, true, true, true), false);
+                    dc.FillPath(new SolidBrush(_cBorderColor), path);
+                }
+
+                pen.Alignment = PenAlignment.Inset;
+                
+                //dc.PixelOffsetMode = PixelOffsetMode.Half;
+                //dc.FillPath(new SolidBrush(_cFillColor), path);
+                
+                //if (_showBorder) dc.DrawPath(pen, path);
+                this.Region = new Region(MakeRoundedRect(rectRegion, _xRadius + 0.5f, _yRadius + 0.5f, true, true, true, true));
+                this.lblText.Padding = new Padding((int)(this.lblText.Font.SizeInPoints / 6), 0, 0, 0);
+                //this.lblText.Region = this.Region;
             }
             base.OnPaint(e);
             
@@ -385,3 +399,4 @@ namespace Controls
 
     }
 }
+// https://stackoverflow.com/questions/33878184/c-sharp-how-to-make-smooth-arc-region-using-graphics-path

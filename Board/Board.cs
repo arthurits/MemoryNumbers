@@ -274,12 +274,6 @@ namespace Controls
             public SequenceEventArgs(int length) { SequenceLength = length; }
         }
 
-        // public delegate void EventHandler<TEventArgs>(object sender, TEventArgs e);
-        public event EventHandler<SequenceEventArgs> WrongSequence;
-        protected virtual void OnWrongSequence(Board.SequenceEventArgs e)
-        {
-            if (WrongSequence != null) WrongSequence(this, e);
-        }
         #endregion Events
 
         public Board()
@@ -291,7 +285,7 @@ namespace Controls
 
             // Load the sounds
             _path = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
-            _soundPlayer = new System.Media.SoundPlayer[Enum.GetNames(typeof(AudioSoundType)).Length];                                              // https://stackoverflow.com/questions/856154/total-number-of-items-defined-in-an-enum
+            _soundPlayer = new System.Media.SoundPlayer[Enum.GetNames(typeof(AudioSoundType)).Length];  // https://stackoverflow.com/questions/856154/total-number-of-items-defined-in-an-enum
             _soundPlayer[0] = System.IO.File.Exists(_path + @"\audio\Correct number.wav") ? new System.Media.SoundPlayer(_path + @"\audio\Correct number.wav") : null;
             _soundPlayer[1] = System.IO.File.Exists(_path + @"\audio\Wrong number.wav") ? new System.Media.SoundPlayer(_path + @"\audio\Wrong number.wav") : null;
             _soundPlayer[2] = System.IO.File.Exists(_path + @"\audio\Correct sequence.wav") ? new System.Media.SoundPlayer(_path + @"\audio\Correct sequence.wav") : null;
@@ -362,9 +356,10 @@ namespace Controls
         {
             this.SuspendLayout();
 
-            //base.OnResize(e);
-            if (Parent == null) return;
-            if (((Form)Parent).WindowState == FormWindowState.Minimized) return;
+            if (FindForm() == null) return;
+            if (FindForm().WindowState == FormWindowState.Minimized) return;
+            //if (Parent == null) return;
+            //if (((Form)Parent).WindowState == FormWindowState.Minimized) return;
 
             int minDimension = Math.Min(this.Width, this.Height);
             if (minDimension == 0) return;
@@ -403,6 +398,7 @@ namespace Controls
                 }
             }
 
+            base.OnResize(e);
             this.ResumeLayout(true);
             this.PerformLayout();
         }
@@ -501,7 +497,7 @@ namespace Controls
                     VisibleBorder = false,
                     Visible = false
                 };
-                _roundButton[i].Font = new Font(_roundButton[i].Font.FontFamily, _fFontSize * (_nDiameter - 2 * _nDiameter * _fBorderWidth));
+                _roundButton[i].Font = new Font(_roundButton[i].Font.FontFamily, _fFontSize * _nDiameter);
                 
                 do
                 {

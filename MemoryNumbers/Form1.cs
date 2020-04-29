@@ -35,12 +35,14 @@ namespace MemoryNumbers
             InitializeMenuStrip();
             InitializeStatusStrip();
 
+            board1.Parent = this;
+
             // Subscribe to events
-            countDown1.TimerEnding += new EventHandler<Controls.TimerEndingEventArgs>(OnTimerEnding);
+            //countDown1.TimerEnding += new EventHandler<Controls.TimerEndingEventArgs>(OnTimerEnding);
             board1.ButtonClick += new EventHandler<Board.ButtonClickEventArgs>(OnButtonClick);
             //board1.RightSequence += new EventHandler<Board.SequenceEventArgs>(OnCorrectSequence);
-            board1.RightSequence += async (object s, Board.SequenceEventArgs e) => await OnCorrectSequence(s, e);
-            board1.WrongSequence += new EventHandler<Board.SequenceEventArgs>(OnWrongSequence);
+            //board1.RightSequence += async (object s, Board.SequenceEventArgs e) => await OnCorrectSequence(s, e);
+            //board1.WrongSequence += new EventHandler<Board.SequenceEventArgs>(OnWrongSequence);
             //_game.CorrectSequence += new EventHandler<Game.CorrectEventArgs>(OnCorrectSequence);
             //_game.WrongSequence += new EventHandler<Game.WrongEventArgs>(OnWrongSequence);
             //_game.GameOver += new EventHandler<Game.OverEventArgs>(OnGameOver);
@@ -174,6 +176,13 @@ namespace MemoryNumbers
 
         #region Events subscription
 
+        private void OnButtonClick(object sender, Board.ButtonClickEventArgs e)
+        {
+
+            if (_game.Check(e.ButtonValue)) board1.ButtonRight();
+            // hide button
+        }
+
         private async Task OnCorrectSequence(object sender, Game.CorrectEventArgs e)
         {
             // Perform the GUI tasks corresponding to a right sequence (sounds, images, buttons, etc)
@@ -217,48 +226,6 @@ namespace MemoryNumbers
         {
             //System.Diagnostics.Debug.WriteLine("OnGameOver subscription event");
             MessageBox.Show("You reached the\nend of the game", "Congratulations!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-
-        // This four methods are not used. They should be deleted along with their definitions on lines 39, 40, 42 and 43 and the definitions in Board.cs
-        private async Task OnCorrectSequence(object sender, Board.SequenceEventArgs e)
-        {
-            // Wait before starting a new sequence
-            await Task.Delay(100);
-
-            // Show the score in the status bar
-            this.toolStripStatusLabel_Secuence.Text = e.SequenceLength.ToString();
-            this.toolStripStatusLabel_Secuence.Invalidate();
-
-            // Keep the game going on
-            _game.CurrentScore = e.SequenceLength;
-            System.Diagnostics.Debug.WriteLine("Form in OnCorrectSequence");
-            if (_game.Start())
-            {
-                board1.Start(_game.GetSequence);
-            }
-            System.Diagnostics.Debug.WriteLine("Form after ReStart");
-
-        }
-        private void OnWrongSequence(object sender, Board.SequenceEventArgs e)
-        {
-            MessageBox.Show("Wrong sequence","Error");
-            OnCorrectSequence(sender, e);
-        }
-
-        private void OnButtonClick(object sender, Board.ButtonClickEventArgs e)
-        {
-
-            if (_game.Check(e.ButtonValue)) board1.ButtonRight();
-            // hide button
-        }
-
-        private void OnTimerEnding(object sender, TimerEndingEventArgs e)
-        {
-            // countDown1.roundButton1.BorderColor = Color.Transparent;
-            //countDown1.VisibleText = false;
-            // Since the Sytem.Timer runs in another thread, we need to use Invoke to get back to the control thread (which is the UI thread)
-            ((Controls.CountDown)sender).Invoke((new Action(() => ((Controls.CountDown)sender).Visible = false)));
         }
 
         #endregion Events subscription

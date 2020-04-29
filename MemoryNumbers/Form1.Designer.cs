@@ -45,9 +45,9 @@
             this.toolStripMain_Settings = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMain_About = new System.Windows.Forms.ToolStripButton();
+            this.board1 = new Controls.Board();
             this.roundButton1 = new Controls.RoundButton();
             this.countDown1 = new Controls.CountDown();
-            this.board1 = new Controls.Board();
             this.statusStrip.SuspendLayout();
             this.toolStripMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.board1)).BeginInit();
@@ -209,6 +209,31 @@
             this.toolStripMain_About.ToolTipText = "About this software";
             this.toolStripMain_About.Click += new System.EventHandler(this.toolStripMain_About_Click);
             // 
+            // board1
+            // 
+            this.board1.BackColor = System.Drawing.Color.Azure;
+            this.board1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.board1.BorderColor = System.Drawing.Color.Black;
+            this.board1.BorderRatio = 0.115F;
+            this.board1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.board1.CountDownRatio = 0.37F;
+            this.board1.Diameter = 67;
+            this.board1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.board1.FillColor = System.Drawing.Color.Transparent;
+            this.board1.FontRatio = 0.6F;
+            this.board1.Location = new System.Drawing.Point(0, 70);
+            this.board1.MaxNumber = 9;
+            this.board1.MinNumber = 0;
+            this.board1.Name = "board1";
+            this.board1.NumbersRatio = 0.25F;
+            this.board1.PlaySounds = false;
+            this.board1.ResultRatio = 0.56F;
+            this.board1.Size = new System.Drawing.Size(538, 271);
+            this.board1.TabIndex = 3;
+            this.board1.TabStop = false;
+            this.board1.Time = 700;
+            this.board1.TimeIncrement = 300;
+            // 
             // roundButton1
             // 
             this.roundButton1.BackColor = System.Drawing.Color.Transparent;
@@ -235,7 +260,7 @@
             this.countDown1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.countDown1.Font = new System.Drawing.Font("Microsoft Sans Serif", 35F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.countDown1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.countDown1.Location = new System.Drawing.Point(417, 124);
+            this.countDown1.Location = new System.Drawing.Point(403, 91);
             this.countDown1.Margin = new System.Windows.Forms.Padding(20, 18, 20, 18);
             this.countDown1.Name = "countDown1";
             this.countDown1.PlaySounds = false;
@@ -248,30 +273,6 @@
             this.countDown1.VisibleText = true;
             this.countDown1.xRadius = 50F;
             this.countDown1.yRadius = 50F;
-            // 
-            // board1
-            // 
-            this.board1.BackColor = System.Drawing.Color.Azure;
-            this.board1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.board1.BorderColor = System.Drawing.Color.Black;
-            this.board1.BorderRatio = 0.115F;
-            this.board1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.board1.CountDownRatio = 0.37F;
-            this.board1.Diameter = 41;
-            this.board1.FillColor = System.Drawing.Color.Transparent;
-            this.board1.FontRatio = 0.6F;
-            this.board1.Location = new System.Drawing.Point(0, 174);
-            this.board1.MaxNumber = 9;
-            this.board1.MinNumber = 0;
-            this.board1.Name = "board1";
-            this.board1.NumbersRatio = 0.25F;
-            this.board1.PlaySounds = false;
-            this.board1.ResultRatio = 0.56F;
-            this.board1.Size = new System.Drawing.Size(380, 167);
-            this.board1.TabIndex = 3;
-            this.board1.TabStop = false;
-            this.board1.Time = 700;
-            this.board1.TimeIncrement = 300;
             // 
             // Form1
             // 

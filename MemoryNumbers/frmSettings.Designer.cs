@@ -30,13 +30,16 @@
         {
             this.tabSettings = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.grpTime = new System.Windows.Forms.GroupBox();
             this.radFixed = new System.Windows.Forms.RadioButton();
             this.radIncremental = new System.Windows.Forms.RadioButton();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.radSequential = new System.Windows.Forms.RadioButton();
+            this.grpSequence = new System.Windows.Forms.GroupBox();
+            this.radProgressive = new System.Windows.Forms.RadioButton();
             this.radRandom = new System.Windows.Forms.RadioButton();
             this.tabSettingsGame = new System.Windows.Forms.TabPage();
+            this.trackTimeIncrement = new System.Windows.Forms.TrackBar();
+            this.numTimeIncrement = new System.Windows.Forms.NumericUpDown();
+            this.lblTimeIncrement = new System.Windows.Forms.Label();
             this.numMaxDigit = new System.Windows.Forms.NumericUpDown();
             this.numMinDigit = new System.Windows.Forms.NumericUpDown();
             this.numMaxAttempts = new System.Windows.Forms.NumericUpDown();
@@ -47,6 +50,12 @@
             this.trackTime = new System.Windows.Forms.TrackBar();
             this.lblTime = new System.Windows.Forms.Label();
             this.tabGUI = new System.Windows.Forms.TabPage();
+            this.trackResultsRatio = new System.Windows.Forms.TrackBar();
+            this.numResultsRatio = new System.Windows.Forms.NumericUpDown();
+            this.lblResultsRatio = new System.Windows.Forms.Label();
+            this.trackFontRatio = new System.Windows.Forms.TrackBar();
+            this.numFontRatio = new System.Windows.Forms.NumericUpDown();
+            this.lblFontRatio = new System.Windows.Forms.Label();
             this.trackBorderRatio = new System.Windows.Forms.TrackBar();
             this.trackNumbersRatio = new System.Windows.Forms.TrackBar();
             this.trackCountRatio = new System.Windows.Forms.TrackBar();
@@ -58,28 +67,29 @@
             this.lblCountRatio = new System.Windows.Forms.Label();
             this.btnAccept = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.lblTimeIncrement = new System.Windows.Forms.Label();
-            this.numTimeIncrement = new System.Windows.Forms.NumericUpDown();
-            this.trackTimeIncrement = new System.Windows.Forms.TrackBar();
             this.tabSettings.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.grpTime.SuspendLayout();
+            this.grpSequence.SuspendLayout();
             this.tabSettingsGame.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackTimeIncrement)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numTimeIncrement)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxDigit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMinDigit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxAttempts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackTime)).BeginInit();
             this.tabGUI.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackResultsRatio)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numResultsRatio)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackFontRatio)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numFontRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBorderRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackNumbersRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackCountRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numBorderRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numNumbersRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCountRatio)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numTimeIncrement)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackTimeIncrement)).BeginInit();
             this.SuspendLayout();
             // 
             // tabSettings
@@ -96,8 +106,8 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.groupBox2);
-            this.tabPage1.Controls.Add(this.groupBox1);
+            this.tabPage1.Controls.Add(this.grpTime);
+            this.tabPage1.Controls.Add(this.grpSequence);
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -106,20 +116,21 @@
             this.tabPage1.Text = "Play mode";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // groupBox2
+            // grpTime
             // 
-            this.groupBox2.Controls.Add(this.radFixed);
-            this.groupBox2.Controls.Add(this.radIncremental);
-            this.groupBox2.Location = new System.Drawing.Point(267, 53);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(237, 143);
-            this.groupBox2.TabIndex = 5;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Time";
+            this.grpTime.Controls.Add(this.radFixed);
+            this.grpTime.Controls.Add(this.radIncremental);
+            this.grpTime.Location = new System.Drawing.Point(267, 53);
+            this.grpTime.Name = "grpTime";
+            this.grpTime.Size = new System.Drawing.Size(237, 143);
+            this.grpTime.TabIndex = 5;
+            this.grpTime.TabStop = false;
+            this.grpTime.Text = "Time";
             // 
             // radFixed
             // 
             this.radFixed.AutoSize = true;
+            this.radFixed.Checked = true;
             this.radFixed.Location = new System.Drawing.Point(47, 42);
             this.radFixed.Name = "radFixed";
             this.radFixed.Size = new System.Drawing.Size(89, 21);
@@ -139,31 +150,32 @@
             this.radIncremental.UseVisualStyleBackColor = true;
             this.radIncremental.CheckedChanged += new System.EventHandler(this.radIncremental_CheckedChanged);
             // 
-            // groupBox1
+            // grpSequence
             // 
-            this.groupBox1.Controls.Add(this.radSequential);
-            this.groupBox1.Controls.Add(this.radRandom);
-            this.groupBox1.Location = new System.Drawing.Point(28, 53);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(188, 143);
-            this.groupBox1.TabIndex = 4;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Numeric sequence";
+            this.grpSequence.Controls.Add(this.radProgressive);
+            this.grpSequence.Controls.Add(this.radRandom);
+            this.grpSequence.Location = new System.Drawing.Point(28, 53);
+            this.grpSequence.Name = "grpSequence";
+            this.grpSequence.Size = new System.Drawing.Size(188, 143);
+            this.grpSequence.TabIndex = 4;
+            this.grpSequence.TabStop = false;
+            this.grpSequence.Text = "Numeric sequence";
             // 
-            // radSequential
+            // radProgressive
             // 
-            this.radSequential.AutoSize = true;
-            this.radSequential.Location = new System.Drawing.Point(35, 42);
-            this.radSequential.Name = "radSequential";
-            this.radSequential.Size = new System.Drawing.Size(92, 21);
-            this.radSequential.TabIndex = 0;
-            this.radSequential.TabStop = true;
-            this.radSequential.Text = "Ascending";
-            this.radSequential.UseVisualStyleBackColor = true;
+            this.radProgressive.AutoSize = true;
+            this.radProgressive.Location = new System.Drawing.Point(35, 42);
+            this.radProgressive.Name = "radProgressive";
+            this.radProgressive.Size = new System.Drawing.Size(101, 21);
+            this.radProgressive.TabIndex = 0;
+            this.radProgressive.TabStop = true;
+            this.radProgressive.Text = "Progressive";
+            this.radProgressive.UseVisualStyleBackColor = true;
             // 
             // radRandom
             // 
             this.radRandom.AutoSize = true;
+            this.radRandom.Checked = true;
             this.radRandom.Location = new System.Drawing.Point(35, 90);
             this.radRandom.Name = "radRandom";
             this.radRandom.Size = new System.Drawing.Size(79, 21);
@@ -194,6 +206,39 @@
             this.tabSettingsGame.Size = new System.Drawing.Size(567, 316);
             this.tabSettingsGame.TabIndex = 0;
             this.tabSettingsGame.Text = "Game";
+            // 
+            // trackTimeIncrement
+            // 
+            this.trackTimeIncrement.Location = new System.Drawing.Point(197, 88);
+            this.trackTimeIncrement.Maximum = 1000;
+            this.trackTimeIncrement.Name = "trackTimeIncrement";
+            this.trackTimeIncrement.Size = new System.Drawing.Size(268, 45);
+            this.trackTimeIncrement.SmallChange = 10;
+            this.trackTimeIncrement.TabIndex = 15;
+            this.trackTimeIncrement.TickFrequency = 100;
+            this.trackTimeIncrement.ValueChanged += new System.EventHandler(this.trackTimeIncrement_ValueChanged);
+            // 
+            // numTimeIncrement
+            // 
+            this.numTimeIncrement.Location = new System.Drawing.Point(125, 88);
+            this.numTimeIncrement.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numTimeIncrement.Name = "numTimeIncrement";
+            this.numTimeIncrement.Size = new System.Drawing.Size(61, 23);
+            this.numTimeIncrement.TabIndex = 14;
+            this.numTimeIncrement.ValueChanged += new System.EventHandler(this.numTimeIncrement_ValueChanged);
+            // 
+            // lblTimeIncrement
+            // 
+            this.lblTimeIncrement.AutoSize = true;
+            this.lblTimeIncrement.Location = new System.Drawing.Point(49, 90);
+            this.lblTimeIncrement.Name = "lblTimeIncrement";
+            this.lblTimeIncrement.Size = new System.Drawing.Size(74, 17);
+            this.lblTimeIncrement.TabIndex = 13;
+            this.lblTimeIncrement.Text = "Increment:";
             // 
             // numMaxDigit
             // 
@@ -280,6 +325,12 @@
             // tabGUI
             // 
             this.tabGUI.BackColor = System.Drawing.Color.White;
+            this.tabGUI.Controls.Add(this.trackResultsRatio);
+            this.tabGUI.Controls.Add(this.numResultsRatio);
+            this.tabGUI.Controls.Add(this.lblResultsRatio);
+            this.tabGUI.Controls.Add(this.trackFontRatio);
+            this.tabGUI.Controls.Add(this.numFontRatio);
+            this.tabGUI.Controls.Add(this.lblFontRatio);
             this.tabGUI.Controls.Add(this.trackBorderRatio);
             this.tabGUI.Controls.Add(this.trackNumbersRatio);
             this.tabGUI.Controls.Add(this.trackCountRatio);
@@ -296,6 +347,80 @@
             this.tabGUI.Size = new System.Drawing.Size(567, 316);
             this.tabGUI.TabIndex = 1;
             this.tabGUI.Text = "Interface";
+            // 
+            // trackResultsRatio
+            // 
+            this.trackResultsRatio.Location = new System.Drawing.Point(240, 178);
+            this.trackResultsRatio.Maximum = 100;
+            this.trackResultsRatio.Name = "trackResultsRatio";
+            this.trackResultsRatio.Size = new System.Drawing.Size(225, 45);
+            this.trackResultsRatio.TabIndex = 17;
+            this.trackResultsRatio.TickFrequency = 10;
+            // 
+            // numResultsRatio
+            // 
+            this.numResultsRatio.DecimalPlaces = 2;
+            this.numResultsRatio.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.numResultsRatio.Location = new System.Drawing.Point(171, 178);
+            this.numResultsRatio.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numResultsRatio.Name = "numResultsRatio";
+            this.numResultsRatio.Size = new System.Drawing.Size(55, 23);
+            this.numResultsRatio.TabIndex = 16;
+            // 
+            // lblResultsRatio
+            // 
+            this.lblResultsRatio.AutoSize = true;
+            this.lblResultsRatio.Location = new System.Drawing.Point(52, 180);
+            this.lblResultsRatio.Name = "lblResultsRatio";
+            this.lblResultsRatio.Size = new System.Drawing.Size(91, 17);
+            this.lblResultsRatio.TabIndex = 15;
+            this.lblResultsRatio.Text = "Results ratio:";
+            // 
+            // trackFontRatio
+            // 
+            this.trackFontRatio.Location = new System.Drawing.Point(240, 142);
+            this.trackFontRatio.Maximum = 100;
+            this.trackFontRatio.Name = "trackFontRatio";
+            this.trackFontRatio.Size = new System.Drawing.Size(225, 45);
+            this.trackFontRatio.TabIndex = 14;
+            this.trackFontRatio.TickFrequency = 10;
+            this.trackFontRatio.ValueChanged += new System.EventHandler(this.trackFontRatio_ValueChanged);
+            // 
+            // numFontRatio
+            // 
+            this.numFontRatio.DecimalPlaces = 2;
+            this.numFontRatio.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.numFontRatio.Location = new System.Drawing.Point(171, 142);
+            this.numFontRatio.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numFontRatio.Name = "numFontRatio";
+            this.numFontRatio.Size = new System.Drawing.Size(55, 23);
+            this.numFontRatio.TabIndex = 13;
+            this.numFontRatio.ValueChanged += new System.EventHandler(this.numFontRatio_ValueChanged);
+            // 
+            // lblFontRatio
+            // 
+            this.lblFontRatio.AutoSize = true;
+            this.lblFontRatio.Location = new System.Drawing.Point(52, 144);
+            this.lblFontRatio.Name = "lblFontRatio";
+            this.lblFontRatio.Size = new System.Drawing.Size(72, 17);
+            this.lblFontRatio.TabIndex = 12;
+            this.lblFontRatio.Text = "Font ratio:";
             // 
             // trackBorderRatio
             // 
@@ -433,39 +558,6 @@
             this.btnCancel.Text = "&Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // lblTimeIncrement
-            // 
-            this.lblTimeIncrement.AutoSize = true;
-            this.lblTimeIncrement.Location = new System.Drawing.Point(49, 90);
-            this.lblTimeIncrement.Name = "lblTimeIncrement";
-            this.lblTimeIncrement.Size = new System.Drawing.Size(74, 17);
-            this.lblTimeIncrement.TabIndex = 13;
-            this.lblTimeIncrement.Text = "Increment:";
-            // 
-            // numTimeIncrement
-            // 
-            this.numTimeIncrement.Location = new System.Drawing.Point(125, 88);
-            this.numTimeIncrement.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numTimeIncrement.Name = "numTimeIncrement";
-            this.numTimeIncrement.Size = new System.Drawing.Size(61, 23);
-            this.numTimeIncrement.TabIndex = 14;
-            this.numTimeIncrement.ValueChanged += new System.EventHandler(this.numTimeIncrement_ValueChanged);
-            // 
-            // trackTimeIncrement
-            // 
-            this.trackTimeIncrement.Location = new System.Drawing.Point(197, 88);
-            this.trackTimeIncrement.Maximum = 1000;
-            this.trackTimeIncrement.Name = "trackTimeIncrement";
-            this.trackTimeIncrement.Size = new System.Drawing.Size(268, 45);
-            this.trackTimeIncrement.SmallChange = 10;
-            this.trackTimeIncrement.TabIndex = 15;
-            this.trackTimeIncrement.TickFrequency = 100;
-            this.trackTimeIncrement.ValueChanged += new System.EventHandler(this.trackTimeIncrement_ValueChanged);
-            // 
             // frmSettings
             // 
             this.AcceptButton = this.btnAccept;
@@ -484,12 +576,14 @@
             this.Text = "MemoryNumbers - Settings";
             this.tabSettings.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.grpTime.ResumeLayout(false);
+            this.grpTime.PerformLayout();
+            this.grpSequence.ResumeLayout(false);
+            this.grpSequence.PerformLayout();
             this.tabSettingsGame.ResumeLayout(false);
             this.tabSettingsGame.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackTimeIncrement)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numTimeIncrement)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxDigit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMinDigit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numMaxAttempts)).EndInit();
@@ -497,14 +591,16 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackTime)).EndInit();
             this.tabGUI.ResumeLayout(false);
             this.tabGUI.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackResultsRatio)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numResultsRatio)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackFontRatio)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numFontRatio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBorderRatio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackNumbersRatio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackCountRatio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numBorderRatio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numNumbersRatio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCountRatio)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numTimeIncrement)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackTimeIncrement)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -535,14 +631,20 @@
         private System.Windows.Forms.TrackBar trackBorderRatio;
         private System.Windows.Forms.TrackBar trackNumbersRatio;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox grpTime;
         private System.Windows.Forms.RadioButton radFixed;
         private System.Windows.Forms.RadioButton radIncremental;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.RadioButton radSequential;
+        private System.Windows.Forms.GroupBox grpSequence;
+        private System.Windows.Forms.RadioButton radProgressive;
         private System.Windows.Forms.RadioButton radRandom;
         private System.Windows.Forms.TrackBar trackTimeIncrement;
         private System.Windows.Forms.NumericUpDown numTimeIncrement;
         private System.Windows.Forms.Label lblTimeIncrement;
+        private System.Windows.Forms.TrackBar trackFontRatio;
+        private System.Windows.Forms.NumericUpDown numFontRatio;
+        private System.Windows.Forms.Label lblFontRatio;
+        private System.Windows.Forms.TrackBar trackResultsRatio;
+        private System.Windows.Forms.NumericUpDown numResultsRatio;
+        private System.Windows.Forms.Label lblResultsRatio;
     }
 }
