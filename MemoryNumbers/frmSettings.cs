@@ -52,7 +52,7 @@ namespace MemoryNumbers
             }
             catch (KeyNotFoundException e)
             {
-
+                
             }
 
             settings = _settings;
@@ -63,7 +63,7 @@ namespace MemoryNumbers
         private void btnAccept_Click(object sender, EventArgs e)
         {
             settings["Time"] = this.numTime.Value.ToString();
-            settings["TimeIncrement"] = this.numTimeIncrement.Value.ToString();
+            settings["TimeIncrement"] = this.radIncremental.Checked ? this.numTimeIncrement.Value.ToString() : "0";
             settings["MaximumDigit"] = this.numMaxDigit.Value.ToString();
             settings["MinimumDigit"] = this.numMinDigit.Value.ToString();
             settings["MaximumAttempts"] = this.numMaxAttempts.Value.ToString();
@@ -152,6 +152,18 @@ namespace MemoryNumbers
             if (trackFontRatio.Value != ratio) trackFontRatio.Value = ratio;
         }
 
+        private void trackResultsRatio_ValueChanged(object sender, EventArgs e)
+        {
+            decimal ratio = Decimal.Round((decimal)trackResultsRatio.Value / 100, 2, MidpointRounding.AwayFromZero);
+            if (numResultsRatio.Value != ratio) numResultsRatio.Value = ratio;
+        }
+
+        private void numResultsRatio_ValueChanged(object sender, EventArgs e)
+        {
+            int ratio = Convert.ToInt32(100 * numResultsRatio.Value);
+            if (trackResultsRatio.Value != ratio) trackResultsRatio.Value = ratio;
+        }
+
         private void radIncremental_CheckedChanged(object sender, EventArgs e)
         {
             if (radIncremental.Checked==true)
@@ -165,6 +177,7 @@ namespace MemoryNumbers
                 trackTimeIncrement.Enabled = false;
             }
         }
+
 
         // https://stackoverrun.com/es/q/1915473
     }

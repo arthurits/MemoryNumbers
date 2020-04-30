@@ -88,7 +88,7 @@ namespace MemoryNumbers
             if (File.Exists(_path + @"\images\exit.ico")) this.toolStripMain_Exit.Image = new Icon(_path + @"\images\exit.ico", 48, 48).ToBitmap();
             if (File.Exists(_path + @"\images\start.ico")) this.toolStripMain_Start.Image = new Icon(_path + @"\images\start.ico", 48, 48).ToBitmap();
             if (File.Exists(_path + @"\images\stop.ico")) this.toolStripMain_Stop.Image = new Icon(_path + @"\images\stop.ico", 48, 48).ToBitmap();
-            if (File.Exists(_path + @"\images\sound.ico")) this.toolStripMain_Sound.Image = new Icon(_path + @"\images\sound.ico", 48, 48).ToBitmap();
+            if (File.Exists(_path + @"\images\soundoff.ico")) this.toolStripMain_Sound.Image = new Icon(_path + @"\images\soundoff.ico", 48, 48).ToBitmap();
             if (File.Exists(_path + @"\images\graph.ico")) this.toolStripMain_Graph.Image = new Icon(_path + @"\images\graph.ico", 48, 48).ToBitmap();
             if (File.Exists(_path + @"\images\settings.ico")) this.toolStripMain_Settings.Image = new Icon(_path + @"\images\settings.ico", 48, 48).ToBitmap();
             //if (File.Exists(path + @"\images\save.ico")) this.toolStripMain_Data.Image = new Icon(path + @"\images\save.ico", 48, 48).ToBitmap();
@@ -196,13 +196,10 @@ namespace MemoryNumbers
             await Task.Delay(100);
 
             // Keep the game going on
-            //_game.CurrentScore = e.Score;
-            System.Diagnostics.Debug.WriteLine("Form in OnCorrectSequence");
             if (_game.Start())
             {
                 board1.Start(_game.GetSequence);
             }
-            System.Diagnostics.Debug.WriteLine("Form after ReStart");
 
         }
         private async Task OnWrongSequence(object sender, Game.WrongEventArgs e)
@@ -254,7 +251,7 @@ namespace MemoryNumbers
 
         private void toolStripMain_Sound_CheckedChanged(object sender, EventArgs e)
         {
-            this.board1.PlaySounds = toolStripMain_Sound.Checked;
+            this.board1.PlaySounds = !toolStripMain_Sound.Checked;
         }
 
         private void toolStripMain_Settings_Click(object sender, EventArgs e)
@@ -325,6 +322,7 @@ namespace MemoryNumbers
             _programSettings["WindowWidth"] = this.ClientSize.Width.ToString();
             _programSettings["WindowHeight"] = this.ClientSize.Height.ToString();
 
+            /*
             _programSettings["MaximumAttempts"] = this._game.MaximumAttempts.ToString();
             _programSettings["MaximumDigit"] = this.board1.MaxNumber.ToString();
             _programSettings["MinimumDigit"] = this.board1.MinNumber.ToString();
@@ -336,8 +334,9 @@ namespace MemoryNumbers
             _programSettings["NumbersRatio"] = this.board1.NumbersRatio.ToString();
             _programSettings["FontRatio"] = this.board1.FontRatio.ToString();
             _programSettings["ResultsRatio"] = this.board1.ResultRatio.ToString();
+            */
 
-            _programSettings["Sound"] = this.toolStripMain_Sound.Checked == true ? "1" : "0";
+            _programSettings["Sound"] = this.toolStripMain_Sound.Checked == true ? "0" : "1";
 
             // Save window settings.
             TextWriter textWriter = StreamWriter.Null;
@@ -390,8 +389,8 @@ namespace MemoryNumbers
             this.board1.FontRatio = Convert.ToSingle(_programSettings["FontRatio"]);
             this.board1.ResultRatio = Convert.ToSingle(_programSettings["ResultsRatio"]);
 
-            this.toolStripMain_Sound.Checked = _programSettings.ContainsKey("Sound") ? (Convert.ToInt32(_programSettings["Sound"]) == 1 ? true : false) : true;
-            this.board1.PlaySounds = this.toolStripMain_Sound.Checked;
+            this.toolStripMain_Sound.Checked = _programSettings.ContainsKey("Sound") ? (Convert.ToInt32(_programSettings["Sound"]) == 0 ? true : false) : false;
+            this.board1.PlaySounds = !this.toolStripMain_Sound.Checked;
         }
 
         /// <summary>
@@ -417,7 +416,9 @@ namespace MemoryNumbers
             _programSettings["FontRatio"] = "0.60";
             _programSettings["ResultsRatio"] = "0.56";
 
-            _programSettings["Sound"] = "1";     // Checked
+            _programSettings["PlayMode"] = "9";
+
+            _programSettings["Sound"] = "0";     // Sound off unchecked
         }
 
 

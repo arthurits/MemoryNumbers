@@ -616,7 +616,11 @@ namespace Controls
         private async Task PlayAudioFile(AudioSoundType type, AudioSoundMode mode)
         {
             // If no sounds are to be played, then exit
-            if (!_sound) return;
+            if (!_sound)
+            {
+                Task.Delay(100);
+                return;
+            }
 
             // Else, play the selected sound in the selected mode
             if (_soundPlayer[(int)type] != null)

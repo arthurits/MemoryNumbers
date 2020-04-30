@@ -246,6 +246,7 @@
             this.roundButton1.Size = new System.Drawing.Size(224, 144);
             this.roundButton1.TabIndex = 1;
             this.roundButton1.Text = "0";
+            this.roundButton1.Visible = false;
             this.roundButton1.VisibleBorder = true;
             this.roundButton1.VisibleText = true;
             this.roundButton1.xRadius = 50F;
@@ -269,6 +270,7 @@
             this.countDown1.TabIndex = 2;
             this.countDown1.Text = "5";
             this.countDown1.TimeInterval = 1000D;
+            this.countDown1.Visible = false;
             this.countDown1.VisibleBorder = true;
             this.countDown1.VisibleText = true;
             this.countDown1.xRadius = 50F;

@@ -181,9 +181,7 @@ namespace MemoryNumbers
             if ((_nCurrAttempt > _nMaxAttempts) || _nSequenceLength > (_nMaxDigit - _nMinDigit + 1))
             {
                 _nSequence = null;
-                System.Diagnostics.Debug.WriteLine("SetSequence before event");
                 OnGameOver(new OverEventArgs(_nSequenceLength - 1));
-                System.Diagnostics.Debug.WriteLine("SetSequence after event");
                 return false;
             }
             _nSequenceIndex = 0;
@@ -278,7 +276,7 @@ namespace MemoryNumbers
             // First check if the value clicked is correct
             if (_nSequence[_nSequenceIndex] != value)
             {
-                OnWrongSequence(new WrongEventArgs(value));
+                OnWrongSequence(new WrongEventArgs(_nSequenceLength - 2));
                 return false;
             }
             

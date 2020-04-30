@@ -196,7 +196,12 @@ namespace Controls
 
             // To ensure that your control is redrawn every time it is resized
             // https://msdn.microsoft.com/en-us/library/b818z6z6(v=vs.110).aspx
-            SetStyle(ControlStyles.ResizeRedraw, true);
+            SetStyle(ControlStyles.ResizeRedraw |
+                    ControlStyles.UserPaint |
+                    ControlStyles.SupportsTransparentBackColor |
+                    ControlStyles.OptimizedDoubleBuffer |
+                    ControlStyles.AllPaintingInWmPaint,
+                    true);
 
             this.DoubleBuffered = true;
 
@@ -220,55 +225,34 @@ namespace Controls
             lblText.Text = _sText;
         }
 
+        /// <summary>
+        /// Overrides the paint event. Comprises 3 parts: the fill, the border, and the definition of the control's region
+        /// </summary>
+        /// <param name="e">Paint event argument</param>
         protected override void OnPaint(PaintEventArgs e)
         {
-            /*
-            //30 is width, height of ellipse
-            IntPtr hrgn = CreateRoundRectRgn(0, 0, this.Width, this.Height, 30, 30);
-            IntPtr brush = CreateSolidBrush(0x0); // black, of format : //0x00bbggrr
-            FillRgn(this.Handle, hrgn, brush);
-            FrameRgn(e.Graphics.GetHdc(), hrgn, brush, 2, 2);
+            Graphics dc = e.Graphics;
+            dc.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
-            DeleteObject(hrgn);
-            DeleteObject(brush);
+            RectangleF rectOut = new RectangleF(0.5f, 0.5f, this.ClientRectangle.Width - 1, this.ClientRectangle.Height - 1);
+            RectangleF rectIn = RectangleF.Inflate(rectOut, -_fBorderWidth, -_fBorderWidth);
+            RectangleF rectRegion = RectangleF.Inflate(rectOut, 0.5f, 0.5f);
 
-            Region = Region.FromHrgn(hrgn);
+            GraphicsPath path = MakeRoundedRect(rectOut, _xRadius, _yRadius);
+            dc.FillPath(new SolidBrush(_cFillColor), path);
 
-            Graphics.FromHdc(this.Handle).FillRegion(, Region);
-            Graphics.FromHdc(this.Handle).;
-            */
-
-            using (Pen pen = new Pen(new SolidBrush(_cBorderColor), _fBorderWidth))
+            if (_showBorder)
             {
-                Graphics dc = e.Graphics;
-                dc.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-
-                RectangleF rectOut = new RectangleF(0.5f, 0.5f, this.ClientRectangle.Width - 1, this.ClientRectangle.Height - 1);
-                RectangleF rectIn = RectangleF.Inflate(rectOut, -_fBorderWidth, -_fBorderWidth);
-                RectangleF rectRegion = RectangleF.Inflate(rectOut, 0.5f, 0.5f);
-                
-                //GraphicsPath path = MakeRoundedRect(rectOut, _xRadius , _yRadius , true, true, true, true);
-                GraphicsPath path = MakeRoundedRect(rectIn, _xRadius - _fBorderWidth, _yRadius - _fBorderWidth, true, true, true, true);
-                dc.FillPath(new SolidBrush(_cFillColor), path);
-
-                if (_showBorder)
-                {
-                    path.AddPath(MakeRoundedRect(rectOut, _xRadius, _yRadius, true, true, true, true), false);
-                    dc.FillPath(new SolidBrush(_cBorderColor), path);
-                }
-
-                pen.Alignment = PenAlignment.Inset;
-                
-                //dc.PixelOffsetMode = PixelOffsetMode.Half;
-                //dc.FillPath(new SolidBrush(_cFillColor), path);
-                
-                //if (_showBorder) dc.DrawPath(pen, path);
-                this.Region = new Region(MakeRoundedRect(rectRegion, _xRadius + 0.5f, _yRadius + 0.5f, true, true, true, true));
-                this.lblText.Padding = new Padding((int)(this.lblText.Font.SizeInPoints / 6), 0, 0, 0);
-                //this.lblText.Region = this.Region;
+                path.AddPath(MakeRoundedRect(rectIn, _xRadius - _fBorderWidth, _yRadius - _fBorderWidth), false);
+                dc.FillPath(new SolidBrush(_cBorderColor), path);
             }
+
+            this.Region = new Region(MakeRoundedRect(rectRegion, _xRadius + 0.5f, _yRadius + 0.5f));
+            this.lblText.Padding = new Padding((int)(this.lblText.Font.SizeInPoints / 6), 0, 0, 0);
+            //this.lblText.Region = this.Region;
+
             base.OnPaint(e);
-            
+
         }
 
         protected override void OnClick(EventArgs e)
@@ -288,18 +272,18 @@ namespace Controls
         }
 
         /// <summary>
-        /// Draw a rectangle in the indicated Rectangle rounding the indicated corners.
+        /// Draw a rectangle in the indicated Rectangle (the container box) rounding the indicated corners.
         /// http://csharphelper.com/blog/2016/01/draw-rounded-rectangles-in-c/
         /// </summary>
         /// <param name="rect">Rectangle structure to be rounded</param>
         /// <param name="xradius">Horizonal radius in pixels</param>
         /// <param name="yradius">Vertical radius in pixels</param>
-        /// <param name="round_ul">True if upper left corner is to be rounded</param>
-        /// <param name="round_ur">True if upper right corner is to be rounded</param>
-        /// <param name="round_lr">True if lower right corner is to be rounded</param>
-        /// <param name="round_ll">True if lower left corner is to be rounded</param>
-        /// <returns></returns>
-        private GraphicsPath MakeRoundedRect(RectangleF rect, float xradius, float yradius, bool round_ul, bool round_ur, bool round_lr, bool round_ll)
+        /// <param name="round_ul">True (default value) if upper left corner is to be rounded</param>
+        /// <param name="round_ur">True (default value) if upper right corner is to be rounded</param>
+        /// <param name="round_lr">True (default value) if lower right corner is to be rounded</param>
+        /// <param name="round_ll">True (default value) if lower left corner is to be rounded</param>
+        /// <returns>The graphic path defining the rounded rectangle</returns>
+        private GraphicsPath MakeRoundedRect(RectangleF rect, float xradius, float yradius, bool round_ul = true, bool round_ur = true, bool round_lr = true, bool round_ll = true)
         {
             // Make a GraphicsPath to draw the rectangle.
             PointF point1, point2;
@@ -308,7 +292,7 @@ namespace Controls
             // Upper left corner.
             if (round_ul)
             {
-                if (xradius>0 && yradius>0)
+                if (xradius > 0 && yradius > 0)
                 {
                     RectangleF corner = new RectangleF(
                         rect.X, rect.Y,
@@ -329,7 +313,7 @@ namespace Controls
             // Upper right corner.
             if (round_ur)
             {
-                if (xradius>0 && yradius>0)
+                if (xradius > 0 && yradius > 0)
                 {
                     RectangleF corner = new RectangleF(
                         rect.Right - 2 * xradius, rect.Y,
@@ -350,7 +334,7 @@ namespace Controls
             // Lower right corner.
             if (round_lr)
             {
-                if (xradius > 0 && yradius>0)
+                if (xradius > 0 && yradius > 0)
                 {
                     RectangleF corner = new RectangleF(
                     rect.Right - 2 * xradius,
@@ -372,7 +356,7 @@ namespace Controls
             // Lower left corner.
             if (round_ll)
             {
-                if (xradius>0 && yradius > 0)
+                if (xradius > 0 && yradius > 0)
                 {
                     RectangleF corner = new RectangleF(
                     rect.X, rect.Bottom - 2 * yradius,

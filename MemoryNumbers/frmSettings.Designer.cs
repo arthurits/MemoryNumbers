@@ -356,6 +356,7 @@
             this.trackResultsRatio.Size = new System.Drawing.Size(225, 45);
             this.trackResultsRatio.TabIndex = 17;
             this.trackResultsRatio.TickFrequency = 10;
+            this.trackResultsRatio.ValueChanged += new System.EventHandler(this.trackResultsRatio_ValueChanged);
             // 
             // numResultsRatio
             // 
@@ -374,6 +375,7 @@
             this.numResultsRatio.Name = "numResultsRatio";
             this.numResultsRatio.Size = new System.Drawing.Size(55, 23);
             this.numResultsRatio.TabIndex = 16;
+            this.numResultsRatio.ValueChanged += new System.EventHandler(this.numResultsRatio_ValueChanged);
             // 
             // lblResultsRatio
             // 
