@@ -67,6 +67,7 @@
             this.lblCountRatio = new System.Windows.Forms.Label();
             this.btnAccept = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tabSettings.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.grpTime.SuspendLayout();
@@ -325,6 +326,7 @@
             // tabGUI
             // 
             this.tabGUI.BackColor = System.Drawing.Color.White;
+            this.tabGUI.Controls.Add(this.checkBox1);
             this.tabGUI.Controls.Add(this.trackResultsRatio);
             this.tabGUI.Controls.Add(this.numResultsRatio);
             this.tabGUI.Controls.Add(this.lblResultsRatio);
@@ -560,6 +562,18 @@
             this.btnCancel.Text = "&Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox1.Location = new System.Drawing.Point(52, 229);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(266, 21);
+            this.checkBox1.TabIndex = 18;
+            this.checkBox1.Text = "Remember window position on startup";
+            this.checkBox1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // frmSettings
             // 
             this.AcceptButton = this.btnAccept;
@@ -648,5 +662,6 @@
         private System.Windows.Forms.TrackBar trackResultsRatio;
         private System.Windows.Forms.NumericUpDown numResultsRatio;
         private System.Windows.Forms.Label lblResultsRatio;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

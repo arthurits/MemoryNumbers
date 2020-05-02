@@ -373,9 +373,12 @@ namespace MemoryNumbers
         {
             if (WindowSettings)
             {
-                this.StartPosition = FormStartPosition.Manual;
-                this.DesktopLocation = new Point(Convert.ToInt32(_programSettings["WindowLeft"]), Convert.ToInt32(_programSettings["WindowTop"]));
-                this.ClientSize = new Size(Convert.ToInt32(_programSettings["WindowWidth"]), Convert.ToInt32(_programSettings["WindowHeight"]));
+                if (Convert.ToInt32(_programSettings["WindowPosition"]) == 1 ? true : false)
+                {
+                    this.StartPosition = FormStartPosition.Manual;
+                    this.DesktopLocation = new Point(Convert.ToInt32(_programSettings["WindowLeft"]), Convert.ToInt32(_programSettings["WindowTop"]));
+                    this.ClientSize = new Size(Convert.ToInt32(_programSettings["WindowWidth"]), Convert.ToInt32(_programSettings["WindowHeight"]));
+                }
             }
 
             this._game.MaximumAttempts = Convert.ToInt32(_programSettings["MaximumAttempts"]);
@@ -415,6 +418,7 @@ namespace MemoryNumbers
             _programSettings["NumbersRatio"] = "0.25";
             _programSettings["FontRatio"] = "0.60";
             _programSettings["ResultsRatio"] = "0.56";
+            _programSettings["WindowPosition"] = "1";
 
             _programSettings["PlayMode"] = "9";
 

@@ -142,7 +142,12 @@ namespace Controls
         public float BorderRatio
         {
             get { return _fBorderWidth; }
-            set { _fBorderWidth = value < 0 ? 0f : value; Invalidate(); }
+            set
+            {
+                _fBorderWidth = value < 0 ? 0f : value;
+                countDown.BorderWidth = ((countDown.Height - 1f) / 2f) * _fBorderWidth;
+                countDown.Invalidate();
+            }
         }
 
         /// <summary>
@@ -368,6 +373,7 @@ namespace Controls
 
             if (countDown != null)
             {
+                this.countDown.BorderWidth = ((minDimension * _fCountDownFactor - 1) / 2) * _fBorderWidth;
                 this.countDown.xRadius = (minDimension * _fCountDownFactor) / 2;
                 this.countDown.yRadius = (minDimension * _fCountDownFactor) / 2;
                 this.countDown.Size = new Size((int)(minDimension * _fCountDownFactor), (int)(minDimension * _fCountDownFactor));
@@ -398,9 +404,11 @@ namespace Controls
                 }
             }
 
-            base.OnResize(e);
+            
             this.ResumeLayout(true);
             this.PerformLayout();
+            
+            base.OnResize(e);
         }
 
         public async Task Start(int[] numbers)
@@ -489,10 +497,10 @@ namespace Controls
                     Parent = this,
                     FillColor = _cBackColor,
                     BorderColor = _cBorderColor,
-                    BorderWidth = _nDiameter * _fBorderWidth,
+                    BorderWidth = (_nDiameter - 1f) / 2f * _fBorderWidth, // The RoundButton.cs defines the rectangle as height-1 and width-1
                     Size = new Size(_nDiameter, _nDiameter),
-                    xRadius = _nDiameter / 2,
-                    yRadius = _nDiameter / 2,
+                    xRadius = _nDiameter / 2f,
+                    yRadius = _nDiameter / 2f,
                     Text = numbers[i].ToString(),
                     VisibleBorder = false,
                     Visible = false

@@ -30,6 +30,12 @@ namespace MemoryNumbers
         {
             try
             {
+                PlayMode play = (PlayMode)Convert.ToInt32(_settings["PlayMode"]);
+                this.radProgressive.Checked = ((play & PlayMode.SequenceProgressive) == PlayMode.SequenceProgressive);
+                this.radRandom.Checked = ((play & PlayMode.SequenceRandom) == PlayMode.SequenceRandom);
+                this.radFixed.Checked = ((play & PlayMode.TimeFixed) == PlayMode.TimeFixed);
+                this.radIncremental.Checked = ((play & PlayMode.TimeIncremental) == PlayMode.TimeIncremental);
+                
                 this.numTime.Value = Convert.ToInt32(_settings["Time"]);
                 this.numTimeIncrement.Value = Convert.ToInt32(_settings["TimeIncrement"]);
                 this.numMaxDigit.Value = Convert.ToInt32(_settings["MaximumDigit"]);
@@ -41,13 +47,7 @@ namespace MemoryNumbers
                 this.numBorderRatio.Value = Convert.ToDecimal(_settings["BorderRatio"]);
                 this.numFontRatio.Value = Convert.ToDecimal(_settings["FontRatio"]);
                 this.numResultsRatio.Value = Convert.ToDecimal(_settings["ResultsRatio"]);
-
-                PlayMode play = (PlayMode)Convert.ToInt32(_settings["PlayMode"]);
-
-                this.radProgressive.Checked = ((play & PlayMode.SequenceProgressive) == PlayMode.SequenceProgressive);
-                this.radRandom.Checked = ((play & PlayMode.SequenceRandom) == PlayMode.SequenceRandom);
-                this.radFixed.Checked = ((play & PlayMode.TimeFixed) == PlayMode.TimeFixed);
-                this.radIncremental.Checked = ((play & PlayMode.TimeIncremental) == PlayMode.TimeIncremental);
+                this.checkBox1.Checked = Convert.ToInt32(_settings["WindowPosition"]) == 1 ? true : false;
 
             }
             catch (KeyNotFoundException e)
@@ -73,6 +73,7 @@ namespace MemoryNumbers
             settings["BorderRatio"] = this.numBorderRatio.Value.ToString();
             settings["FontRatio"] = this.numFontRatio.Value.ToString();
             settings["ResultsRatio"] = this.numResultsRatio.Value.ToString();
+            settings["WindowPosition"] = (this.checkBox1.Checked ? 1 : 0).ToString();
 
             settings["PlayMode"] = (
                                     (this.radFixed.Checked ? 1 : 0) * 1 +
