@@ -161,7 +161,7 @@ namespace Controls
         public float CountDownRatio
         {
             get { return _fCountDownFactor; }
-            set { _fCountDownFactor = value < 0 ? 0f : value; Invalidate(); }
+            set { _fCountDownFactor = value < 0 ? 0f : value; countDown.Invalidate(); }
         }
 
         /// <summary>
