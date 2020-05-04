@@ -161,7 +161,12 @@ namespace Controls
         public float CountDownRatio
         {
             get { return _fCountDownFactor; }
-            set { _fCountDownFactor = value < 0 ? 0f : value; countDown.Invalidate(); }
+            set
+            {
+                _fCountDownFactor = value < 0 ? 0f : value;
+                countDown.Size = new Size((int)(Math.Min(this.Width, this.Height) * _fCountDownFactor), (int)(Math.Min(this.Width, this.Height) * _fCountDownFactor));
+                countDown.Invalidate();
+            }
         }
 
         /// <summary>
@@ -175,7 +180,11 @@ namespace Controls
         public float NumbersRatio
         {
             get { return _fNumbersFactor; }
-            set { _fNumbersFactor = value < 0 ? 0f : value; Invalidate(); }
+            set
+            {
+                _fNumbersFactor = value < 0 ? 0f : value;
+                Invalidate();
+            }
         }
 
         /// <summary>
@@ -189,7 +198,12 @@ namespace Controls
         public float FontRatio
         {
             get { return _fFontSize; }
-            set { _fFontSize = value < 0 ? 0f : value; Invalidate(); }
+            set
+            {
+                _fFontSize = value < 0 ? 0f : value;
+                countDown.Font = new Font(countDown.Font.FontFamily, _fFontSize * (countDown.Size.Height - 2 * countDown.BorderWidth));
+                countDown.Invalidate();
+            }
         }
 
         /// <summary>
@@ -203,7 +217,14 @@ namespace Controls
         public float ResultRatio
         {
             get { return _fPictureCorrect; }
-            set { _fPictureCorrect = value < 0 ? 0f : value; Invalidate(); }
+            set
+            {
+                _fPictureCorrect = value < 0 ? 0f : value;
+                this.pctCorrect.Size = new Size((int)(Math.Min(this.Width, this.Height) * _fPictureCorrect), (int)(Math.Min(this.Width, this.Height) * _fPictureCorrect));
+                this.pctWrong.Size = new Size((int)(Math.Min(this.Width, this.Height) * _fPictureCorrect), (int)(Math.Min(this.Width, this.Height) * _fPictureCorrect));
+                pctCorrect.Invalidate();
+                pctWrong.Invalidate();
+            }
         }
 
         /// <summary>
@@ -217,7 +238,12 @@ namespace Controls
         public Color BorderColor
         {
             get { return _cBorderColor; }
-            set { _cBorderColor = value; Invalidate(); }
+            set
+            {
+                _cBorderColor = value;
+                countDown.BorderColor = _cBorderColor;
+                countDown.Invalidate();
+            }
         }
 
         /// <summary>
@@ -383,7 +409,7 @@ namespace Controls
             if (pctCorrect != null)
             {
                 Bitmap bitmap = null;
-                this.pctCorrect.Size = new Size((int)(this.Size.Height * _fPictureCorrect), (int)(this.Size.Height * _fPictureCorrect));
+                this.pctCorrect.Size = new Size((int)(minDimension * _fPictureCorrect), (int)(minDimension * _fPictureCorrect));
                 this.pctCorrect.Location = new System.Drawing.Point((this.Size.Width - pctCorrect.Size.Width) / 2, (this.Size.Height - pctCorrect.Size.Height) / 2);
                 if(System.IO.File.Exists(_path + @"\images\Sequence correct.svg"))
                     bitmap = GetBitmapFromSVG(_path + @"\images\Sequence correct.svg", this.pctCorrect.Width, this.pctCorrect.Height);
@@ -393,7 +419,7 @@ namespace Controls
                     this.pctCorrect.Region = new Region(GetRegionFromTransparentBitmap(bitmap));
                 }
 
-                this.pctWrong.Size = new Size((int)(this.Size.Height * _fPictureCorrect), (int)(this.Size.Height * _fPictureCorrect));
+                this.pctWrong.Size = new Size((int)(minDimension * _fPictureCorrect), (int)(minDimension * _fPictureCorrect));
                 this.pctWrong.Location = new System.Drawing.Point((this.Size.Width - pctWrong.Size.Width) / 2, (this.Size.Height - pctWrong.Size.Height) / 2);
                 if (System.IO.File.Exists(_path + @"\images\Sequence wrong.svg"))
                     bitmap = GetBitmapFromSVG(_path + @"\images\Sequence wrong.svg", this.pctWrong.Width, this.pctWrong.Height);
