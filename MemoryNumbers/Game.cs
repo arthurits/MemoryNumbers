@@ -29,8 +29,9 @@ namespace MemoryNumbers
         private int _nCurrAttempt = 0;      // The accumulated number of attempts
         private int _nMinLength = 2;        // The minimum length of the initial _nSequence array
         private int[] _nSequence;
-
-
+        private PlayMode _playMode;         // The current play mode
+        private int _nTime;
+        private int _nTimeIncremental;
 
         #endregion Private variables
 
@@ -102,12 +103,22 @@ namespace MemoryNumbers
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int[] GetSequence { get => _nSequence; }
 
+        /// <summary>
+        /// The actual play-mode selected by the user (time and sequence mode).
+        /// </summary>
+        [Description("The actual play-mode selected by the user (time and sequence mode)"),
+        Category("Sequence properties"),
+        Browsable(true),
+        EditorBrowsable(EditorBrowsableState.Always),
+        DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public PlayMode PlayMode { get => _playMode; set => _playMode = value; }
+
         #endregion Public properties
 
         #region Events
 
-            #region Events definitions
-            public event EventHandler<TickEventArgs> Tick;
+        #region Events definitions
+        public event EventHandler<TickEventArgs> Tick;
             public event EventHandler<WrongEventArgs> WrongSequence;
             public event EventHandler<CorrectEventArgs> CorrectSequence;
             public event EventHandler<OverEventArgs> GameOver;

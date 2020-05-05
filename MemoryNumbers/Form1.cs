@@ -384,6 +384,7 @@ namespace MemoryNumbers
             this._game.MaximumAttempts = Convert.ToInt32(_programSettings["MaximumAttempts"]);
             this._game.MaximumDigit = Convert.ToInt32(_programSettings["MaximumDigit"]);
             this._game.MinimumDigit = Convert.ToInt32(_programSettings["MinimumDigit"]);
+            this._game.PlayMode = (PlayMode)Enum.Parse(typeof(PlayMode), _programSettings["PlayMode"]);
             this.board1.Time = Convert.ToInt32(_programSettings["Time"]);
             this.board1.TimeIncrement = _programSettings.ContainsKey("TimeIncrement") ? Convert.ToInt32(_programSettings["TimeIncrement"]) : 0;
             this.board1.BorderRatio = Convert.ToSingle(_programSettings["BorderRatio"]);
