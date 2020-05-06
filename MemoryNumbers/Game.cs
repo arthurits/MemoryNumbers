@@ -41,7 +41,7 @@ namespace MemoryNumbers
         /// Only positive numbers > 0. Default is 10.
         /// </summary>
         [Description("Maximum attempts (minimum 1 attempt)"),
-        Category("Sequence properties"),
+        Category("Game properties"),
         Browsable(true),
         EditorBrowsable(EditorBrowsableState.Always),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
@@ -52,7 +52,7 @@ namespace MemoryNumbers
         /// Only positive numbers > 0. Default is 2.
         /// </summary>
         [Description("Minimum initial length (minimum 1 digit)"),
-        Category("Sequence properties"),
+        Category("Game properties"),
         Browsable(true),
         EditorBrowsable(EditorBrowsableState.Always),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
@@ -63,7 +63,7 @@ namespace MemoryNumbers
         /// Only positive numbers > 0 and >= MinimumDigit. Default is 10.
         /// </summary>
         [Description("Maximum excluded number (digit) of the sequence"),
-        Category("Sequence properties"),
+        Category("Game properties"),
         Browsable(true),
         EditorBrowsable(EditorBrowsableState.Always),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
@@ -74,7 +74,7 @@ namespace MemoryNumbers
         /// Only positive numbers >= 0. Default is 0.
         /// </summary>
         [Description("Minimum initial length (minimum 1 digit)"),
-        Category("Sequence properties"),
+        Category("Game properties"),
         Browsable(true),
         EditorBrowsable(EditorBrowsableState.Always),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
@@ -86,18 +86,18 @@ namespace MemoryNumbers
         /// </summary>
         /// [Description("Minimum digits (minimum 1 digit)"),
         [Description("Current score (length og the numeric sequence"),
-        Category("Sequence properties"),
+        Category("Game properties"),
         Browsable(true),
         EditorBrowsable(EditorBrowsableState.Always),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int CurrentScore { get => _nSequenceLength; set => _nSequenceLength = value < 0 ? 0 : value; }
 
         /// <summary>
-        /// (Read only) Gets the numeric array containing the current sequence.
+        /// Gets the numeric array containing the current sequence (read only).
         /// Its length corresponds to the CurrentScore property.
         /// </summary>
-        [Description("Get the numeric sequence to represent (read only)"),
-        Category("Sequence properties"),
+        [Description("Gets the numeric sequence to represent (read only)"),
+        Category("Game properties"),
         Browsable(true),
         EditorBrowsable(EditorBrowsableState.Always),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
@@ -107,11 +107,31 @@ namespace MemoryNumbers
         /// The actual play-mode selected by the user (time and sequence mode).
         /// </summary>
         [Description("The actual play-mode selected by the user (time and sequence mode)"),
-        Category("Sequence properties"),
+        Category("Game properties"),
         Browsable(true),
         EditorBrowsable(EditorBrowsableState.Always),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public PlayMode PlayMode { get => _playMode; set => _playMode = value; }
+
+        /// <summary>
+        /// The time (ms) each sequence is shown to the player.
+        /// </summary>
+        [Description("The time (ms) each sequence is shown to the player"),
+        Category("Game properties"),
+        Browsable(true),
+        EditorBrowsable(EditorBrowsableState.Always),
+        DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public int Time { get => _nTime; set => _nTime = value < 0 ? 0 : value; }
+
+        /// <summary>
+        /// The time increment (ms) after each correct sequence.
+        /// </summary>
+        [Description("The time increment (ms) after each correct sequence"),
+        Category("Game properties"),
+        Browsable(true),
+        EditorBrowsable(EditorBrowsableState.Always),
+        DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public int TimeIncrement { get => _nTimeIncremental; set => _nTimeIncremental = value < 0 ? 0 : value; }
 
         #endregion Public properties
 
@@ -119,32 +139,32 @@ namespace MemoryNumbers
 
         #region Events definitions
         public event EventHandler<TickEventArgs> Tick;
-            public event EventHandler<WrongEventArgs> WrongSequence;
-            public event EventHandler<CorrectEventArgs> CorrectSequence;
-            public event EventHandler<OverEventArgs> GameOver;
-            #endregion Events definitions
+        public event EventHandler<WrongEventArgs> WrongSequence;
+        public event EventHandler<CorrectEventArgs> CorrectSequence;
+        public event EventHandler<OverEventArgs> GameOver;
+        #endregion Events definitions
 
-            #region Events encapsulation
+        #region Events encapsulation
 
-            protected virtual void OnTick(TickEventArgs e)
-            {
-                if (Tick != null) Tick(this, e);
-            }
-            protected virtual void OnWrongSequence(WrongEventArgs e)
-            {
-                if (WrongSequence != null) WrongSequence(this, e);
-            }
-            protected virtual void OnCorrectSequence(CorrectEventArgs e)
-            {
-                if (CorrectSequence != null) CorrectSequence(this, e);
-            }
-            protected virtual void OnGameOver(OverEventArgs e)
-            {
-                if (GameOver != null) GameOver(this, e);
-            }
-            #endregion Events encapsulation
+        protected virtual void OnTick(TickEventArgs e)
+        {
+            if (Tick != null) Tick(this, e);
+        }
+        protected virtual void OnWrongSequence(WrongEventArgs e)
+        {
+            if (WrongSequence != null) WrongSequence(this, e);
+        }
+        protected virtual void OnCorrectSequence(CorrectEventArgs e)
+        {
+            if (CorrectSequence != null) CorrectSequence(this, e);
+        }
+        protected virtual void OnGameOver(OverEventArgs e)
+        {
+            if (GameOver != null) GameOver(this, e);
+        }
+        #endregion Events encapsulation
 
-            #region EventArgs definitions
+        #region EventArgs definitions
         public class TickEventArgs : EventArgs
         {
             public readonly bool Flash;

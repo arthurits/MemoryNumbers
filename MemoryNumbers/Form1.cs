@@ -322,20 +322,6 @@ namespace MemoryNumbers
             _programSettings["WindowWidth"] = this.ClientSize.Width.ToString();
             _programSettings["WindowHeight"] = this.ClientSize.Height.ToString();
 
-            /*
-            _programSettings["MaximumAttempts"] = this._game.MaximumAttempts.ToString();
-            _programSettings["MaximumDigit"] = this.board1.MaxNumber.ToString();
-            _programSettings["MinimumDigit"] = this.board1.MinNumber.ToString();
-
-            _programSettings["Time"] = this.board1.Time.ToString();
-            _programSettings["TimeIncrement"] = this.board1.TimeIncrement.ToString();
-            _programSettings["BorderRatio"] = this.board1.BorderRatio.ToString();
-            _programSettings["CountDownRatio"] = this.board1.CountDownRatio.ToString();
-            _programSettings["NumbersRatio"] = this.board1.NumbersRatio.ToString();
-            _programSettings["FontRatio"] = this.board1.FontRatio.ToString();
-            _programSettings["ResultsRatio"] = this.board1.ResultRatio.ToString();
-            */
-
             _programSettings["Sound"] = this.toolStripMain_Sound.Checked == true ? "0" : "1";
 
             // Save window settings.
@@ -375,9 +361,11 @@ namespace MemoryNumbers
             {
                 if (Convert.ToInt32(_programSettings["WindowPosition"]) == 1 ? true : false)
                 {
+                    var startPos = this.StartPosition;
                     this.StartPosition = FormStartPosition.Manual;
                     this.DesktopLocation = new Point(Convert.ToInt32(_programSettings["WindowLeft"]), Convert.ToInt32(_programSettings["WindowTop"]));
                     this.ClientSize = new Size(Convert.ToInt32(_programSettings["WindowWidth"]), Convert.ToInt32(_programSettings["WindowHeight"]));
+                    this.StartPosition = startPos;
                 }
             }
 
@@ -385,6 +373,8 @@ namespace MemoryNumbers
             this._game.MaximumDigit = Convert.ToInt32(_programSettings["MaximumDigit"]);
             this._game.MinimumDigit = Convert.ToInt32(_programSettings["MinimumDigit"]);
             this._game.PlayMode = (PlayMode)Enum.Parse(typeof(PlayMode), _programSettings["PlayMode"]);
+            this._game.Time = Convert.ToInt32(_programSettings["Time"]);
+            this._game.TimeIncrement = Convert.ToInt32(_programSettings["TimeIncrement"]);
             this.board1.Time = Convert.ToInt32(_programSettings["Time"]);
             this.board1.TimeIncrement = _programSettings.ContainsKey("TimeIncrement") ? Convert.ToInt32(_programSettings["TimeIncrement"]) : 0;
             this.board1.BorderRatio = Convert.ToSingle(_programSettings["BorderRatio"]);
@@ -409,24 +399,22 @@ namespace MemoryNumbers
             _programSettings["WindowHeight"] = this.ClientSize.Height.ToString();
 
             _programSettings["MaximumAttempts"] = "10";
-            _programSettings["MaximumDigit"] = "10";
+            _programSettings["MaximumDigit"] = "9";
             _programSettings["MinimumDigit"] = "0";
             _programSettings["Time"] = "700";
             _programSettings["TimeIncrement"] = "0";
 
-            _programSettings["BorderRatio"] = "0.3";
+            _programSettings["BorderRatio"] = "0.12";
             _programSettings["CountDownRatio"] = "0.37";
             _programSettings["NumbersRatio"] = "0.25";
-            _programSettings["FontRatio"] = "0.60";
+            _programSettings["FontRatio"] = "0.55";
             _programSettings["ResultsRatio"] = "0.56";
             _programSettings["WindowPosition"] = "1";
 
             _programSettings["PlayMode"] = "9";
 
-            _programSettings["Sound"] = "0";     // Sound off unchecked
+            _programSettings["Sound"] = "1";     // Sound on unchecked
         }
-
-
 
 
         #endregion Application settings
