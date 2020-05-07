@@ -54,6 +54,7 @@ namespace MemoryNumbers
             _programSettings = new ProgramSettings<string, string>();
             LoadProgramSettings();
             ApplySettings(true);
+            board1.Update();
         }
 
         #region Initialization ToolStrip
@@ -166,6 +167,13 @@ namespace MemoryNumbers
             // Guardar los datos de configuración
             SaveProgramSettings();
         }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            //board1.Width = this.Width;
+            //board1.Height = this.ClientSize.Height - tspTop.Height - tspBottom.Height;
+        }
+
 
         private void roundButton1_Click(object sender, EventArgs e)
         {

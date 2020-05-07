@@ -222,8 +222,8 @@ namespace Controls
                 _fPictureCorrect = value < 0 ? 0f : value;
                 this.pctCorrect.Size = new Size((int)(Math.Min(this.Width, this.Height) * _fPictureCorrect), (int)(Math.Min(this.Width, this.Height) * _fPictureCorrect));
                 this.pctWrong.Size = new Size((int)(Math.Min(this.Width, this.Height) * _fPictureCorrect), (int)(Math.Min(this.Width, this.Height) * _fPictureCorrect));
-                pctCorrect.Invalidate();
-                pctWrong.Invalidate();
+                pctCorrect.Update();
+                pctWrong.Update();
             }
         }
 
