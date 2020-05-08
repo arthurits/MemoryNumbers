@@ -55,6 +55,7 @@ namespace MemoryNumbers
             LoadProgramSettings();
             ApplySettings(true);
             board1.Update();
+            //board1.Focus();
         }
 
         #region Initialization ToolStrip
@@ -170,8 +171,12 @@ namespace MemoryNumbers
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            //board1.Width = this.Width;
-            //board1.Height = this.ClientSize.Height - tspTop.Height - tspBottom.Height;
+            this.SuspendLayout();
+            board1.Top = tspTop.Height;
+            board1.Left = 0;
+            board1.Width = this.ClientSize.Width;
+            board1.Height = this.ClientSize.Height - tspTop.Height - tspBottom.Height;
+            this.ResumeLayout();
         }
 
 

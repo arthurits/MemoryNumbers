@@ -26,6 +26,7 @@ namespace Controls
         private int _nSequenceLength = 0;
         private int _nButtons = 10;
         private int _nDiameter = 45;
+        private int _nMinDimension;
         private int _nMaxNum = 9;
         private int _nMinNum = 0;
         private int _nTime = 700;
@@ -145,8 +146,7 @@ namespace Controls
             set
             {
                 _fBorderWidth = value < 0 ? 0f : value;
-                countDown.BorderWidth = ((countDown.Height - 1f) / 2f) * _fBorderWidth;
-                countDown.Invalidate();
+                CountDownUpdate();
             }
         }
 
@@ -164,8 +164,7 @@ namespace Controls
             set
             {
                 _fCountDownFactor = value < 0 ? 0f : value;
-                countDown.Size = new Size((int)(Math.Min(this.Width, this.Height) * _fCountDownFactor), (int)(Math.Min(this.Width, this.Height) * _fCountDownFactor));
-                countDown.Invalidate();
+                CountDownUpdate();
             }
         }
 
@@ -183,7 +182,6 @@ namespace Controls
             set
             {
                 _fNumbersFactor = value < 0 ? 0f : value;
-                Invalidate();
             }
         }
 
@@ -201,8 +199,7 @@ namespace Controls
             set
             {
                 _fFontSize = value < 0 ? 0f : value;
-                countDown.Font = new Font(countDown.Font.FontFamily, _fFontSize * (countDown.Size.Height - 2 * countDown.BorderWidth));
-                countDown.Invalidate();
+                CountDownUpdate();
             }
         }
 
@@ -220,10 +217,7 @@ namespace Controls
             set
             {
                 _fPictureCorrect = value < 0 ? 0f : value;
-                this.pctCorrect.Size = new Size((int)(Math.Min(this.Width, this.Height) * _fPictureCorrect), (int)(Math.Min(this.Width, this.Height) * _fPictureCorrect));
-                this.pctWrong.Size = new Size((int)(Math.Min(this.Width, this.Height) * _fPictureCorrect), (int)(Math.Min(this.Width, this.Height) * _fPictureCorrect));
-                pctCorrect.Update();
-                pctWrong.Update();
+                PictureBoxResultUpdate();
             }
         }
 
@@ -242,7 +236,6 @@ namespace Controls
             {
                 _cBorderColor = value;
                 countDown.BorderColor = _cBorderColor;
-                countDown.Invalidate();
             }
         }
 
@@ -313,6 +306,7 @@ namespace Controls
             InitializeComponent();
             // this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
             this.DoubleBuffered = true;
+            this.ResizeRedraw = true;
 
             // Load the sounds
             _path = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
@@ -385,56 +379,63 @@ namespace Controls
         // https://docs.microsoft.com/en-us/dotnet/framework/winforms/automatic-scaling-in-windows-forms
         protected override void OnResize(EventArgs e)
         {
-            this.SuspendLayout();
+            //this.SuspendLayout();
+            //base.OnResize(e);
 
             if (FindForm() == null) return;
             if (FindForm().WindowState == FormWindowState.Minimized) return;
             //if (Parent == null) return;
             //if (((Form)Parent).WindowState == FormWindowState.Minimized) return;
 
+            _nMinDimension = Math.Min(this.Width, this.Height);
+            _nDiameter = (int)(_nMinDimension * _fNumbersFactor);
+
+            // Update the controls if the board is not shrunk
+            if (_nMinDimension != 0)
+            {
+                if (countDown != null) CountDownUpdate();
+                if (pctCorrect != null) PictureBoxResultUpdate();
+            }
+            
+            //this.ResumeLayout(true);
+            //this.PerformLayout();
+        }
+
+        private void CountDownUpdate()
+        {
             int minDimension = Math.Min(this.Width, this.Height);
-            if (minDimension == 0) return;
 
-            _nDiameter = (int)(minDimension * _fNumbersFactor);
+            this.countDown.BorderWidth = ((minDimension * _fCountDownFactor - 1) / 2) * _fBorderWidth;
+            this.countDown.xRadius = (minDimension * _fCountDownFactor) / 2;
+            this.countDown.yRadius = (minDimension * _fCountDownFactor) / 2;
+            this.countDown.Size = new Size((int)(minDimension * _fCountDownFactor), (int)(minDimension * _fCountDownFactor));
+            this.countDown.Location = new System.Drawing.Point((this.Size.Width - countDown.Size.Width) / 2, (this.Size.Height - countDown.Size.Height) / 2);
+            this.countDown.Font = new Font(countDown.Font.FontFamily, _fFontSize * (countDown.Size.Height - 2 * countDown.BorderWidth));
+            // countDown.Invalidate();
+        }
 
-            if (countDown != null)
+        private void PictureBoxResultUpdate()
+        {
+            Bitmap bitmap = null;
+            this.pctCorrect.Size = new Size((int)(_nMinDimension * _fPictureCorrect), (int)(_nMinDimension * _fPictureCorrect));
+            this.pctCorrect.Location = new System.Drawing.Point((this.Size.Width - pctCorrect.Size.Width) / 2, (this.Size.Height - pctCorrect.Size.Height) / 2);
+            if (System.IO.File.Exists(_path + @"\images\Sequence correct.svg"))
+                bitmap = GetBitmapFromSVG(_path + @"\images\Sequence correct.svg", this.pctCorrect.Width, this.pctCorrect.Height);
+            if (bitmap != null)
             {
-                this.countDown.BorderWidth = ((minDimension * _fCountDownFactor - 1) / 2) * _fBorderWidth;
-                this.countDown.xRadius = (minDimension * _fCountDownFactor) / 2;
-                this.countDown.yRadius = (minDimension * _fCountDownFactor) / 2;
-                this.countDown.Size = new Size((int)(minDimension * _fCountDownFactor), (int)(minDimension * _fCountDownFactor));
-                this.countDown.Location = new System.Drawing.Point((this.Size.Width - countDown.Size.Width) / 2, (this.Size.Height - countDown.Size.Height) / 2);
-                this.countDown.Font = new Font(countDown.Font.FontFamily, _fFontSize * (countDown.Size.Height - 2 * countDown.BorderWidth));
-            }
-            if (pctCorrect != null)
-            {
-                Bitmap bitmap = null;
-                this.pctCorrect.Size = new Size((int)(minDimension * _fPictureCorrect), (int)(minDimension * _fPictureCorrect));
-                this.pctCorrect.Location = new System.Drawing.Point((this.Size.Width - pctCorrect.Size.Width) / 2, (this.Size.Height - pctCorrect.Size.Height) / 2);
-                if(System.IO.File.Exists(_path + @"\images\Sequence correct.svg"))
-                    bitmap = GetBitmapFromSVG(_path + @"\images\Sequence correct.svg", this.pctCorrect.Width, this.pctCorrect.Height);
-                if (bitmap != null)
-                {
-                    this.pctCorrect.Image = bitmap;
-                    this.pctCorrect.Region = new Region(GetRegionFromTransparentBitmap(bitmap));
-                }
-
-                this.pctWrong.Size = new Size((int)(minDimension * _fPictureCorrect), (int)(minDimension * _fPictureCorrect));
-                this.pctWrong.Location = new System.Drawing.Point((this.Size.Width - pctWrong.Size.Width) / 2, (this.Size.Height - pctWrong.Size.Height) / 2);
-                if (System.IO.File.Exists(_path + @"\images\Sequence wrong.svg"))
-                    bitmap = GetBitmapFromSVG(_path + @"\images\Sequence wrong.svg", this.pctWrong.Width, this.pctWrong.Height);
-                if (bitmap != null)
-                {
-                    this.pctWrong.Image = bitmap;
-                    this.pctWrong.Region = new Region(GetRegionFromTransparentBitmap(bitmap));
-                }
+                this.pctCorrect.Image = bitmap;
+                this.pctCorrect.Region = new Region(GetRegionFromTransparentBitmap(bitmap));
             }
 
-            
-            this.ResumeLayout(true);
-            this.PerformLayout();
-            
-            base.OnResize(e);
+            this.pctWrong.Size = new Size((int)(_nMinDimension * _fPictureCorrect), (int)(_nMinDimension * _fPictureCorrect));
+            this.pctWrong.Location = new System.Drawing.Point((this.Size.Width - pctWrong.Size.Width) / 2, (this.Size.Height - pctWrong.Size.Height) / 2);
+            if (System.IO.File.Exists(_path + @"\images\Sequence wrong.svg"))
+                bitmap = GetBitmapFromSVG(_path + @"\images\Sequence wrong.svg", this.pctWrong.Width, this.pctWrong.Height);
+            if (bitmap != null)
+            {
+                this.pctWrong.Image = bitmap;
+                this.pctWrong.Region = new Region(GetRegionFromTransparentBitmap(bitmap));
+            }
         }
 
         public async Task Start(int[] numbers)
@@ -570,7 +571,7 @@ namespace Controls
 
         public async Task ButtonRight()
         {
-            await PlayAudioFile(AudioSoundType.NumberCorrect, AudioSoundMode.Async);
+            PlayAudioFile(AudioSoundType.NumberCorrect, AudioSoundMode.Async);
         }
 
         public async Task ButtonWrong()
@@ -711,7 +712,7 @@ namespace Controls
                                                                             bitmap.PixelFormat);
 
             int bytesPerPixel = (Image.GetPixelFormatSize(bitmap.PixelFormat)) >> 3;
-            /*
+            
             unsafe
             {
                 byte* PixelComponent = (byte*)imageData.Scan0;
@@ -727,9 +728,10 @@ namespace Controls
                     row += imageData.Stride;
                 }
             }
-            */
-            //bitmap.UnlockBits(imageData);
+            bitmap.UnlockBits(imageData);
+            
 
+            /*
             // Marshal
             byte[] imageBytes = new byte[Math.Abs(imageData.Stride) * bitmap.Height];
             IntPtr scan0 = imageData.Scan0;
@@ -749,6 +751,7 @@ namespace Controls
             System.Runtime.InteropServices.Marshal.Copy(imageBytes, 0, scan0, imageBytes.Length);
 
             bitmap.UnlockBits(imageData);
+            */
 
             /*
             // Another Marshal option. Slower than the previous
