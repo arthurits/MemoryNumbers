@@ -98,12 +98,6 @@ namespace Controls
             //roundButton1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
         }
 
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            //this.Region = roundButton1.Region;
-            base.OnPaint(e);
-        }
-
         private void onTimeEvent(object sender, ElapsedEventArgs e)
         {
             _dCounter -= _dInterval / 1000;

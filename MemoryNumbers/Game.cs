@@ -234,12 +234,22 @@ namespace MemoryNumbers
         {
             // Create and fill the array
             _nSequence = new int[_nSequenceLength];
-            for (int i = 0; i < _nSequenceLength; i++)
+            if ((_playMode & PlayMode.SequenceRandom) == PlayMode.SequenceRandom)
             {
-                _nSequence[i] = _nMinDigit - 1;
-                _nSequence[i] = GetRandomNumber();
+                for (int i = 0; i < _nSequenceLength; i++)
+                {
+                    _nSequence[i] = _nMinDigit - 1;
+                    _nSequence[i] = GetRandomNumber();
+                }
+                Array.Sort(_nSequence); // This is not necessary since the numbers would be random scattered in the board control
             }
-            Array.Sort(_nSequence); // This is not necessary since the numbers would be random scattered in the board control
+            else if ((_playMode & PlayMode.SequenceProgressive) == PlayMode.SequenceProgressive)
+            {
+                for (int i = 0; i < _nSequenceLength; i++)
+                {
+                    _nSequence[i] = _nMinDigit + i;
+                }
+            }
        
             return true;
         }

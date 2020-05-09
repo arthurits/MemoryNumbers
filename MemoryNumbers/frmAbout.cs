@@ -111,6 +111,5 @@ namespace MemoryNumbers
             if (System.IO.File.Exists(path + @"\images\logo@256.png")) this.logoPictureBox.Image = new Bitmap(path + @"\images\logo@256.png");
         }
 
-        
     }
 }

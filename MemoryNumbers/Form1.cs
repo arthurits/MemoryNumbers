@@ -169,16 +169,19 @@ namespace MemoryNumbers
             SaveProgramSettings();
         }
 
-        private void Form1_Resize(object sender, EventArgs e)
+        private async void Form1_Resize(object sender, EventArgs e)
         {
             this.SuspendLayout();
             board1.Top = tspTop.Height;
             board1.Left = 0;
-            board1.Width = this.ClientSize.Width;
-            board1.Height = this.ClientSize.Height - tspTop.Height - tspBottom.Height;
+            board1.Size = new Size(this.ClientSize.Width, this.ClientSize.Height - tspTop.Height - tspBottom.Height);
             this.ResumeLayout();
         }
 
+        private async void Form1_ResizeEnd(object sender, EventArgs e)
+        {
+
+        }
 
         private void roundButton1_Click(object sender, EventArgs e)
         {
@@ -208,10 +211,15 @@ namespace MemoryNumbers
             // Wait before starting a new sequence
             await Task.Delay(100);
 
+            int increment = 0;
+
             // Keep the game going on
             if (_game.Start())
             {
-                board1.Start(_game.GetSequence);
+                if ((_game.PlayMode & PlayMode.TimeIncremental) == PlayMode.TimeIncremental)
+                    increment = (_game.GetSequence.Length - _game.MinimumLength) * _game.TimeIncrement;
+
+                board1.Start(_game.GetSequence, increment);
             }
 
         }
@@ -228,8 +236,16 @@ namespace MemoryNumbers
             // Wait before starting a new sequence
             await Task.Delay(100);
 
+            int increment = 0;
+
             _game.CurrentScore -= 2;
-            if (_game.Start()) board1.Start(_game.GetSequence);
+            if (_game.Start())
+            {
+                if ((_game.PlayMode & PlayMode.TimeIncremental) == PlayMode.TimeIncremental)
+                    increment = (_game.GetSequence.Length - _game.MinimumLength) * _game.TimeIncrement;
+
+                board1.Start(_game.GetSequence, increment);
+            }
         }
 
         private async Task OnGameOver(object sender, Game.OverEventArgs e)
@@ -259,7 +275,7 @@ namespace MemoryNumbers
                 return;
             }
             board1.Visible = true;
-            board1.Start(_game.GetSequence);
+            board1.Start(_game.GetSequence, 0);
         }
 
         private void toolStripMain_Sound_CheckedChanged(object sender, EventArgs e)
@@ -431,6 +447,7 @@ namespace MemoryNumbers
 
 
         #endregion Application settings
+
 
     }
 }

@@ -45,9 +45,9 @@
             this.toolStripMain_Settings = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMain_About = new System.Windows.Forms.ToolStripButton();
-            this.board1 = new Controls.Board();
             this.roundButton1 = new Controls.RoundButton();
             this.countDown1 = new Controls.CountDown();
+            this.board1 = new Controls.Board();
             this.statusStrip.SuspendLayout();
             this.toolStripMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.board1)).BeginInit();
@@ -209,30 +209,6 @@
             this.toolStripMain_About.ToolTipText = "About this software";
             this.toolStripMain_About.Click += new System.EventHandler(this.toolStripMain_About_Click);
             // 
-            // board1
-            // 
-            this.board1.BackColor = System.Drawing.Color.Azure;
-            this.board1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.board1.BorderColor = System.Drawing.Color.Black;
-            this.board1.BorderRatio = 0.115F;
-            this.board1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.board1.CountDownRatio = 0.37F;
-            this.board1.Diameter = 37;
-            this.board1.FillColor = System.Drawing.Color.Transparent;
-            this.board1.FontRatio = 0.6F;
-            this.board1.Location = new System.Drawing.Point(0, 70);
-            this.board1.MaxNumber = 9;
-            this.board1.MinNumber = 0;
-            this.board1.Name = "board1";
-            this.board1.NumbersRatio = 0.25F;
-            this.board1.PlaySounds = false;
-            this.board1.ResultRatio = 0.56F;
-            this.board1.Size = new System.Drawing.Size(287, 148);
-            this.board1.TabIndex = 3;
-            this.board1.TabStop = false;
-            this.board1.Time = 700;
-            this.board1.TimeIncrement = 300;
-            // 
             // roundButton1
             // 
             this.roundButton1.BackColor = System.Drawing.Color.Transparent;
@@ -275,6 +251,30 @@
             this.countDown1.xRadius = 50F;
             this.countDown1.yRadius = 50F;
             // 
+            // board1
+            // 
+            this.board1.BackColor = System.Drawing.Color.Azure;
+            this.board1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.board1.BorderColor = System.Drawing.Color.Black;
+            this.board1.BorderRatio = 0.115F;
+            this.board1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.board1.CountDownRatio = 0.37F;
+            this.board1.Diameter = 37;
+            this.board1.FillColor = System.Drawing.Color.Transparent;
+            this.board1.FontRatio = 0.6F;
+            this.board1.Location = new System.Drawing.Point(0, 70);
+            this.board1.MaxNumber = 9;
+            this.board1.MinNumber = 0;
+            this.board1.Name = "board1";
+            this.board1.NumbersRatio = 0.25F;
+            this.board1.PlaySounds = false;
+            this.board1.ResultRatio = 0.56F;
+            this.board1.Size = new System.Drawing.Size(287, 148);
+            this.board1.TabIndex = 3;
+            this.board1.TabStop = false;
+            this.board1.Time = 700;
+            this.board1.TimeIncrement = 300;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -296,6 +296,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Shown += new System.EventHandler(this.Form1_Shown);
+            this.ResizeEnd += new System.EventHandler(this.Form1_ResizeEnd);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
@@ -329,14 +330,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripButton toolStripMain_Graph;
 
-        /*
-        private System.Windows.Forms.ToolStripButton toolStrip_Exit;
-        private System.Windows.Forms.ToolStripButton toolStrip_Person;
-        private System.Windows.Forms.ToolStripButton toolStrip_Search;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripButton toolStrip_About;
-        */
     }
 }
 

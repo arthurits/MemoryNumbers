@@ -41,6 +41,8 @@ namespace Controls
         private string _path;
         private bool _sound;
         private System.Media.SoundPlayer[] _soundPlayer;
+        private Svg.SvgDocument _svgCorrect = null;
+        private Svg.SvgDocument _svgWrong = null;
         private enum AudioSoundType
         {
             NumberCorrect,
@@ -307,7 +309,7 @@ namespace Controls
             // this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
             this.DoubleBuffered = true;
             this.ResizeRedraw = true;
-
+            this.BorderStyle = BorderStyle.FixedSingle;
             // Load the sounds
             _path = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
             _soundPlayer = new System.Media.SoundPlayer[Enum.GetNames(typeof(AudioSoundType)).Length];  // https://stackoverflow.com/questions/856154/total-number-of-items-defined-in-an-enum
@@ -351,7 +353,7 @@ namespace Controls
             // https://stackoverflow.com/questions/53832933/fade-ws-ex-layered-form
             pctCorrect = new System.Windows.Forms.PictureBox()
             {
-                Anchor=AnchorStyles.None,
+                Anchor = AnchorStyles.None,
                 BackColor = Color.Transparent,
                 Dock = DockStyle.None,
                 Parent = this,
@@ -361,84 +363,104 @@ namespace Controls
             {
                 Anchor = AnchorStyles.None,
                 BackColor = Color.Transparent,
-                Dock=DockStyle.None,
+                Dock = DockStyle.None,
                 Parent = this,
                 Visible = false
             };
             this.Controls.Add(pctCorrect);
             this.Controls.Add(pctWrong);
+
+            // Read the SVG files. This is done here because it takes some 0.2 - 0.3 seconds each to read
+            // This way we avoid any possible bottle neck when overriding OnResize
+            if (System.IO.File.Exists(_path + @"\images\Sequence correct.svg"))
+                _svgCorrect = SvgDocument.Open(_path + @"\images\Sequence correct.svg");
+            if (System.IO.File.Exists(_path + @"\images\Sequence wrong.svg"))
+                _svgWrong = SvgDocument.Open(_path + @"\images\Sequence wrong.svg");
         }
         
         // https://stackoverflow.com/questions/4446478/how-do-i-create-a-colored-border-on-a-picturebox-control
         protected override void OnPaint(PaintEventArgs e)
         {
-            base.OnPaint(e);
+            //base.OnPaint(e);
             //ControlPaint.DrawBorder(e.Graphics, e.ClipRectangle, Color.Black, ButtonBorderStyle.Solid);
         }
 
         // https://docs.microsoft.com/en-us/dotnet/framework/winforms/automatic-scaling-in-windows-forms
         protected override void OnResize(EventArgs e)
-        {
+        {            
+            base.OnResize(e);
+
             //this.SuspendLayout();
-            //base.OnResize(e);
-
-            if (FindForm() == null) return;
-            if (FindForm().WindowState == FormWindowState.Minimized) return;
-            //if (Parent == null) return;
-            //if (((Form)Parent).WindowState == FormWindowState.Minimized) return;
-
             _nMinDimension = Math.Min(this.Width, this.Height);
             _nDiameter = (int)(_nMinDimension * _fNumbersFactor);
+
+            var form = FindForm();
+            if (form == null) return;
+            if (form.WindowState == FormWindowState.Minimized) return;
 
             // Update the controls if the board is not shrunk
             if (_nMinDimension != 0)
             {
-                if (countDown != null) CountDownUpdate();
-                if (pctCorrect != null) PictureBoxResultUpdate();
+                //if (countDown != null) CountDownUpdate();
+                //if (pctCorrect != null) PictureBoxResultUpdate();
+                ResizeChildControls();
             }
-            
+
+            //base.OnResize(e);
             //this.ResumeLayout(true);
             //this.PerformLayout();
         }
 
+        public void ResizeChildControls()
+        {
+            PictureBoxResultUpdate();
+            CountDownUpdate();
+        }
+
         private void CountDownUpdate()
         {
-            int minDimension = Math.Min(this.Width, this.Height);
-
-            this.countDown.BorderWidth = ((minDimension * _fCountDownFactor - 1) / 2) * _fBorderWidth;
-            this.countDown.xRadius = (minDimension * _fCountDownFactor) / 2;
-            this.countDown.yRadius = (minDimension * _fCountDownFactor) / 2;
-            this.countDown.Size = new Size((int)(minDimension * _fCountDownFactor), (int)(minDimension * _fCountDownFactor));
-            this.countDown.Location = new System.Drawing.Point((this.Size.Width - countDown.Size.Width) / 2, (this.Size.Height - countDown.Size.Height) / 2);
-            this.countDown.Font = new Font(countDown.Font.FontFamily, _fFontSize * (countDown.Size.Height - 2 * countDown.BorderWidth));
-            // countDown.Invalidate();
+            if (countDown != null)
+            {
+                this.countDown.BorderWidth = ((_nMinDimension * _fCountDownFactor - 1) / 2) * _fBorderWidth;
+                this.countDown.xRadius = (_nMinDimension * _fCountDownFactor) / 2;
+                this.countDown.yRadius = (_nMinDimension * _fCountDownFactor) / 2;
+                this.countDown.Size = new Size((int)(_nMinDimension * _fCountDownFactor), (int)(_nMinDimension * _fCountDownFactor));
+                this.countDown.Location = new System.Drawing.Point((this.Size.Width - countDown.Size.Width) / 2, (this.Size.Height - countDown.Size.Height) / 2);
+                this.countDown.Font = new Font(countDown.Font.FontFamily, _fFontSize * (countDown.Size.Height - 2 * countDown.BorderWidth));
+                // countDown.Invalidate();
+            }
         }
 
-        private void PictureBoxResultUpdate()
+        private async void PictureBoxResultUpdate()
         {
-            Bitmap bitmap = null;
-            this.pctCorrect.Size = new Size((int)(_nMinDimension * _fPictureCorrect), (int)(_nMinDimension * _fPictureCorrect));
-            this.pctCorrect.Location = new System.Drawing.Point((this.Size.Width - pctCorrect.Size.Width) / 2, (this.Size.Height - pctCorrect.Size.Height) / 2);
-            if (System.IO.File.Exists(_path + @"\images\Sequence correct.svg"))
-                bitmap = GetBitmapFromSVG(_path + @"\images\Sequence correct.svg", this.pctCorrect.Width, this.pctCorrect.Height);
-            if (bitmap != null)
+            if (pctCorrect != null)
             {
-                this.pctCorrect.Image = bitmap;
-                this.pctCorrect.Region = new Region(GetRegionFromTransparentBitmap(bitmap));
+                Bitmap bitmap = null;
+                this.pctCorrect.Size = new Size((int)(_nMinDimension * _fPictureCorrect), (int)(_nMinDimension * _fPictureCorrect));
+                this.pctCorrect.Location = new System.Drawing.Point((this.Size.Width - pctCorrect.Size.Width) / 2, (this.Size.Height - pctCorrect.Size.Height) / 2);
+                if (_svgCorrect != null)
+                    bitmap = await DrawSVG(_svgCorrect, this.pctCorrect.Width, this.pctCorrect.Height);
+                if (bitmap != null)
+                {
+                    this.pctCorrect.Image = bitmap;
+                    this.pctCorrect.Region = new Region(await GetRegionFromTransparentBitmap(bitmap));
+                }
+
+                this.pctWrong.Size = new Size((int)(_nMinDimension * _fPictureCorrect), (int)(_nMinDimension * _fPictureCorrect));
+                this.pctWrong.Location = new System.Drawing.Point((this.Size.Width - pctWrong.Size.Width) / 2, (this.Size.Height - pctWrong.Size.Height) / 2);
+                if (_svgWrong != null)
+                    bitmap = await DrawSVG(_svgWrong, this.pctWrong.Width, this.pctWrong.Height);
+                if (bitmap != null)
+                {
+                    this.pctWrong.Image = bitmap;
+                    this.pctWrong.Region = new Region(await GetRegionFromTransparentBitmap(bitmap));
+                }
+
             }
 
-            this.pctWrong.Size = new Size((int)(_nMinDimension * _fPictureCorrect), (int)(_nMinDimension * _fPictureCorrect));
-            this.pctWrong.Location = new System.Drawing.Point((this.Size.Width - pctWrong.Size.Width) / 2, (this.Size.Height - pctWrong.Size.Height) / 2);
-            if (System.IO.File.Exists(_path + @"\images\Sequence wrong.svg"))
-                bitmap = GetBitmapFromSVG(_path + @"\images\Sequence wrong.svg", this.pctWrong.Width, this.pctWrong.Height);
-            if (bitmap != null)
-            {
-                this.pctWrong.Image = bitmap;
-                this.pctWrong.Region = new Region(GetRegionFromTransparentBitmap(bitmap));
-            }
         }
 
-        public async Task Start(int[] numbers)
+        public async Task Start(int[] numbers, int TimeIncrement)
         {
             /*
             new System.Threading.Thread(() =>
@@ -447,6 +469,9 @@ namespace Controls
             }).Start();
             */
             // Task.Run(() => this.Invoke((new Action(() => CreateButtons(numbers)))));
+            
+            _nTimeIncrement = TimeIncrement;
+            
             this.pctWrong.Visible = false;
             this.pctCorrect.Visible = false;
 
@@ -464,6 +489,7 @@ namespace Controls
 
             return;
         }
+
         // https://stackoverflow.com/questions/2367718/automating-the-invokerequired-code-pattern
         private void OnCountDownEnding(object sender, TimerEndingEventArgs e)
         {
@@ -492,7 +518,7 @@ namespace Controls
             {
                 btn.Visible = true;
             }
-            await Task.Delay(_nTime);
+            await Task.Delay(_nTime + _nTimeIncrement);
             foreach (RoundButton btn in _roundButton)
             {
                 btn.VisibleText = false;
@@ -692,6 +718,18 @@ namespace Controls
             return svgBitmap;
         }
 
+        private async Task<System.Drawing.Bitmap> DrawSVG(Svg.SvgDocument document, int width, int height)
+        {
+            return document.Draw(width, height);
+        }
+
+        private void DrawSVG(Svg.SvgDocument document)
+        {
+            pctCorrect.Image = document.Draw();
+            //document.Draw(pctCorrect.CreateGraphics());
+            return;
+        }
+
         /// <summary>
         /// Gets a region pixel by pixel from the non-transparent pixels of the bitmap
         /// More information here: https://www.codeproject.com/Articles/617613/Fast-pixel-operations-in-NET-with-and-without-unsa
@@ -700,7 +738,7 @@ namespace Controls
         /// </summary>
         /// <param name="bitmap"></param>
         /// <returns></returns>
-        private System.Drawing.Drawing2D.GraphicsPath GetRegionFromTransparentBitmap (System.Drawing.Bitmap bitmap)
+        private async Task<System.Drawing.Drawing2D.GraphicsPath> GetRegionFromTransparentBitmap (System.Drawing.Bitmap bitmap)
         {
             System.Drawing.Drawing2D.GraphicsPath region = new System.Drawing.Drawing2D.GraphicsPath();
 
@@ -712,7 +750,7 @@ namespace Controls
                                                                             bitmap.PixelFormat);
 
             int bytesPerPixel = (Image.GetPixelFormatSize(bitmap.PixelFormat)) >> 3;
-            
+            /*
             unsafe
             {
                 byte* PixelComponent = (byte*)imageData.Scan0;
@@ -729,29 +767,37 @@ namespace Controls
                 }
             }
             bitmap.UnlockBits(imageData);
-            
+            */
 
-            /*
+
             // Marshal
-            byte[] imageBytes = new byte[Math.Abs(imageData.Stride) * bitmap.Height];
-            IntPtr scan0 = imageData.Scan0;
-            System.Runtime.InteropServices.Marshal.Copy(scan0, imageBytes, 0, imageBytes.Length);
-            int row = 0;
-            int col = 0;
-            for (int j = 0; j < imageData.Height; j++)
+            // This is a CPU-bound operation so we run it asyncronously on another thread
+            // https://www.pluralsight.com/guides/using-task-run-async-await
+            await Task.Run(() =>
             {
-                col = 0;
-                for (int i = 0; i < imageData.Width; i++)
+
+                byte[] imageBytes = new byte[Math.Abs(imageData.Stride) * bitmap.Height];
+                IntPtr scan0 = imageData.Scan0;
+                System.Runtime.InteropServices.Marshal.Copy(scan0, imageBytes, 0, imageBytes.Length);
+                int row = 0;
+                int col = 0;
+                for (int j = 0; j < imageData.Height; j++)
                 {
-                    if (imageBytes[(row + col) + 3] > 0) region.AddRectangle(new Rectangle(i, j, 1, 1));
-                    col += bytesPerPixel;
+                    col = 0;
+                    for (int i = 0; i < imageData.Width; i++)
+                    {
+                        if (imageBytes[(row + col) + 3] > 0) region.AddRectangle(new Rectangle(i, j, 1, 1));
+                        col += bytesPerPixel;
+                    }
+                    row += imageData.Stride;
                 }
-                row += imageData.Stride;
-            }
-            System.Runtime.InteropServices.Marshal.Copy(imageBytes, 0, scan0, imageBytes.Length);
+                System.Runtime.InteropServices.Marshal.Copy(imageBytes, 0, scan0, imageBytes.Length);
+                
+            });
 
             bitmap.UnlockBits(imageData);
-            */
+
+
 
             /*
             // Another Marshal option. Slower than the previous
@@ -781,5 +827,6 @@ namespace Controls
 
         #endregion Private routines
     }
+
 }
 
