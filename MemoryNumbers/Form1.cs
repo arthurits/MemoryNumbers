@@ -20,6 +20,7 @@ namespace MemoryNumbers
         string _path;
         // Program settings
         private ProgramSettings<string, string> _programSettings;
+        private ProgramSettings<string, string> _defaultSettings;
         private static readonly string _programSettingsFileName = @"Configuration.xml";
 
         public Form1()
@@ -52,8 +53,12 @@ namespace MemoryNumbers
 
             // Read the program settings file and apply them
             _programSettings = new ProgramSettings<string, string>();
-            LoadProgramSettings();
-            ApplySettings(true);
+            LoadProgramSettings(_programSettings);
+            _defaultSettings = new ProgramSettings<string, string>();
+            LoadDefaultSettings(_defaultSettings);
+            
+            ApplySettings(_programSettings, _defaultSettings, true);
+            
             board1.Update();
             //board1.Focus();
         }
@@ -166,7 +171,7 @@ namespace MemoryNumbers
             }
 
             // Guardar los datos de configuración
-            SaveProgramSettings();
+            SaveProgramSettings(_programSettings);
         }
 
         private async void Form1_Resize(object sender, EventArgs e)
@@ -211,15 +216,10 @@ namespace MemoryNumbers
             // Wait before starting a new sequence
             await Task.Delay(100);
 
-            int increment = 0;
-
             // Keep the game going on
             if (_game.Start())
             {
-                if ((_game.PlayMode & PlayMode.TimeIncremental) == PlayMode.TimeIncremental)
-                    increment = (_game.GetSequence.Length - _game.MinimumLength) * _game.TimeIncrement;
-
-                board1.Start(_game.GetSequence, increment);
+                board1.Start(_game.GetSequence, _game.TimeTotal);
             }
 
         }
@@ -236,22 +236,19 @@ namespace MemoryNumbers
             // Wait before starting a new sequence
             await Task.Delay(100);
 
-            int increment = 0;
-
             _game.CurrentScore -= 2;
             if (_game.Start())
             {
-                if ((_game.PlayMode & PlayMode.TimeIncremental) == PlayMode.TimeIncremental)
-                    increment = (_game.GetSequence.Length - _game.MinimumLength) * _game.TimeIncrement;
-
-                board1.Start(_game.GetSequence, increment);
+                board1.Start(_game.GetSequence, _game.TimeTotal);
             }
+
         }
 
         private async Task OnGameOver(object sender, Game.OverEventArgs e)
         {
             //System.Diagnostics.Debug.WriteLine("OnGameOver subscription event");
             MessageBox.Show("You reached the\nend of the game", "Congratulations!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            board1.ClearBoard();
         }
 
         #endregion Events subscription
@@ -269,13 +266,20 @@ namespace MemoryNumbers
             //_game.CurrentScore = _game.MinimumLength - 1;
             _game.ReSet();
 
-            if (!_game.Start())
+            // Show the score in the status bar
+            this.toolStripStatusLabel_Secuence.Text = _game.CurrentScore.ToString();
+            this.toolStripStatusLabel_Secuence.Invalidate();
+
+            if (_game.Start())
             {
-                MessageBox.Show("Could not start the game\nUnexpected error.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                board1.Visible = true;
+                board1.Start(_game.GetSequence, _game.TimeTotal);
             }
-            board1.Visible = true;
-            board1.Start(_game.GetSequence, 0);
+            else
+            {
+                MessageBox.Show("Could not start the game.\nUnexpected error.", "Error StartClick", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
         }
 
         private void toolStripMain_Sound_CheckedChanged(object sender, EventArgs e)
@@ -290,7 +294,7 @@ namespace MemoryNumbers
             if (form.DialogResult == DialogResult.OK)
             {
                 _programSettings = form.settings;
-                ApplySettings(false);
+                ApplySettings(_programSettings, _defaultSettings, false);
             }
         }
 
@@ -308,7 +312,7 @@ namespace MemoryNumbers
         /// <summary>
         /// Loads any saved program settings.
         /// </summary>
-        private void LoadProgramSettings()
+        private void LoadProgramSettings(ProgramSettings<string, string> settings)
         {
             // Load the saved window settings and resize the window.
             TextReader textReader = StreamReader.Null;
@@ -333,7 +337,7 @@ namespace MemoryNumbers
                                         MessageBoxIcon.Error);
                     }
                 }
-                LoadDefaultSettings();
+                //LoadDefaultSettings();
             }
             finally
             {
@@ -344,14 +348,14 @@ namespace MemoryNumbers
         /// <summary>
         /// Saves the current program settings.
         /// </summary>
-        private void SaveProgramSettings()
+        private void SaveProgramSettings(ProgramSettings<string, string> settings)
         {
-            _programSettings["WindowLeft"] = this.DesktopLocation.X.ToString();
-            _programSettings["WindowTop"] = this.DesktopLocation.Y.ToString();
-            _programSettings["WindowWidth"] = this.ClientSize.Width.ToString();
-            _programSettings["WindowHeight"] = this.ClientSize.Height.ToString();
+            settings["WindowLeft"] = this.DesktopLocation.X.ToString();
+            settings["WindowTop"] = this.DesktopLocation.Y.ToString();
+            settings["WindowWidth"] = this.ClientSize.Width.ToString();
+            settings["WindowHeight"] = this.ClientSize.Height.ToString();
 
-            _programSettings["Sound"] = this.toolStripMain_Sound.Checked == true ? "0" : "1";
+            settings["Sound"] = this.toolStripMain_Sound.Checked == true ? "0" : "1";
 
             // Save window settings.
             TextWriter textWriter = StreamWriter.Null;
@@ -359,7 +363,7 @@ namespace MemoryNumbers
             {
                 textWriter = new StreamWriter(_programSettingsFileName, false);
                 System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(ProgramSettings<string, string>));
-                serializer.Serialize(textWriter, _programSettings);
+                serializer.Serialize(textWriter, settings);
                 textWriter.Close();
             }
             catch (Exception ex)
@@ -384,65 +388,65 @@ namespace MemoryNumbers
         /// Update UI with settings
         /// </summary>
         /// <param name="WindowSettings">True if the window position and size should be applied. False if omitted</param>
-        private void ApplySettings(bool WindowSettings = false)
+        private void ApplySettings(ProgramSettings<string, string> programSettings, ProgramSettings<string, string> defaultSettings, bool WindowSettings = false)
         {
             if (WindowSettings)
             {
-                if (Convert.ToInt32(_programSettings["WindowPosition"]) == 1 ? true : false)
+                if (Convert.ToInt32(programSettings["WindowPosition"]) == 1 ? true : false)
                 {
                     var startPos = this.StartPosition;
                     this.StartPosition = FormStartPosition.Manual;
-                    this.DesktopLocation = new Point(Convert.ToInt32(_programSettings["WindowLeft"]), Convert.ToInt32(_programSettings["WindowTop"]));
-                    this.ClientSize = new Size(Convert.ToInt32(_programSettings["WindowWidth"]), Convert.ToInt32(_programSettings["WindowHeight"]));
+                    this.DesktopLocation = new Point(Convert.ToInt32(programSettings["WindowLeft"]), Convert.ToInt32(programSettings["WindowTop"]));
+                    this.ClientSize = new Size(Convert.ToInt32(programSettings["WindowWidth"]), Convert.ToInt32(programSettings["WindowHeight"]));
                     this.StartPosition = startPos;
                 }
             }
 
-            this._game.MaximumAttempts = Convert.ToInt32(_programSettings["MaximumAttempts"]);
-            this._game.MaximumDigit = Convert.ToInt32(_programSettings["MaximumDigit"]);
-            this._game.MinimumDigit = Convert.ToInt32(_programSettings["MinimumDigit"]);
-            this._game.PlayMode = (PlayMode)Enum.Parse(typeof(PlayMode), _programSettings["PlayMode"]);
-            this._game.Time = Convert.ToInt32(_programSettings["Time"]);
-            this._game.TimeIncrement = Convert.ToInt32(_programSettings["TimeIncrement"]);
-            this.board1.Time = Convert.ToInt32(_programSettings["Time"]);
-            this.board1.TimeIncrement = _programSettings.ContainsKey("TimeIncrement") ? Convert.ToInt32(_programSettings["TimeIncrement"]) : 0;
-            this.board1.BorderRatio = Convert.ToSingle(_programSettings["BorderRatio"]);
-            this.board1.CountDownRatio = Convert.ToSingle(_programSettings["CountDownRatio"]);
-            this.board1.NumbersRatio = Convert.ToSingle(_programSettings["NumbersRatio"]);
-            this.board1.FontRatio = Convert.ToSingle(_programSettings["FontRatio"]);
-            this.board1.ResultRatio = Convert.ToSingle(_programSettings["ResultsRatio"]);
+            this._game.MaximumAttempts = Convert.ToInt32(programSettings.ContainsKey("MaximumAttempts") ? programSettings["MaximumAttempts"] : defaultSettings["MaximumAttempts"]);
+            this._game.MaximumDigit = Convert.ToInt32(programSettings.ContainsKey("MaximumDigit") ? programSettings["MaximumDigit"] : defaultSettings["MaximumDigit"]);
+            this._game.MinimumDigit = Convert.ToInt32(programSettings.ContainsKey("MinimumDigit") ? programSettings["MinimumDigit"] : defaultSettings["MinimumDigit"]);
+            this._game.PlayMode = (PlayMode)Enum.Parse(typeof(PlayMode), programSettings.ContainsKey("PlayMode") ? programSettings["PlayMode"] : defaultSettings["PlayMode"]);
+            this._game.Time = Convert.ToInt32(programSettings.ContainsKey("Time") ? programSettings["Time"] : defaultSettings["Time"]);
+            this._game.TimeIncrement = Convert.ToInt32(programSettings.ContainsKey("TimeIncrement") ? programSettings["TimeIncrement"] : defaultSettings["TimeIncrement"]);
+            this.board1.Time = Convert.ToInt32(programSettings.ContainsKey("Time") ? programSettings["Time"] : defaultSettings["Time"]);
+            this.board1.BorderRatio = Convert.ToSingle(programSettings.ContainsKey("BorderRatio") ? programSettings["BorderRatio"] : defaultSettings["BorderRatio"]);
+            this.board1.CountDownRatio = Convert.ToSingle(programSettings.ContainsKey("CountDownRatio") ? programSettings["CountDownRatio"] : defaultSettings["CountDownRatio"]);
+            this.board1.NumbersRatio = Convert.ToSingle(programSettings.ContainsKey("NumbersRatio") ? programSettings["NumbersRatio"] : defaultSettings["NumbersRatio"]);
+            this.board1.FontRatio = Convert.ToSingle(programSettings.ContainsKey("FontRatio") ? programSettings["FontRatio"] : defaultSettings["FontRatio"]);
+            this.board1.ResultRatio = Convert.ToSingle(programSettings.ContainsKey("ResultsRatio") ? programSettings["ResultsRatio"] : defaultSettings["ResultsRatio"]);
 
-            this.toolStripMain_Sound.Checked = _programSettings.ContainsKey("Sound") ? (Convert.ToInt32(_programSettings["Sound"]) == 0 ? true : false) : false;
+            this.toolStripMain_Sound.Checked = Convert.ToInt32((programSettings.ContainsKey("Sound") ? programSettings["Sound"] : defaultSettings["Sound"])) == 0 ? true : false;
+            //this.toolStripMain_Sound.Checked = programSettings.ContainsKey("Sound") ? (Convert.ToInt32(programSettings["Sound"]) == 0 ? true : false) : false;
             this.board1.PlaySounds = !this.toolStripMain_Sound.Checked;
         }
 
         /// <summary>
         /// Set default settings. This is called when no settings file has been found
         /// </summary>
-        private void LoadDefaultSettings()
+        private void LoadDefaultSettings(ProgramSettings<string, string> settings)
         {
             // Set default settings
-            _programSettings["WindowLeft"] = this.DesktopLocation.X.ToString();    // Get current form coordinates
-            _programSettings["WindowTop"] = this.DesktopLocation.Y.ToString();
-            _programSettings["WindowWidth"] = this.ClientSize.Width.ToString();    // Get current form size
-            _programSettings["WindowHeight"] = this.ClientSize.Height.ToString();
+            settings["WindowLeft"] = this.DesktopLocation.X.ToString();    // Get current form coordinates
+            settings["WindowTop"] = this.DesktopLocation.Y.ToString();
+            settings["WindowWidth"] = this.ClientSize.Width.ToString();    // Get current form size
+            settings["WindowHeight"] = this.ClientSize.Height.ToString();
 
-            _programSettings["MaximumAttempts"] = "10";
-            _programSettings["MaximumDigit"] = "9";
-            _programSettings["MinimumDigit"] = "0";
-            _programSettings["Time"] = "700";
-            _programSettings["TimeIncrement"] = "0";
+            settings["MaximumAttempts"] = "10";
+            settings["MaximumDigit"] = "9";
+            settings["MinimumDigit"] = "0";
+            settings["Time"] = "700";
+            settings["TimeIncrement"] = "0";
 
-            _programSettings["BorderRatio"] = "0.12";
-            _programSettings["CountDownRatio"] = "0.37";
-            _programSettings["NumbersRatio"] = "0.25";
-            _programSettings["FontRatio"] = "0.55";
-            _programSettings["ResultsRatio"] = "0.56";
-            _programSettings["WindowPosition"] = "1";
+            settings["BorderRatio"] = "0.12";
+            settings["CountDownRatio"] = "0.37";
+            settings["NumbersRatio"] = "0.25";
+            settings["FontRatio"] = "0.55";
+            settings["ResultsRatio"] = "0.56";
+            settings["WindowPosition"] = "1";
 
-            _programSettings["PlayMode"] = "9";
+            settings["PlayMode"] = "9";
 
-            _programSettings["Sound"] = "1";     // Sound on unchecked
+            settings["Sound"] = "1";     // Sound on unchecked
         }
 
 

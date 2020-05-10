@@ -35,7 +35,8 @@ namespace MemoryNumbers
                 this.radRandom.Checked = ((play & PlayMode.SequenceRandom) == PlayMode.SequenceRandom);
                 this.radFixed.Checked = ((play & PlayMode.TimeFixed) == PlayMode.TimeFixed);
                 this.radIncremental.Checked = ((play & PlayMode.TimeIncremental) == PlayMode.TimeIncremental);
-                
+                this.numTimeIncrement.Enabled = this.radIncremental.Checked;
+
                 this.numTime.Value = Convert.ToInt32(_settings["Time"]);
                 this.numTimeIncrement.Value = Convert.ToInt32(_settings["TimeIncrement"]);
                 this.numMaxDigit.Value = Convert.ToInt32(_settings["MaximumDigit"]);
@@ -63,7 +64,7 @@ namespace MemoryNumbers
         private void btnAccept_Click(object sender, EventArgs e)
         {
             settings["Time"] = this.numTime.Value.ToString();
-            settings["TimeIncrement"] = this.radIncremental.Checked ? this.numTimeIncrement.Value.ToString() : "0";
+            settings["TimeIncrement"] = this.numTimeIncrement.Value.ToString();
             settings["MaximumDigit"] = this.numMaxDigit.Value.ToString();
             settings["MinimumDigit"] = this.numMinDigit.Value.ToString();
             settings["MaximumAttempts"] = this.numMaxAttempts.Value.ToString();

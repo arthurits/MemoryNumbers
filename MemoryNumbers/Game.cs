@@ -22,8 +22,7 @@ namespace MemoryNumbers
 
         private int _nMaxDigit = 10;
         private int _nMinDigit = 0;
-        /// It's the current length of the _nSequence array
-        private int _nSequenceLength = 0; 
+        private int _nSequenceLength = 0;   // It's the current length of the _nSequence array
         private int _nSequenceIndex = 0;    // index (button clicked) whithin the _nSequence array
         private int _nMaxAttempts = 10;
         private int _nCurrAttempt = 0;      // The accumulated number of attempts
@@ -31,7 +30,8 @@ namespace MemoryNumbers
         private int[] _nSequence;
         private PlayMode _playMode;         // The current play mode
         private int _nTime;
-        private int _nTimeIncremental;
+        private int _nTimeIncrement;
+        private int _nTotalTime;
 
         #endregion Private variables
 
@@ -103,7 +103,7 @@ namespace MemoryNumbers
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int[] GetSequence { get => _nSequence; }
 
-        /// <summary>
+                /// <summary>
         /// The actual play-mode selected by the user (time and sequence mode).
         /// </summary>
         [Description("The actual play-mode selected by the user (time and sequence mode)"),
@@ -131,7 +131,17 @@ namespace MemoryNumbers
         Browsable(true),
         EditorBrowsable(EditorBrowsableState.Always),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        public int TimeIncrement { get => _nTimeIncremental; set => _nTimeIncremental = value < 0 ? 0 : value; }
+        public int TimeIncrement { get => _nTimeIncrement; set => _nTimeIncrement = value < 0 ? 0 : value; }
+
+        /// <summary>
+        /// The total time (ms) for showing the buttons. This may oscillate if the play mode is Time Incremental
+        /// </summary>
+        [Description("The total time (ms) for showing the buttons"),
+        Category("Game properties"),
+        Browsable(true),
+        EditorBrowsable(EditorBrowsableState.Always),
+        DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public int TimeTotal { get => _nTotalTime;}
 
         #endregion Public properties
 
@@ -209,13 +219,19 @@ namespace MemoryNumbers
             // Increment the current attempts counter            
             _nCurrAttempt++;
 
+            // The game is over if we are above the maximum number of attemps or
+            // if the sequence is longer than the number of digits allowed
             if ((_nCurrAttempt > _nMaxAttempts) || _nSequenceLength > (_nMaxDigit - _nMinDigit + 1))
             {
                 _nSequence = null;
                 OnGameOver(new OverEventArgs(_nSequenceLength - 1));
                 return false;
             }
+
+            // Restart the index pointing to the first element of _nSequence
             _nSequenceIndex = 0;
+            
+            // Generate the numeric sequence
             return SetSequence();
         }
 
@@ -225,6 +241,7 @@ namespace MemoryNumbers
             _nSequenceIndex = 0;
             _nCurrAttempt = 0;
             _nSequence = null;
+            _nTotalTime = _nTime;
         }
 
         /// <summary>
@@ -232,7 +249,7 @@ namespace MemoryNumbers
         /// </summary>
         private bool SetSequence()
         {
-            // Create and fill the array
+            // Create and fill the array depending on the current playmode
             _nSequence = new int[_nSequenceLength];
             if ((_playMode & PlayMode.SequenceRandom) == PlayMode.SequenceRandom)
             {
@@ -317,6 +334,10 @@ namespace MemoryNumbers
             // First check if the value clicked is correct
             if (_nSequence[_nSequenceIndex] != value)
             {
+                // If the playmode is Time Incremental, reduce the total time
+                if ((_playMode & PlayMode.TimeIncremental) == PlayMode.TimeIncremental)
+                    _nTotalTime -= _nTimeIncrement;
+
                 OnWrongSequence(new WrongEventArgs(_nSequenceLength - 2));
                 return false;
             }
@@ -324,22 +345,22 @@ namespace MemoryNumbers
             // Increase the counter whithin the _nSequence
             _nSequenceIndex++;
 
-            // Check if this is the last button, i.e. the last value of _nSequence
+            // Check if this is the last button, i.e. the last available value in the _nSequence array
             if (_nSequenceIndex > _nSequence.Length-1)
             {
+                // If the playmode is Time Incremental, increase the total time
+                if ((_playMode & PlayMode.TimeIncremental) == PlayMode.TimeIncremental)
+                    _nTotalTime += _nTimeIncrement;
+
                 //_nSequenceLength++;
                 OnCorrectSequence(new CorrectEventArgs(_nSequenceLength));
                 return false;
             }
 
+            // The OnGameOver is checked at the Start function. It could be also implemented here
 
-            /*
-            if (_nGameScore>(_nMinDigit+_nMaxDigit+1))
-            {
-                OnGameOver(new OverEventArgs(_nGameScore - 1));
-                ReSet();
-            }
-            */
+            
+
             // If we get here, it means the player guessed correctly and that there are still numbers left in the sequence
             return true;
         }

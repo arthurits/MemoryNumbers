@@ -273,7 +273,7 @@
             this.board1.TabIndex = 3;
             this.board1.TabStop = false;
             this.board1.Time = 700;
-            this.board1.TimeIncrement = 300;
+            //this.board1.TimeIncrement = 300;
             // 
             // Form1
             // 

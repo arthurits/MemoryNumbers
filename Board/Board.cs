@@ -21,16 +21,16 @@ namespace Controls
         private Controls.CountDown countDown;
         private System.Windows.Forms.PictureBox pctCorrect;
         private System.Windows.Forms.PictureBox pctWrong;
-        private int[] _nSequence;
+        //private int[] _nSequence;
         private int _nSequenceCounter = 0;
         private int _nSequenceLength = 0;
-        private int _nButtons = 10;
+        //private int _nButtons = 10;
         private int _nDiameter = 45;
         private int _nMinDimension;
         private int _nMaxNum = 9;
         private int _nMinNum = 0;
         private int _nTime = 700;
-        private int _nTimeIncrement = 300;
+        //private int _nTimeIncrement = 300;
         private float _fBorderWidth = 0.12f;
         private float _fCountDownFactor = 0.37f;
         private float _fNumbersFactor = 0.25f;
@@ -117,21 +117,6 @@ namespace Controls
         {
             get { return _nTime; }
             set { _nTime = value < 0 ? 0 : value; }
-        }
-
-        /// <summary>
-        /// Provides a time increment (miliseconds) for the flashing interval that it's added to Time after each sequence is correct.
-        /// If the sequence is incorrect, then this increment is substracted from Time
-        /// </summary>
-        [Description("Time-flashing increment after each sequence (must be >=0)"),
-        Category("Digit button properties"),
-        Browsable(true),
-        EditorBrowsable(EditorBrowsableState.Always),
-        DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        public int TimeIncrement
-        {
-            get { return _nTimeIncrement; }
-            set { _nTimeIncrement = value < 0 ? 0 : value; }
         }
 
         /// <summary>
@@ -439,7 +424,9 @@ namespace Controls
                 this.pctCorrect.Size = new Size((int)(_nMinDimension * _fPictureCorrect), (int)(_nMinDimension * _fPictureCorrect));
                 this.pctCorrect.Location = new System.Drawing.Point((this.Size.Width - pctCorrect.Size.Width) / 2, (this.Size.Height - pctCorrect.Size.Height) / 2);
                 if (_svgCorrect != null)
+                {
                     bitmap = await DrawSVG(_svgCorrect, this.pctCorrect.Width, this.pctCorrect.Height);
+                }
                 if (bitmap != null)
                 {
                     this.pctCorrect.Image = bitmap;
@@ -449,7 +436,9 @@ namespace Controls
                 this.pctWrong.Size = new Size((int)(_nMinDimension * _fPictureCorrect), (int)(_nMinDimension * _fPictureCorrect));
                 this.pctWrong.Location = new System.Drawing.Point((this.Size.Width - pctWrong.Size.Width) / 2, (this.Size.Height - pctWrong.Size.Height) / 2);
                 if (_svgWrong != null)
+                {
                     bitmap = await DrawSVG(_svgWrong, this.pctWrong.Width, this.pctWrong.Height);
+                }
                 if (bitmap != null)
                 {
                     this.pctWrong.Image = bitmap;
@@ -460,7 +449,7 @@ namespace Controls
 
         }
 
-        public async Task Start(int[] numbers, int TimeIncrement)
+        public async Task Start(int[] numbers, int Time)
         {
             /*
             new System.Threading.Thread(() =>
@@ -470,7 +459,7 @@ namespace Controls
             */
             // Task.Run(() => this.Invoke((new Action(() => CreateButtons(numbers)))));
             
-            _nTimeIncrement = TimeIncrement;
+            _nTime = Time;
             
             this.pctWrong.Visible = false;
             this.pctCorrect.Visible = false;
@@ -518,7 +507,7 @@ namespace Controls
             {
                 btn.Visible = true;
             }
-            await Task.Delay(_nTime + _nTimeIncrement);
+            await Task.Delay(_nTime);
             foreach (RoundButton btn in _roundButton)
             {
                 btn.VisibleText = false;
@@ -595,11 +584,19 @@ namespace Controls
             return;
         }
 
+        /// <summary>
+        /// Play the "number correct" audio
+        /// </summary>
+        /// <returns></returns>
         public async Task ButtonRight()
         {
             PlayAudioFile(AudioSoundType.NumberCorrect, AudioSoundMode.Async);
         }
 
+        /// <summary>
+        /// Play the audio and show the WRONG result picture
+        /// </summary>
+        /// <returns></returns>
         public async Task ButtonWrong()
         {
             await PlayAudioFile(AudioSoundType.NumberWrong, AudioSoundMode.Sync);
@@ -612,12 +609,28 @@ namespace Controls
             await taskError;
         }
 
+        /// <summary>
+        /// Play the audio and show the OK result picture
+        /// </summary>
+        /// <returns></returns>
         public async Task SequenceRight()
         {
             await PlayAudioFile(AudioSoundType.NumberCorrect, AudioSoundMode.Sync);
             pctCorrect.Visible = true;
             pctCorrect.Update();
             await PlayAudioFile(AudioSoundType.SequenceCorrect, AudioSoundMode.Sync);
+        }
+
+        /// <summary>
+        /// Dispose the numeric buttons and hide any picture results
+        /// </summary>
+        public void ClearBoard()
+        {
+            if (pctCorrect.Visible)
+                pctCorrect.Visible = false;
+            if (pctWrong.Visible)
+                pctWrong.Visible = false;
+            DeleteButtons();
         }
 
         private async void ButtonClicked(object sender, RoundButton.ButtonClickEventArgs e)
@@ -721,13 +734,6 @@ namespace Controls
         private async Task<System.Drawing.Bitmap> DrawSVG(Svg.SvgDocument document, int width, int height)
         {
             return document.Draw(width, height);
-        }
-
-        private void DrawSVG(Svg.SvgDocument document)
-        {
-            pctCorrect.Image = document.Draw();
-            //document.Draw(pctCorrect.CreateGraphics());
-            return;
         }
 
         /// <summary>
