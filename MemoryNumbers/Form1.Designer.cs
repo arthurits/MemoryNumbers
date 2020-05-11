@@ -259,7 +259,8 @@
             this.board1.BorderRatio = 0.115F;
             this.board1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.board1.CountDownRatio = 0.37F;
-            this.board1.Diameter = 37;
+            this.board1.Diameter = 67;
+            this.board1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.board1.FillColor = System.Drawing.Color.Transparent;
             this.board1.FontRatio = 0.6F;
             this.board1.Location = new System.Drawing.Point(0, 70);
@@ -269,11 +270,10 @@
             this.board1.NumbersRatio = 0.25F;
             this.board1.PlaySounds = false;
             this.board1.ResultRatio = 0.56F;
-            this.board1.Size = new System.Drawing.Size(287, 148);
+            this.board1.Size = new System.Drawing.Size(538, 271);
             this.board1.TabIndex = 3;
             this.board1.TabStop = false;
             this.board1.Time = 700;
-            //this.board1.TimeIncrement = 300;
             // 
             // Form1
             // 

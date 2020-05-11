@@ -179,7 +179,7 @@ namespace MemoryNumbers
             this.SuspendLayout();
             board1.Top = tspTop.Height;
             board1.Left = 0;
-            board1.Size = new Size(this.ClientSize.Width, this.ClientSize.Height - tspTop.Height - tspBottom.Height);
+            //board1.Size = new Size(this.ClientSize.Width, this.ClientSize.Height - tspTop.Height - tspBottom.Height);
             this.ResumeLayout();
         }
 

@@ -34,8 +34,8 @@ namespace Controls
         private float _fBorderWidth = 0.12f;
         private float _fCountDownFactor = 0.37f;
         private float _fNumbersFactor = 0.25f;
-        private float _fPictureCorrect = 0.56f;
-        private float _fFontSize = 0.60f;
+        private float _fResultFactor = 0.56f;
+        private float _fFontFactor = 0.60f;
         private Color _cBorderColor = Color.Black;
         private Color _cBackColor = Color.Transparent;
         private string _path;
@@ -182,10 +182,10 @@ namespace Controls
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public float FontRatio
         {
-            get { return _fFontSize; }
+            get { return _fFontFactor; }
             set
             {
-                _fFontSize = value < 0 ? 0f : value;
+                _fFontFactor = value < 0 ? 0f : value;
                 CountDownUpdate();
             }
         }
@@ -200,10 +200,10 @@ namespace Controls
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public float ResultRatio
         {
-            get { return _fPictureCorrect; }
+            get { return _fResultFactor; }
             set
             {
-                _fPictureCorrect = value < 0 ? 0f : value;
+                _fResultFactor = value < 0 ? 0f : value;
                 PictureBoxResultUpdate();
             }
         }
@@ -396,9 +396,9 @@ namespace Controls
             //this.PerformLayout();
         }
 
-        public void ResizeChildControls()
+        public async void ResizeChildControls()
         {
-            PictureBoxResultUpdate();
+            await PictureBoxResultUpdate();
             CountDownUpdate();
         }
 
@@ -411,42 +411,54 @@ namespace Controls
                 this.countDown.yRadius = (_nMinDimension * _fCountDownFactor) / 2;
                 this.countDown.Size = new Size((int)(_nMinDimension * _fCountDownFactor), (int)(_nMinDimension * _fCountDownFactor));
                 this.countDown.Location = new System.Drawing.Point((this.Size.Width - countDown.Size.Width) / 2, (this.Size.Height - countDown.Size.Height) / 2);
-                this.countDown.Font = new Font(countDown.Font.FontFamily, _fFontSize * (countDown.Size.Height - 2 * countDown.BorderWidth));
+                this.countDown.Font = new Font(countDown.Font.FontFamily, _fFontFactor * (countDown.Size.Height - 2 * countDown.BorderWidth));
                 // countDown.Invalidate();
             }
         }
 
-        private async void PictureBoxResultUpdate()
+        private async Task PictureBoxResultUpdate()
         {
+            System.Diagnostics.Debug.WriteLine("Mark stamp #1");
             if (pctCorrect != null)
             {
-                Bitmap bitmap = null;
-                this.pctCorrect.Size = new Size((int)(_nMinDimension * _fPictureCorrect), (int)(_nMinDimension * _fPictureCorrect));
+                Bitmap bmpCorrect = null;
+                this.pctCorrect.Size = new Size((int)(_nMinDimension * _fResultFactor), (int)(_nMinDimension * _fResultFactor));
                 this.pctCorrect.Location = new System.Drawing.Point((this.Size.Width - pctCorrect.Size.Width) / 2, (this.Size.Height - pctCorrect.Size.Height) / 2);
                 if (_svgCorrect != null)
                 {
-                    bitmap = await DrawSVG(_svgCorrect, this.pctCorrect.Width, this.pctCorrect.Height);
+                    System.Diagnostics.Debug.WriteLine("Mark stamp #2");
+                    bmpCorrect = await DrawSVG(_svgCorrect, this.pctCorrect.Width, this.pctCorrect.Height);
+                    System.Diagnostics.Debug.WriteLine("Mark stamp #3");
                 }
-                if (bitmap != null)
+                if (bmpCorrect != null)
                 {
-                    this.pctCorrect.Image = bitmap;
-                    this.pctCorrect.Region = new Region(await GetRegionFromTransparentBitmap(bitmap));
+                    System.Diagnostics.Debug.WriteLine("Mark stamp #4");
+                    this.pctCorrect.Image = bmpCorrect;
+                    this.pctCorrect.Region = new Region(await GetRegionFromTransparentBitmap(bmpCorrect));
+                    System.Diagnostics.Debug.WriteLine("Mark stamp #5");
                 }
-
-                this.pctWrong.Size = new Size((int)(_nMinDimension * _fPictureCorrect), (int)(_nMinDimension * _fPictureCorrect));
+            }
+            System.Diagnostics.Debug.WriteLine("Mark stamp #6");
+            if (pctWrong != null)
+            {
+                Bitmap bmpWrong = null;
+                this.pctWrong.Size = new Size((int)(_nMinDimension * _fResultFactor), (int)(_nMinDimension * _fResultFactor));
                 this.pctWrong.Location = new System.Drawing.Point((this.Size.Width - pctWrong.Size.Width) / 2, (this.Size.Height - pctWrong.Size.Height) / 2);
                 if (_svgWrong != null)
                 {
-                    bitmap = await DrawSVG(_svgWrong, this.pctWrong.Width, this.pctWrong.Height);
+                    System.Diagnostics.Debug.WriteLine("Mark stamp #7");
+                    bmpWrong = await DrawSVG(_svgWrong, this.pctWrong.Width, this.pctWrong.Height);
+                    System.Diagnostics.Debug.WriteLine("Mark stamp #8");
                 }
-                if (bitmap != null)
+                if (bmpWrong != null)
                 {
-                    this.pctWrong.Image = bitmap;
-                    this.pctWrong.Region = new Region(await GetRegionFromTransparentBitmap(bitmap));
+                    System.Diagnostics.Debug.WriteLine("Mark stamp #9");
+                    this.pctWrong.Image = bmpWrong;
+                    this.pctWrong.Region = new Region(await GetRegionFromTransparentBitmap(bmpWrong));
+                    System.Diagnostics.Debug.WriteLine("Mark stamp #10");
                 }
-
             }
-
+            
         }
 
         public async Task Start(int[] numbers, int Time)
@@ -547,7 +559,7 @@ namespace Controls
                     VisibleBorder = false,
                     Visible = false
                 };
-                _roundButton[i].Font = new Font(_roundButton[i].Font.FontFamily, _fFontSize * _nDiameter);
+                _roundButton[i].Font = new Font(_roundButton[i].Font.FontFamily, _fFontFactor * _nDiameter);
                 
                 do
                 {
