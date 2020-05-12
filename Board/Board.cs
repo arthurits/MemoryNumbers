@@ -339,7 +339,8 @@ namespace Controls
             pctCorrect = new System.Windows.Forms.PictureBox()
             {
                 Anchor = AnchorStyles.None,
-                BackColor = Color.Transparent,
+                //BackColor = Color.Transparent,
+                BackgroundImageLayout = ImageLayout.Stretch,
                 Dock = DockStyle.None,
                 Parent = this,
                 Visible = false
@@ -347,7 +348,8 @@ namespace Controls
             pctWrong = new System.Windows.Forms.PictureBox()
             {
                 Anchor = AnchorStyles.None,
-                BackColor = Color.Transparent,
+                //BackColor = Color.Transparent,
+                BackgroundImageLayout = ImageLayout.Stretch,
                 Dock = DockStyle.None,
                 Parent = this,
                 Visible = false
@@ -418,48 +420,85 @@ namespace Controls
 
         private async Task PictureBoxResultUpdate()
         {
-            System.Diagnostics.Debug.WriteLine("Mark stamp #1");
-            if (pctCorrect != null)
+            if (pctCorrect != null && pctWrong != null)
             {
                 Bitmap bmpCorrect = null;
+                Region rgCorrect = null;
+                Bitmap bmpWrong = null;
+                Region rgWrong = null;
+                
                 this.pctCorrect.Size = new Size((int)(_nMinDimension * _fResultFactor), (int)(_nMinDimension * _fResultFactor));
                 this.pctCorrect.Location = new System.Drawing.Point((this.Size.Width - pctCorrect.Size.Width) / 2, (this.Size.Height - pctCorrect.Size.Height) / 2);
-                if (_svgCorrect != null)
-                {
-                    System.Diagnostics.Debug.WriteLine("Mark stamp #2");
-                    bmpCorrect = await DrawSVG(_svgCorrect, this.pctCorrect.Width, this.pctCorrect.Height);
-                    System.Diagnostics.Debug.WriteLine("Mark stamp #3");
-                }
-                if (bmpCorrect != null)
-                {
-                    System.Diagnostics.Debug.WriteLine("Mark stamp #4");
-                    this.pctCorrect.Image = bmpCorrect;
-                    this.pctCorrect.Region = new Region(await GetRegionFromTransparentBitmap(bmpCorrect));
-                    System.Diagnostics.Debug.WriteLine("Mark stamp #5");
-                }
-            }
-            System.Diagnostics.Debug.WriteLine("Mark stamp #6");
-            if (pctWrong != null)
-            {
-                Bitmap bmpWrong = null;
+                
                 this.pctWrong.Size = new Size((int)(_nMinDimension * _fResultFactor), (int)(_nMinDimension * _fResultFactor));
                 this.pctWrong.Location = new System.Drawing.Point((this.Size.Width - pctWrong.Size.Width) / 2, (this.Size.Height - pctWrong.Size.Height) / 2);
-                if (_svgWrong != null)
+
+                bmpCorrect = _svgCorrect.Draw(this.pctCorrect.Width, this.pctCorrect.Height);
+                bmpWrong = _svgWrong.Draw(this.pctWrong.Width, this.pctWrong.Height);
+
+                System.Diagnostics.Debug.WriteLine("Mark stamp #1");
+                await Task.Run(() =>
                 {
-                    System.Diagnostics.Debug.WriteLine("Mark stamp #7");
-                    bmpWrong = await DrawSVG(_svgWrong, this.pctWrong.Width, this.pctWrong.Height);
-                    System.Diagnostics.Debug.WriteLine("Mark stamp #8");
-                }
-                if (bmpWrong != null)
-                {
-                    System.Diagnostics.Debug.WriteLine("Mark stamp #9");
-                    this.pctWrong.Image = bmpWrong;
-                    this.pctWrong.Region = new Region(await GetRegionFromTransparentBitmap(bmpWrong));
-                    System.Diagnostics.Debug.WriteLine("Mark stamp #10");
-                }
+                    System.Diagnostics.Debug.WriteLine("Mark stamp #2");
+                    rgCorrect = new Region(GetRegionFromTransparentBitmap(bmpCorrect));
+                    rgWrong = new Region(GetRegionFromTransparentBitmap(bmpWrong));
+                    System.Diagnostics.Debug.WriteLine("pctWrong size {0}x{1}", pctWrong.Width, pctWrong.Height);
+                    System.Diagnostics.Debug.WriteLine("bmpWrong size {0}x{1}", bmpWrong.Width, bmpWrong.Height);
+                    System.Diagnostics.Debug.WriteLine("Mark stamp #3");
+                });
+                System.Diagnostics.Debug.WriteLine("Mark stamp #4");
+                this.pctCorrect.Image = bmpCorrect;
+                this.pctCorrect.Region = rgCorrect;
+                this.pctWrong.Image = bmpWrong;
+                this.pctWrong.Region = rgWrong;
+                System.Diagnostics.Debug.WriteLine("Mark stamp #5");
             }
-            
-        }
+
+
+                /*
+                System.Diagnostics.Debug.WriteLine("Mark stamp #1");
+                if (pctCorrect != null)
+                {
+                    Bitmap bmpCorrect = null;
+                    this.pctCorrect.Size = new Size((int)(_nMinDimension * _fResultFactor), (int)(_nMinDimension * _fResultFactor));
+                    this.pctCorrect.Location = new System.Drawing.Point((this.Size.Width - pctCorrect.Size.Width) / 2, (this.Size.Height - pctCorrect.Size.Height) / 2);
+                    if (_svgCorrect != null)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Mark stamp #2");
+                        bmpCorrect = await DrawSVG(_svgCorrect, this.pctCorrect.Width, this.pctCorrect.Height);
+                        System.Diagnostics.Debug.WriteLine("Mark stamp #3");
+                    }
+                    if (bmpCorrect != null)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Mark stamp #4");
+                        this.pctCorrect.Image = bmpCorrect;
+                        this.pctCorrect.Region = new Region(await GetRegionFromTransparentBitmap(bmpCorrect));
+                        System.Diagnostics.Debug.WriteLine("Mark stamp #5");
+                    }
+                }
+                System.Diagnostics.Debug.WriteLine("Mark stamp #6");
+                if (pctWrong != null)
+                {
+                    Bitmap bmpWrong = null;
+                    this.pctWrong.Size = new Size((int)(_nMinDimension * _fResultFactor), (int)(_nMinDimension * _fResultFactor));
+                    this.pctWrong.Location = new System.Drawing.Point((this.Size.Width - pctWrong.Size.Width) / 2, (this.Size.Height - pctWrong.Size.Height) / 2);
+                    if (_svgWrong != null)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Mark stamp #7");
+                        bmpWrong = await DrawSVG(_svgWrong, this.pctWrong.Width, this.pctWrong.Height);
+                        System.Diagnostics.Debug.WriteLine("Mark stamp #8");
+                    }
+                    if (bmpWrong != null)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Mark stamp #9");
+                        this.pctWrong.Image = bmpWrong;
+                        this.pctWrong.Region = new Region(await GetRegionFromTransparentBitmap(bmpWrong));
+                        System.Diagnostics.Debug.WriteLine("Mark stamp #10");
+                    }
+                }
+                */
+
+            }
 
         public async Task Start(int[] numbers, int Time)
         {
@@ -743,7 +782,7 @@ namespace Controls
             return svgBitmap;
         }
 
-        private async Task<System.Drawing.Bitmap> DrawSVG(Svg.SvgDocument document, int width, int height)
+        private System.Drawing.Bitmap DrawSVG(Svg.SvgDocument document, int width, int height)
         {
             return document.Draw(width, height);
         }
@@ -756,7 +795,7 @@ namespace Controls
         /// </summary>
         /// <param name="bitmap"></param>
         /// <returns></returns>
-        private async Task<System.Drawing.Drawing2D.GraphicsPath> GetRegionFromTransparentBitmap (System.Drawing.Bitmap bitmap)
+        private System.Drawing.Drawing2D.GraphicsPath GetRegionFromTransparentBitmap (System.Drawing.Bitmap bitmap)
         {
             System.Drawing.Drawing2D.GraphicsPath region = new System.Drawing.Drawing2D.GraphicsPath();
 
@@ -791,8 +830,8 @@ namespace Controls
             // Marshal
             // This is a CPU-bound operation so we run it asyncronously on another thread
             // https://www.pluralsight.com/guides/using-task-run-async-await
-            await Task.Run(() =>
-            {
+            //await Task.Run(() =>
+            //{
 
                 byte[] imageBytes = new byte[Math.Abs(imageData.Stride) * bitmap.Height];
                 IntPtr scan0 = imageData.Scan0;
@@ -811,7 +850,7 @@ namespace Controls
                 }
                 System.Runtime.InteropServices.Marshal.Copy(imageBytes, 0, scan0, imageBytes.Length);
                 
-            });
+            //});
 
             bitmap.UnlockBits(imageData);
 
