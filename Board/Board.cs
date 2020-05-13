@@ -436,6 +436,9 @@ namespace Controls
                 bmpCorrect = _svgCorrect.Draw(this.pctCorrect.Width, this.pctCorrect.Height);
                 bmpWrong = _svgWrong.Draw(this.pctWrong.Width, this.pctWrong.Height);
 
+                //bmpCorrect = DrawSVG(_svgCorrect, this.pctCorrect.Width, this.pctCorrect.Height);
+                //bmpWrong = DrawSVG(_svgWrong, this.pctWrong.Width, this.pctWrong.Height);
+
                 System.Diagnostics.Debug.WriteLine("Mark stamp #1");
                 await Task.Run(() =>
                 {
@@ -445,13 +448,17 @@ namespace Controls
                     System.Diagnostics.Debug.WriteLine("pctWrong size {0}x{1}", pctWrong.Width, pctWrong.Height);
                     System.Diagnostics.Debug.WriteLine("bmpWrong size {0}x{1}", bmpWrong.Width, bmpWrong.Height);
                     System.Diagnostics.Debug.WriteLine("Mark stamp #3");
+
+                    this.pctCorrect.Image = bmpCorrect;
+                    if (this.pctCorrect.InvokeRequired) this.pctCorrect.Invoke((Action)(() => this.pctCorrect.Region = rgCorrect));
+                    else this.pctCorrect.Region = rgCorrect;
+                    this.pctWrong.Image = bmpWrong;
+                    if (this.pctWrong.InvokeRequired) this.pctWrong.Invoke((Action)(() => this.pctWrong.Region = rgWrong));
+                    else this.pctWrong.Region = rgWrong;
                 });
                 System.Diagnostics.Debug.WriteLine("Mark stamp #4");
-                this.pctCorrect.Image = bmpCorrect;
-                this.pctCorrect.Region = rgCorrect;
-                this.pctWrong.Image = bmpWrong;
-                this.pctWrong.Region = rgWrong;
-                System.Diagnostics.Debug.WriteLine("Mark stamp #5");
+                
+
             }
 
 
@@ -784,7 +791,10 @@ namespace Controls
 
         private System.Drawing.Bitmap DrawSVG(Svg.SvgDocument document, int width, int height)
         {
-            return document.Draw(width, height);
+            using (var bitmap = document.Draw(width, height))
+            {
+                return bitmap;
+            }
         }
 
         /// <summary>
@@ -794,10 +804,10 @@ namespace Controls
         /// and here: // https://social.msdn.microsoft.com/Forums/office/en-US/5d8220b8-a7fa-4b49-8567-7a39da8f79b7/vb2010-how-can-i-make-the-picturebox-realy-transparent?forum=vbgeneral
         /// </summary>
         /// <param name="bitmap"></param>
-        /// <returns></returns>
+        /// <returns>Path</returns>
         private System.Drawing.Drawing2D.GraphicsPath GetRegionFromTransparentBitmap (System.Drawing.Bitmap bitmap)
         {
-            System.Drawing.Drawing2D.GraphicsPath region = new System.Drawing.Drawing2D.GraphicsPath();
+            System.Drawing.Drawing2D.GraphicsPath regionPath = new System.Drawing.Drawing2D.GraphicsPath();
 
             // Check that we have a bitmap
             if (bitmap == null) return null;
@@ -837,13 +847,21 @@ namespace Controls
                 IntPtr scan0 = imageData.Scan0;
                 System.Runtime.InteropServices.Marshal.Copy(scan0, imageBytes, 0, imageBytes.Length);
                 int row = 0;
-                int col = 0;
+                int col;
                 for (int j = 0; j < imageData.Height; j++)
                 {
                     col = 0;
                     for (int i = 0; i < imageData.Width; i++)
                     {
-                        if (imageBytes[(row + col) + 3] > 0) region.AddRectangle(new Rectangle(i, j, 1, 1));
+                        // Loop until we find a non transparent pixel
+                        // https://www.codeguru.com/csharp/csharp/cs_misc/graphicsandimages/article.php/c4259/Converting-ColorKeyed-Bitmaps-to-Custom-Regions.htm
+                        int i0 = i;
+                        while((i < imageData.Width) && (imageBytes[(row + col) + 3] > 0))
+                        {
+                            i++;
+                            col += bytesPerPixel;
+                        }
+                        regionPath.AddRectangle(new Rectangle(i0, j, i-i0, 1));
                         col += bytesPerPixel;
                     }
                     row += imageData.Stride;
@@ -879,7 +897,9 @@ namespace Controls
                 }
             }
             */
-            return region;
+
+            return regionPath; 
+            
         }
 
         #endregion Private routines

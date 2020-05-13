@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Configuration;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -52,15 +53,13 @@ namespace MemoryNumbers
             _game.GameOver += async (object s, Game.OverEventArgs e) => await OnGameOver(s, e);
 
             // Read the program settings file and apply them
-            _programSettings = new ProgramSettings<string, string>();
-            LoadProgramSettings(_programSettings);
+            LoadProgramSettings(ref _programSettings);
+            
             _defaultSettings = new ProgramSettings<string, string>();
             LoadDefaultSettings(_defaultSettings);
             
             ApplySettings(_programSettings, _defaultSettings, true);
             
-            board1.Update();
-            //board1.Focus();
         }
 
         #region Initialization ToolStrip
@@ -174,16 +173,16 @@ namespace MemoryNumbers
             SaveProgramSettings(_programSettings);
         }
 
-        private async void Form1_Resize(object sender, EventArgs e)
+        private void Form1_Resize(object sender, EventArgs e)
         {
-            this.SuspendLayout();
-            board1.Top = tspTop.Height;
-            board1.Left = 0;
+            //this.SuspendLayout();
+            //board1.Top = tspTop.Height;
+            //board1.Left = 0;
             //board1.Size = new Size(this.ClientSize.Width, this.ClientSize.Height - tspTop.Height - tspBottom.Height);
-            this.ResumeLayout();
+            //this.ResumeLayout();
         }
 
-        private async void Form1_ResizeEnd(object sender, EventArgs e)
+        private void Form1_ResizeEnd(object sender, EventArgs e)
         {
 
         }
@@ -289,7 +288,7 @@ namespace MemoryNumbers
 
         private void toolStripMain_Settings_Click(object sender, EventArgs e)
         {
-            frmSettings form = new frmSettings(_programSettings);
+            frmSettings form = new frmSettings(_programSettings, _defaultSettings);
             form.ShowDialog(this);
             if (form.DialogResult == DialogResult.OK)
             {
@@ -312,7 +311,7 @@ namespace MemoryNumbers
         /// <summary>
         /// Loads any saved program settings.
         /// </summary>
-        private void LoadProgramSettings(ProgramSettings<string, string> settings)
+        private void LoadProgramSettings(ref ProgramSettings<string, string> settings)
         {
             // Load the saved window settings and resize the window.
             TextReader textReader = StreamReader.Null;
@@ -320,7 +319,7 @@ namespace MemoryNumbers
             {
                 textReader = new StreamReader(_programSettingsFileName);
                 System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(ProgramSettings<string, string>));
-                _programSettings = (ProgramSettings<string, string>)serializer.Deserialize(textReader);
+                settings = (ProgramSettings<string, string>)serializer.Deserialize(textReader);
                 textReader.Close();
             }
             catch (Exception ex)
@@ -331,7 +330,7 @@ namespace MemoryNumbers
                     using (new CenterWinDialog(this))
                     {
                         MessageBox.Show(this,
-                                        "Unexpected error while\nloading settings data",
+                                        "Unexpected error while\nloading settings data.",
                                         "Error",
                                         MessageBoxButtons.OK,
                                         MessageBoxIcon.Error);
@@ -408,7 +407,7 @@ namespace MemoryNumbers
             this._game.PlayMode = (PlayMode)Enum.Parse(typeof(PlayMode), programSettings.ContainsKey("PlayMode") ? programSettings["PlayMode"] : defaultSettings["PlayMode"]);
             this._game.Time = Convert.ToInt32(programSettings.ContainsKey("Time") ? programSettings["Time"] : defaultSettings["Time"]);
             this._game.TimeIncrement = Convert.ToInt32(programSettings.ContainsKey("TimeIncrement") ? programSettings["TimeIncrement"] : defaultSettings["TimeIncrement"]);
-            this.board1.Time = Convert.ToInt32(programSettings.ContainsKey("Time") ? programSettings["Time"] : defaultSettings["Time"]);
+            //this.board1.Time = Convert.ToInt32(programSettings.ContainsKey("Time") ? programSettings["Time"] : defaultSettings["Time"]);
             this.board1.BorderRatio = Convert.ToSingle(programSettings.ContainsKey("BorderRatio") ? programSettings["BorderRatio"] : defaultSettings["BorderRatio"]);
             this.board1.CountDownRatio = Convert.ToSingle(programSettings.ContainsKey("CountDownRatio") ? programSettings["CountDownRatio"] : defaultSettings["CountDownRatio"]);
             this.board1.NumbersRatio = Convert.ToSingle(programSettings.ContainsKey("NumbersRatio") ? programSettings["NumbersRatio"] : defaultSettings["NumbersRatio"]);
@@ -431,22 +430,22 @@ namespace MemoryNumbers
             settings["WindowWidth"] = this.ClientSize.Width.ToString();    // Get current form size
             settings["WindowHeight"] = this.ClientSize.Height.ToString();
 
-            settings["MaximumAttempts"] = "10";
-            settings["MaximumDigit"] = "9";
-            settings["MinimumDigit"] = "0";
             settings["Time"] = "700";
             settings["TimeIncrement"] = "0";
+            settings["MaximumDigit"] = "9";
+            settings["MinimumDigit"] = "0";
+            settings["MaximumAttempts"] = "10";
 
-            settings["BorderRatio"] = "0.12";
             settings["CountDownRatio"] = "0.37";
             settings["NumbersRatio"] = "0.25";
+            settings["BorderRatio"] = "0.12";
             settings["FontRatio"] = "0.55";
             settings["ResultsRatio"] = "0.56";
-            settings["WindowPosition"] = "1";
+            settings["WindowPosition"] = "1";   // Remember windows position
 
-            settings["PlayMode"] = "9";
+            settings["PlayMode"] = "9";     //Fixed time (1) & random sequence (8)
 
-            settings["Sound"] = "1";     // Sound on unchecked
+            settings["Sound"] = "1";        // Sound on unchecked
         }
 
 

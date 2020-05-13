@@ -15,6 +15,7 @@ namespace MemoryNumbers
     {
         // The return value
         public ProgramSettings<string, string> settings;
+        private ProgramSettings<string, string> _defaultSettings;
 
         public frmSettings()
         {
@@ -25,9 +26,10 @@ namespace MemoryNumbers
             if (System.IO.File.Exists(path + @"\images\settings.ico")) this.Icon = new Icon(path + @"\images\settings.ico");
         }
 
-        public frmSettings(ProgramSettings<string, string> _settings)
+        public frmSettings(ProgramSettings<string, string> _settings, ProgramSettings<string, string> _default)
             :this()
         {
+            /*
             try
             {
                 PlayMode play = (PlayMode)Convert.ToInt32(_settings["PlayMode"]);
@@ -53,10 +55,13 @@ namespace MemoryNumbers
             }
             catch (KeyNotFoundException e)
             {
-                
+                MessageBox.Show(this, "Unexpected error while applying settings.\nPlease report the error to the engineer.", "Settings error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            */
 
+            ApplySettings(_settings);
             settings = _settings;
+            _defaultSettings = _default;
             //_programSettings.ContainsKey("Sound") ?
 
         }
@@ -84,6 +89,65 @@ namespace MemoryNumbers
                                     ).ToString();
 
             Close(); 
+        }
+
+        private void ApplySettings(ProgramSettings<string, string> _settings)
+        {
+            try
+            {
+                PlayMode play = (PlayMode)Convert.ToInt32(_settings["PlayMode"]);
+                this.radProgressive.Checked = ((play & PlayMode.SequenceProgressive) == PlayMode.SequenceProgressive);
+                this.radRandom.Checked = ((play & PlayMode.SequenceRandom) == PlayMode.SequenceRandom);
+                this.radFixed.Checked = ((play & PlayMode.TimeFixed) == PlayMode.TimeFixed);
+                this.radIncremental.Checked = ((play & PlayMode.TimeIncremental) == PlayMode.TimeIncremental);
+                this.numTimeIncrement.Enabled = this.radIncremental.Checked;
+
+                this.numTime.Value = Convert.ToInt32(_settings["Time"]);
+                this.numTimeIncrement.Value = Convert.ToInt32(_settings["TimeIncrement"]);
+                this.numMaxDigit.Value = Convert.ToInt32(_settings["MaximumDigit"]);
+                this.numMinDigit.Value = Convert.ToInt32(_settings["MinimumDigit"]);
+                this.numMaxAttempts.Value = Convert.ToInt32(_settings["MaximumAttempts"]);
+
+                this.numCountRatio.Value = Convert.ToDecimal(_settings["CountDownRatio"]);
+                this.numNumbersRatio.Value = Convert.ToDecimal(_settings["NumbersRatio"]);
+                this.numBorderRatio.Value = Convert.ToDecimal(_settings["BorderRatio"]);
+                this.numFontRatio.Value = Convert.ToDecimal(_settings["FontRatio"]);
+                this.numResultsRatio.Value = Convert.ToDecimal(_settings["ResultsRatio"]);
+                this.checkBox1.Checked = Convert.ToInt32(_settings["WindowPosition"]) == 1 ? true : false;
+
+            }
+            catch (KeyNotFoundException e)
+            {
+                using (new CenterWinDialog(this))
+                {
+                    MessageBox.Show(this,
+                        "Unexpected error while applying settings.\nPlease report the error to the engineer.",
+                        "Settings error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            // Ask for overriding confirmation
+            DialogResult result;
+            using (new CenterWinDialog(this))
+            {
+                result = MessageBox.Show(this, "You are about to override the actual settings\n" +
+                                                "with the default values.\n\n" +
+                                                "Are you sure you want to continue?",
+                                                "Override settings",
+                                                MessageBoxButtons.YesNo,
+                                                MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            }
+
+            // If "Yes", then reset values to default
+            if (result == DialogResult.Yes)
+            {
+                ApplySettings(_defaultSettings);    
+            }
         }
 
         private void trackTime_ValueChanged(object sender, EventArgs e)

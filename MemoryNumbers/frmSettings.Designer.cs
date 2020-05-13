@@ -50,6 +50,7 @@
             this.trackTime = new System.Windows.Forms.TrackBar();
             this.lblTime = new System.Windows.Forms.Label();
             this.tabGUI = new System.Windows.Forms.TabPage();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.trackResultsRatio = new System.Windows.Forms.TrackBar();
             this.numResultsRatio = new System.Windows.Forms.NumericUpDown();
             this.lblResultsRatio = new System.Windows.Forms.Label();
@@ -67,7 +68,7 @@
             this.lblCountRatio = new System.Windows.Forms.Label();
             this.btnAccept = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.btnReset = new System.Windows.Forms.Button();
             this.tabSettings.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.grpTime.SuspendLayout();
@@ -350,6 +351,18 @@
             this.tabGUI.TabIndex = 1;
             this.tabGUI.Text = "Interface";
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox1.Location = new System.Drawing.Point(52, 229);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(266, 21);
+            this.checkBox1.TabIndex = 18;
+            this.checkBox1.Text = "Remember window position on startup";
+            this.checkBox1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // trackResultsRatio
             // 
             this.trackResultsRatio.Location = new System.Drawing.Point(240, 178);
@@ -562,17 +575,15 @@
             this.btnCancel.Text = "&Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
+            // btnReset
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox1.Location = new System.Drawing.Point(52, 229);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(266, 21);
-            this.checkBox1.TabIndex = 18;
-            this.checkBox1.Text = "Remember window position on startup";
-            this.checkBox1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.btnReset.Location = new System.Drawing.Point(16, 367);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(100, 28);
+            this.btnReset.TabIndex = 3;
+            this.btnReset.Text = "&Reset";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
             // frmSettings
             // 
@@ -581,6 +592,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(604, 407);
+            this.Controls.Add(this.btnReset);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnAccept);
             this.Controls.Add(this.tabSettings);
@@ -663,5 +675,6 @@
         private System.Windows.Forms.NumericUpDown numResultsRatio;
         private System.Windows.Forms.Label lblResultsRatio;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Button btnReset;
     }
 }
