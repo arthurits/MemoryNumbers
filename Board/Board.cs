@@ -319,6 +319,7 @@ namespace Controls
                 //FillColor = System.Drawing.Color.Transparent,
                 Name = "CountDown",
                 Parent = this,
+                RegionOffset = 1f,
                 Size = new System.Drawing.Size(100, 100),
                 StartingTime = 3F,
                 //TabIndex = 0,
@@ -330,7 +331,6 @@ namespace Controls
                 xRadius = 50F,
                 yRadius = 50F
             };
-            //this.countDown.Parent = this;
             this.countDown.TimerEnding += new EventHandler<TimerEndingEventArgs>(this.OnCountDownEnding);
             this.Controls.Add(countDown);
 
@@ -601,12 +601,13 @@ namespace Controls
                     Size = new Size(_nDiameter, _nDiameter),
                     xRadius = _nDiameter / 2f,
                     yRadius = _nDiameter / 2f,
+                    RegionOffset = 1f,
                     Text = numbers[i].ToString(),
                     VisibleBorder = false,
                     Visible = false
                 };
                 _roundButton[i].Font = new Font(_roundButton[i].Font.FontFamily, _fFontFactor * _nDiameter);
-                
+
                 do
                 {
                     regIntersec = regTotal.Clone();

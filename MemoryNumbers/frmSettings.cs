@@ -29,37 +29,37 @@ namespace MemoryNumbers
         public frmSettings(ProgramSettings<string, string> _settings, ProgramSettings<string, string> _default)
             :this()
         {
-            /*
+            
             try
             {
-                PlayMode play = (PlayMode)Convert.ToInt32(_settings["PlayMode"]);
+                PlayMode play = (PlayMode)Convert.ToInt32(_settings.ContainsKey("PlayMode") ? _settings["PlayMode"] : _default["PlayMode"]);
                 this.radProgressive.Checked = ((play & PlayMode.SequenceProgressive) == PlayMode.SequenceProgressive);
                 this.radRandom.Checked = ((play & PlayMode.SequenceRandom) == PlayMode.SequenceRandom);
                 this.radFixed.Checked = ((play & PlayMode.TimeFixed) == PlayMode.TimeFixed);
                 this.radIncremental.Checked = ((play & PlayMode.TimeIncremental) == PlayMode.TimeIncremental);
                 this.numTimeIncrement.Enabled = this.radIncremental.Checked;
+                this.trackTimeIncrement.Enabled = this.radIncremental.Checked;
 
-                this.numTime.Value = Convert.ToInt32(_settings["Time"]);
-                this.numTimeIncrement.Value = Convert.ToInt32(_settings["TimeIncrement"]);
-                this.numMaxDigit.Value = Convert.ToInt32(_settings["MaximumDigit"]);
-                this.numMinDigit.Value = Convert.ToInt32(_settings["MinimumDigit"]);
-                this.numMaxAttempts.Value = Convert.ToInt32(_settings["MaximumAttempts"]);
+                this.numTime.Value = Convert.ToInt32(_settings.ContainsKey("Time") ? _settings["Time"] : _default["Time"]);
+                this.numTimeIncrement.Value = Convert.ToInt32(_settings.ContainsKey("TimeIncrement") ? _settings["TimeIncrement"] : _default["TimeIncrement"]);
+                this.numMaxDigit.Value = Convert.ToInt32(_settings.ContainsKey("MaximumDigit") ? _settings["MaximumDigit"] : _default["MaximumDigit"]);
+                this.numMinDigit.Value = Convert.ToInt32(_settings.ContainsKey("MinimumDigit") ? _settings["MinimumDigit"] : _default["MinimumDigit"]);
+                this.numMaxAttempts.Value = Convert.ToInt32(_settings.ContainsKey("MaximumAttempts") ? _settings["MaximumAttempts"] : _default["MaximumAttempts"]);
 
-                this.numCountRatio.Value = Convert.ToDecimal(_settings["CountDownRatio"]);
-                this.numNumbersRatio.Value = Convert.ToDecimal(_settings["NumbersRatio"]);
-                this.numBorderRatio.Value = Convert.ToDecimal(_settings["BorderRatio"]);
-                this.numFontRatio.Value = Convert.ToDecimal(_settings["FontRatio"]);
-                this.numResultsRatio.Value = Convert.ToDecimal(_settings["ResultsRatio"]);
-                this.checkBox1.Checked = Convert.ToInt32(_settings["WindowPosition"]) == 1 ? true : false;
+                this.numCountRatio.Value = Convert.ToDecimal(_settings.ContainsKey("CountDownRatio") ? _settings["CountDownRatio"]: _default["CountDownRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+                this.numNumbersRatio.Value = Convert.ToDecimal(_settings.ContainsKey("NumbersRatio") ? _settings["NumbersRatio"] : _default["NumbersRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+                this.numBorderRatio.Value = Convert.ToDecimal(_settings.ContainsKey("BorderRatio") ? _settings["BorderRatio"] : _default["BorderRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+                this.numFontRatio.Value = Convert.ToDecimal(_settings.ContainsKey("FontRatio") ? _settings["FontRatio"] : _default["FontRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+                this.numResultsRatio.Value = Convert.ToDecimal(_settings.ContainsKey("ResultsRatio") ? _settings["ResultsRatio"] : _default["ResultsRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+                this.checkBox1.Checked = Convert.ToInt32(_settings.ContainsKey("WindowPosition") ? _settings["WindowPosition"] : _default["WindowPosition"]) == 1 ? true : false;
 
             }
             catch (KeyNotFoundException e)
             {
                 MessageBox.Show(this, "Unexpected error while applying settings.\nPlease report the error to the engineer.", "Settings error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            */
-
-            ApplySettings(_settings);
+            
+            //ApplySettings(_settings);
             settings = _settings;
             _defaultSettings = _default;
             //_programSettings.ContainsKey("Sound") ?
@@ -74,11 +74,11 @@ namespace MemoryNumbers
             settings["MinimumDigit"] = this.numMinDigit.Value.ToString();
             settings["MaximumAttempts"] = this.numMaxAttempts.Value.ToString();
 
-            settings["CountDownRatio"] = this.numCountRatio.Value.ToString();
-            settings["NumbersRatio"] = this.numNumbersRatio.Value.ToString();
-            settings["BorderRatio"] = this.numBorderRatio.Value.ToString();
-            settings["FontRatio"] = this.numFontRatio.Value.ToString();
-            settings["ResultsRatio"] = this.numResultsRatio.Value.ToString();
+            settings["CountDownRatio"] = this.numCountRatio.Value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            settings["NumbersRatio"] = this.numNumbersRatio.Value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            settings["BorderRatio"] = this.numBorderRatio.Value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            settings["FontRatio"] = this.numFontRatio.Value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            settings["ResultsRatio"] = this.numResultsRatio.Value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             settings["WindowPosition"] = (this.checkBox1.Checked ? 1 : 0).ToString();
 
             settings["PlayMode"] = (
@@ -101,6 +101,7 @@ namespace MemoryNumbers
                 this.radFixed.Checked = ((play & PlayMode.TimeFixed) == PlayMode.TimeFixed);
                 this.radIncremental.Checked = ((play & PlayMode.TimeIncremental) == PlayMode.TimeIncremental);
                 this.numTimeIncrement.Enabled = this.radIncremental.Checked;
+                this.trackTimeIncrement.Enabled = this.radIncremental.Checked;
 
                 this.numTime.Value = Convert.ToInt32(_settings["Time"]);
                 this.numTimeIncrement.Value = Convert.ToInt32(_settings["TimeIncrement"]);
@@ -108,11 +109,11 @@ namespace MemoryNumbers
                 this.numMinDigit.Value = Convert.ToInt32(_settings["MinimumDigit"]);
                 this.numMaxAttempts.Value = Convert.ToInt32(_settings["MaximumAttempts"]);
 
-                this.numCountRatio.Value = Convert.ToDecimal(_settings["CountDownRatio"]);
-                this.numNumbersRatio.Value = Convert.ToDecimal(_settings["NumbersRatio"]);
-                this.numBorderRatio.Value = Convert.ToDecimal(_settings["BorderRatio"]);
-                this.numFontRatio.Value = Convert.ToDecimal(_settings["FontRatio"]);
-                this.numResultsRatio.Value = Convert.ToDecimal(_settings["ResultsRatio"]);
+                this.numCountRatio.Value = Convert.ToDecimal(_settings["CountDownRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+                this.numNumbersRatio.Value = Convert.ToDecimal(_settings["NumbersRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+                this.numBorderRatio.Value = Convert.ToDecimal(_settings["BorderRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+                this.numFontRatio.Value = Convert.ToDecimal(_settings["FontRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+                this.numResultsRatio.Value = Convert.ToDecimal(_settings["ResultsRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 this.checkBox1.Checked = Convert.ToInt32(_settings["WindowPosition"]) == 1 ? true : false;
 
             }

@@ -55,6 +55,7 @@ namespace Controls
         private float _fBorderWidth = 1f;
         private float _xRadius = 0f;
         private float _yRadius = 0f;
+        private float _fRegionOffset = 0f;
         private Color _cBorderColor = Color.Black;
         private Color _cFillColor = Color.Transparent;
         private int _nWidth;
@@ -98,6 +99,17 @@ namespace Controls
         {
             get { return _yRadius; }
             set { _yRadius = value < 0 ? 0f : value; Invalidate(); }
+        }
+
+        [Description("Region offset of the control (typically 1 px)"),
+        Category("Rounded properties"),
+        Browsable(true),
+        EditorBrowsable(EditorBrowsableState.Always),
+        DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public float RegionOffset
+        {
+            get { return _fRegionOffset; }
+            set { _fRegionOffset = value; Invalidate(); }
         }
 
         [Description("Border color"),
@@ -232,11 +244,13 @@ namespace Controls
         protected override void OnPaint(PaintEventArgs e)
         {
             Graphics dc = e.Graphics;
-            dc.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            dc.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-            RectangleF rectOut = new RectangleF(0.5f, 0.5f, this.ClientRectangle.Width - 1, this.ClientRectangle.Height - 1);
-            RectangleF rectIn = RectangleF.Inflate(rectOut, -_fBorderWidth, -_fBorderWidth);
-            RectangleF rectRegion = RectangleF.Inflate(rectOut, 0.5f, 0.5f);
+            //RectangleF rectOut = new RectangleF(0.5f, 0.5f, this.ClientRectangle.Width - 1, this.ClientRectangle.Height - 1);
+            RectangleF rectOut = new RectangleF(_fRegionOffset / 2, _fRegionOffset / 2, this.ClientRectangle.Width - _fRegionOffset, this.ClientRectangle.Height - _fRegionOffset);
+            RectangleF rectIn = RectangleF.Inflate(rectOut, -_fBorderWidth, -_fBorderWidth);                // Mantains the rectangle's geometric center.
+            //RectangleF rectRegion = RectangleF.Inflate(rectOut, 0.5f, 0.5f);
+            RectangleF rectRegion = RectangleF.Inflate(rectOut, _fRegionOffset / 2, _fRegionOffset / 2);    // Inflates in both + and - directions, hence _fRegionOffset / 2 for a total of _fRegionOffset
 
             GraphicsPath path = MakeRoundedRect(rectOut, _xRadius, _yRadius);
             dc.FillPath(new SolidBrush(_cFillColor), path);
@@ -247,7 +261,8 @@ namespace Controls
                 dc.FillPath(new SolidBrush(_cBorderColor), path);
             }
 
-            this.Region = new Region(MakeRoundedRect(rectRegion, _xRadius + 0.5f, _yRadius + 0.5f));
+            //this.Region = new Region(MakeRoundedRect(rectRegion, _xRadius + 0.5f, _yRadius + 0.5f));
+            this.Region = new Region(MakeRoundedRect(rectRegion, _xRadius + _fRegionOffset / 2, _yRadius + _fRegionOffset / 2));
             this.lblText.Padding = new Padding((int)(this.lblText.Font.SizeInPoints / 6), 0, 0, 0);
             //this.lblText.Region = this.Region;
 
