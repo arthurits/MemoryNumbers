@@ -7,6 +7,8 @@ This is a multiproject .NET C# WinForms game to train your short-term memory. It
 
 Copyright © 2020 by arthurits
 
+[What's Happening](#whats-happening)   |   [Downloading & Release notes][github-release-link]
+
 Latest release: alpha v0.2   |   [Downloading & release notes][github-release-link]
 
 ## How to play
