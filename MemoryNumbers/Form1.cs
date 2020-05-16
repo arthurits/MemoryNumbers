@@ -220,7 +220,11 @@ namespace MemoryNumbers
             // Keep the game going on
             if (_game.Start())
             {
-                board1.Start(_game.GetSequence, _game.TimeTotal);
+                if (await board1.Start(_game.GetSequence, _game.TimeTotal) == false)
+                {
+                    toolStripMain_Stop_Click(null, null);
+                    MessageBox.Show("Could not place the buttons on the screen.\nPlease, try reducing the 'numbers ratio' paremeter in\nthe Settings (between 0.25 - 0.30).", "Error placing numbers", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
 
         }
@@ -240,7 +244,11 @@ namespace MemoryNumbers
             _game.CurrentScore -= 2;
             if (_game.Start())
             {
-                board1.Start(_game.GetSequence, _game.TimeTotal);
+                if (await board1.Start(_game.GetSequence, _game.TimeTotal) == false)
+                {
+                    toolStripMain_Stop_Click(null, null);
+                    MessageBox.Show("Could not place the buttons on the screen.\nPlease, try reducing the 'numbers ratio' paremeter in\nthe Settings (between 0.25 - 0.30).", "Error placing numbers", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
 
         }
@@ -261,7 +269,7 @@ namespace MemoryNumbers
             Close();
         }
 
-        private void toolStripMain_Start_Click(object sender, EventArgs e)
+        private async void toolStripMain_Start_Click(object sender, EventArgs e)
         {
             //countDown1.Start();
             //_game.CurrentScore = _game.MinimumLength - 1;
@@ -274,13 +282,24 @@ namespace MemoryNumbers
             if (_game.Start())
             {
                 board1.Visible = true;
-                board1.Start(_game.GetSequence, _game.TimeTotal);
+                if (await board1.Start(_game.GetSequence, _game.TimeTotal) == false)
+                {
+                    toolStripMain_Stop_Click(null, null);
+                    MessageBox.Show("Could not place the buttons on the screen.\nPlease, try reducing the 'numbers ratio' paremeter in\nthe Settings (between 0.25 - 0.30).", "Error placing numbers", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             else
             {
                 MessageBox.Show("Could not start the game.\nUnexpected error.", "Error StartClick", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             
+        }
+
+        private void toolStripMain_Stop_Click(object sender, EventArgs e)
+        {
+            board1.ClearBoard();
+            this.toolStripStatusLabel_Secuence.Text = "";
+            this.toolStripStatusLabel_Secuence.Invalidate();
         }
 
         private void toolStripMain_Sound_CheckedChanged(object sender, EventArgs e)
@@ -489,8 +508,8 @@ namespace MemoryNumbers
         }
 
 
-        #endregion Application settings
 
+        #endregion Application settings
 
     }
 }

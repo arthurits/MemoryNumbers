@@ -169,6 +169,8 @@ namespace Controls
             set
             {
                 _fNumbersFactor = value < 0 ? 0f : value;
+                _nMinDimension = Math.Min(this.Width, this.Height);
+                _nDiameter = (int)(_nMinDimension * _fNumbersFactor);
             }
         }
 
@@ -507,7 +509,7 @@ namespace Controls
 
             }
 
-        public async Task Start(int[] numbers, int Time)
+        public async Task<bool> Start(int[] numbers, int Time)
         {
             /*
             new System.Threading.Thread(() =>
@@ -522,7 +524,7 @@ namespace Controls
             this.pctWrong.Visible = false;
             this.pctCorrect.Visible = false;
 
-            Task CreateButtonsTask = CreateButtons(numbers);
+            Task<bool> CreateButtonsTask = CreateButtons(numbers);
             // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/;
 
             await Task.Delay(400);
@@ -532,9 +534,9 @@ namespace Controls
             countDown.Start();
             //countDown.Visible = false;
             
-            await CreateButtonsTask;
+            bool result = await CreateButtonsTask;
 
-            return;
+            return result;
         }
 
         // https://stackoverflow.com/questions/2367718/automating-the-invokerequired-code-pattern
@@ -573,14 +575,21 @@ namespace Controls
             }
         }
 
-        public async Task CreateButtons (int[] numbers)
+        public async Task<bool> CreateButtons (int[] numbers)
         {
             bool bIntersection = false;
+            bool result = true;
             Random rnd = new Random();
             Region regTotal = new Region();
             Region regIntersec = new Region();
             Graphics g = this.CreateGraphics();
             _nSequenceLength = numbers.Length;
+
+            int nPartialAttempts = 0;
+            int nTotalAttempts = 0;
+            const int nMaxPartialAttempts = 12;
+            const int nMaxTotalAttempts = 250;
+
 
             regTotal.MakeEmpty();
             //reg1.Union(this.Region);
@@ -589,6 +598,7 @@ namespace Controls
             this.SuspendLayout();
             DeleteButtons();
             _roundButton = new Controls.RoundButton[numbers.Length];
+            
             // Create the buttons
             for (int i = 0; i < _nSequenceLength; i++)
             {
@@ -608,39 +618,54 @@ namespace Controls
                 };
                 _roundButton[i].Font = new Font(_roundButton[i].Font.FontFamily, _fFontFactor * _nDiameter);
 
+                nPartialAttempts = 0;
                 do
                 {
                     regIntersec = regTotal.Clone();
                     _roundButton[i].Location = new Point(rnd.Next(0, this.Width - _nDiameter), rnd.Next(0, this.Height - _nDiameter));
                     regIntersec.Intersect(_roundButton[i].Bounds);
-                    bIntersection = !regIntersec.IsEmpty(g);
+                    bIntersection = regIntersec.IsEmpty(g);
+                    nPartialAttempts++;
+                    nTotalAttempts++;
 
-                } while (bIntersection);
+                } while (!bIntersection && nPartialAttempts <= nMaxPartialAttempts && nTotalAttempts <= nMaxTotalAttempts);
 
-                if (!bIntersection)
+                // Different scenarios
+                if (bIntersection)      // The new button does not overlap the previous ones
                 {
                     _roundButton[i].ButtonClick += new EventHandler<RoundButton.ButtonClickEventArgs>(this.ButtonClicked);
                     this.Controls.Add(_roundButton[i]);
                     regTotal.Union(_roundButton[i].Bounds);
-                    //regIntersect = reg1.Clone();
                 }
-                else
+                else if (!bIntersection && nTotalAttempts <= nMaxTotalAttempts)     // The new button overlaps but we still have more attempts avaliable
                 {
-
+                    if ((i - 2) >= 0)   // If the 3rd button (or above) could not be placed, then delete the previous one (go back two buttons)
+                    {
+                        regTotal.Exclude(_roundButton[i - 1].Bounds);
+                        i -= 2;
+                    }
+                    else   // We get here only when the 2nd button could not be placed, so just try again
+                    {
+                        i--;
+                    }
+                }
+                else if (!bIntersection && nTotalAttempts > nMaxTotalAttempts)     // The new button overlaps and we have run out of attempts
+                {
+                    result = false;
                 }
 
             }
             this.ResumeLayout();
 
-            //_nSequence = new int[numbers.Length];
-            //Array.Copy(numbers, _nSequence, numbers.Length);
+            // Set index pointer to the array's beginning
             _nSequenceCounter = 0;
 
+            // Clean up
             regTotal.Dispose();
             regIntersec.Dispose();
             g.Dispose();
 
-            return;
+            return result;
         }
 
         /// <summary>
@@ -685,6 +710,8 @@ namespace Controls
         /// </summary>
         public void ClearBoard()
         {
+            countDown.Stop();
+            countDown.Visible = false;
             if (pctCorrect.Visible)
                 pctCorrect.Visible = false;
             if (pctWrong.Visible)

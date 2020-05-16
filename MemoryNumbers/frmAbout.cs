@@ -111,5 +111,36 @@ namespace MemoryNumbers
             if (System.IO.File.Exists(path + @"\images\logo@256.png")) this.logoPictureBox.Image = new Bitmap(path + @"\images\logo@256.png");
         }
 
+        [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
+        protected override void WndProc(ref Message m)
+        {
+            const int WM_PARENTNOTIFY = 0x210;
+            const int WM_LBUTTONDOWN = 0x201;
+            const int WM_KEYDOWN = 0x100;
+            const int WM_KEYUP = 0x101;
+            const int KEY_ESC = 0x1B;
+            const int KEY_ENTER = 0x0D;
+            // https://stackoverflow.com/questions/27646476/how-to-fire-form-click-event-even-when-clicking-on-user-controls-in-c-sharp
+            if (m.Msg == WM_PARENTNOTIFY && m.WParam.ToInt32() == WM_LBUTTONDOWN)
+            {
+                this.Close();
+                /*
+                // get the clicked position
+                var x = (int)(m.LParam.ToInt32() & 0xFFFF);
+                var y = (int)(m.LParam.ToInt32() >> 16);
+
+                // get the clicked control
+                var childControl = this.GetChildAtPoint(new Point(x, y));
+
+                // call onClick (which fires Click event)
+                OnClick(EventArgs.Empty)
+                */
+                // do something else...
+            }
+            else if (m.Msg == WM_KEYUP && ((m.WParam.ToInt32() == KEY_ESC) | (m.WParam.ToInt32() == KEY_ENTER)))
+                this.Close();
+
+            base.WndProc(ref m);
+        }
     }
 }

@@ -152,6 +152,7 @@
             this.okButton.Size = new System.Drawing.Size(100, 27);
             this.okButton.TabIndex = 24;
             this.okButton.Text = "&Accept";
+            this.okButton.Visible = false;
             // 
             // frmAbout
             // 

@@ -148,6 +148,7 @@
             this.toolStripMain_Stop.Text = "Stop";
             this.toolStripMain_Stop.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripMain_Stop.ToolTipText = "Stop the game";
+            this.toolStripMain_Stop.Click += new System.EventHandler(this.toolStripMain_Stop_Click);
             // 
             // toolStripSeparator2
             // 
@@ -218,6 +219,7 @@
             this.roundButton1.Font = new System.Drawing.Font("Microsoft Sans Serif", 50F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.roundButton1.Location = new System.Drawing.Point(75, 91);
             this.roundButton1.Name = "roundButton1";
+            this.roundButton1.RegionOffset = 0F;
             this.roundButton1.Size = new System.Drawing.Size(224, 144);
             this.roundButton1.TabIndex = 1;
             this.roundButton1.Text = "0";
@@ -240,6 +242,7 @@
             this.countDown1.Margin = new System.Windows.Forms.Padding(20, 18, 20, 18);
             this.countDown1.Name = "countDown1";
             this.countDown1.PlaySounds = false;
+            this.countDown1.RegionOffset = 0F;
             this.countDown1.Size = new System.Drawing.Size(100, 100);
             this.countDown1.StartingTime = 5F;
             this.countDown1.TabIndex = 2;
