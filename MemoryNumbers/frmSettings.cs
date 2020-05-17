@@ -51,6 +51,7 @@ namespace MemoryNumbers
                 this.numBorderRatio.Value = Convert.ToDecimal(_settings.ContainsKey("BorderRatio") ? _settings["BorderRatio"] : _default["BorderRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 this.numFontRatio.Value = Convert.ToDecimal(_settings.ContainsKey("FontRatio") ? _settings["FontRatio"] : _default["FontRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 this.numResultsRatio.Value = Convert.ToDecimal(_settings.ContainsKey("ResultsRatio") ? _settings["ResultsRatio"] : _default["ResultsRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+                this.pctBackColor.BackColor = Color.FromArgb(Convert.ToInt32(_settings.ContainsKey("BackColor") ? _settings["BackColor"] : _default["BackColor"]));
                 this.checkBox1.Checked = Convert.ToInt32(_settings.ContainsKey("WindowPosition") ? _settings["WindowPosition"] : _default["WindowPosition"]) == 1 ? true : false;
 
             }
@@ -79,6 +80,7 @@ namespace MemoryNumbers
             settings["BorderRatio"] = this.numBorderRatio.Value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             settings["FontRatio"] = this.numFontRatio.Value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             settings["ResultsRatio"] = this.numResultsRatio.Value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+            settings["BackColor"] = this.pctBackColor.BackColor.ToArgb().ToString();
             settings["WindowPosition"] = (this.checkBox1.Checked ? 1 : 0).ToString();
 
             settings["PlayMode"] = (
@@ -114,6 +116,7 @@ namespace MemoryNumbers
                 this.numBorderRatio.Value = Convert.ToDecimal(_settings["BorderRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 this.numFontRatio.Value = Convert.ToDecimal(_settings["FontRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 this.numResultsRatio.Value = Convert.ToDecimal(_settings["ResultsRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
+                this.pctBackColor.BackColor = Color.FromArgb(Convert.ToInt32(settings["BackColor"]));
                 this.checkBox1.Checked = Convert.ToInt32(_settings["WindowPosition"]) == 1 ? true : false;
 
             }
@@ -243,6 +246,23 @@ namespace MemoryNumbers
                 numTimeIncrement.Enabled = false;
                 trackTimeIncrement.Enabled = false;
             }
+        }
+
+        private void pctBackColor_Click(object sender, EventArgs e)
+        {
+            ColorDialog ColorPicker = new ColorDialog();
+            ColorPicker.AllowFullOpen = true;
+            ColorPicker.AnyColor = true;
+            ColorPicker.FullOpen = true;
+            ColorPicker.SolidColorOnly = false;
+            ColorPicker.ShowHelp = true;
+            
+            // Sets the initial color select to the current text color.
+            ColorPicker.Color = pctBackColor.BackColor;
+
+            // Update the text box color if the user clicks OK 
+            if (ColorPicker.ShowDialog() == DialogResult.OK)
+                pctBackColor.BackColor = ColorPicker.Color;
         }
 
 

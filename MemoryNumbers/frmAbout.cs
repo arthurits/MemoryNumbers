@@ -116,12 +116,13 @@ namespace MemoryNumbers
         {
             const int WM_PARENTNOTIFY = 0x210;
             const int WM_LBUTTONDOWN = 0x201;
+            const int WM_LBUTTONUP = 0x0202;
             const int WM_KEYDOWN = 0x100;
             const int WM_KEYUP = 0x101;
-            const int KEY_ESC = 0x1B;
-            const int KEY_ENTER = 0x0D;
+            const int VK_ESCAPE = 0x1B;
+            const int VK_RETURN = 0x0D;
             // https://stackoverflow.com/questions/27646476/how-to-fire-form-click-event-even-when-clicking-on-user-controls-in-c-sharp
-            if (m.Msg == WM_PARENTNOTIFY && m.WParam.ToInt32() == WM_LBUTTONDOWN)
+            if (m.Msg == WM_PARENTNOTIFY && m.WParam.ToInt32() == WM_LBUTTONUP)
             {
                 this.Close();
                 /*
@@ -137,7 +138,7 @@ namespace MemoryNumbers
                 */
                 // do something else...
             }
-            else if (m.Msg == WM_KEYUP && ((m.WParam.ToInt32() == KEY_ESC) | (m.WParam.ToInt32() == KEY_ENTER)))
+            else if (m.Msg == WM_KEYUP && ((m.WParam.ToInt32() == VK_ESCAPE) | (m.WParam.ToInt32() == VK_RETURN)))
                 this.Close();
 
             base.WndProc(ref m);

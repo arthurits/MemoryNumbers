@@ -17,6 +17,9 @@ namespace Controls
     {
         #region Private variables
 
+        const int nMaxPartialAttempts = 12;
+        const int nMaxTotalAttempts = 250;
+
         private Controls.RoundButton[] _roundButton;
         private Controls.CountDown countDown;
         private System.Windows.Forms.PictureBox pctCorrect;
@@ -587,10 +590,7 @@ namespace Controls
 
             int nPartialAttempts = 0;
             int nTotalAttempts = 0;
-            const int nMaxPartialAttempts = 12;
-            const int nMaxTotalAttempts = 250;
-
-
+            
             regTotal.MakeEmpty();
             //reg1.Union(this.Region);
 
@@ -778,7 +778,27 @@ namespace Controls
             // If no sounds are to be played, then exit
             if (!_sound)
             {
-                Task.Delay(100);
+                switch ((int)type)
+                {
+                    case 0:
+                        Task.Delay(600);
+                        break;
+                    case 1:
+                        Task.Delay(339);
+                        break;
+                    case 2:
+                        Task.Delay(5548);
+                        break;
+                    case 3:
+                        Task.Delay(522);
+                        break;
+                    case 4:
+                        Task.Delay(522);
+                        break;
+                    case 5:
+                        Task.Delay(724);
+                        break;
+                }
                 return;
             }
 
@@ -788,9 +808,29 @@ namespace Controls
                 if (mode == AudioSoundMode.Sync) _soundPlayer[(int)type].PlaySync();
                 else if (mode == AudioSoundMode.Async) _soundPlayer[(int)type].Play();
             }
-            else
+            else    // If no sound file was loaded, then wait the corresponding miliseconds
             {
-                Task.Delay(100);
+                switch ((int)type)
+                {
+                    case 0:
+                        Task.Delay(600);
+                        break;
+                    case 1:
+                        Task.Delay(339);
+                        break;
+                    case 2:
+                        Task.Delay(548);
+                        break;
+                    case 3:
+                        Task.Delay(522);
+                        break;
+                    case 4:
+                        Task.Delay(522);
+                        break;
+                    case 5:
+                        Task.Delay(724);
+                        break;
+                }
             }
         }
 

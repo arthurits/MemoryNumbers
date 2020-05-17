@@ -69,6 +69,8 @@
             this.btnAccept = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
+            this.lblBackColor = new System.Windows.Forms.Label();
+            this.pctBackColor = new System.Windows.Forms.PictureBox();
             this.tabSettings.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.grpTime.SuspendLayout();
@@ -92,6 +94,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numBorderRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numNumbersRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCountRatio)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pctBackColor)).BeginInit();
             this.SuspendLayout();
             // 
             // tabSettings
@@ -327,6 +330,8 @@
             // tabGUI
             // 
             this.tabGUI.BackColor = System.Drawing.Color.White;
+            this.tabGUI.Controls.Add(this.pctBackColor);
+            this.tabGUI.Controls.Add(this.lblBackColor);
             this.tabGUI.Controls.Add(this.checkBox1);
             this.tabGUI.Controls.Add(this.trackResultsRatio);
             this.tabGUI.Controls.Add(this.numResultsRatio);
@@ -355,7 +360,7 @@
             // 
             this.checkBox1.AutoSize = true;
             this.checkBox1.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox1.Location = new System.Drawing.Point(52, 229);
+            this.checkBox1.Location = new System.Drawing.Point(52, 275);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(266, 21);
             this.checkBox1.TabIndex = 18;
@@ -585,6 +590,26 @@
             this.btnReset.UseVisualStyleBackColor = true;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
+            // lblBackColor
+            // 
+            this.lblBackColor.AutoSize = true;
+            this.lblBackColor.Location = new System.Drawing.Point(52, 228);
+            this.lblBackColor.Name = "lblBackColor";
+            this.lblBackColor.Size = new System.Drawing.Size(119, 17);
+            this.lblBackColor.TabIndex = 19;
+            this.lblBackColor.Text = "Board back color:";
+            // 
+            // pctBackColor
+            // 
+            this.pctBackColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pctBackColor.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pctBackColor.Location = new System.Drawing.Point(183, 224);
+            this.pctBackColor.Name = "pctBackColor";
+            this.pctBackColor.Size = new System.Drawing.Size(25, 25);
+            this.pctBackColor.TabIndex = 20;
+            this.pctBackColor.TabStop = false;
+            this.pctBackColor.Click += new System.EventHandler(this.pctBackColor_Click);
+            // 
             // frmSettings
             // 
             this.AcceptButton = this.btnAccept;
@@ -629,6 +654,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numBorderRatio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numNumbersRatio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCountRatio)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pctBackColor)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -676,5 +702,7 @@
         private System.Windows.Forms.Label lblResultsRatio;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.PictureBox pctBackColor;
+        private System.Windows.Forms.Label lblBackColor;
     }
 }
