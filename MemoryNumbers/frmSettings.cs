@@ -259,10 +259,12 @@ namespace MemoryNumbers
             
             // Sets the initial color select to the current text color.
             ColorPicker.Color = pctBackColor.BackColor;
-
-            // Update the text box color if the user clicks OK 
-            if (ColorPicker.ShowDialog() == DialogResult.OK)
-                pctBackColor.BackColor = ColorPicker.Color;
+            using (new CenterWinDialog(this.Owner))
+            {
+                // Update the text box color if the user clicks OK 
+                if (ColorPicker.ShowDialog() == DialogResult.OK)
+                    pctBackColor.BackColor = ColorPicker.Color;
+            }
         }
 
 

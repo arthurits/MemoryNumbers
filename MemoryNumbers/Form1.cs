@@ -61,7 +61,7 @@ namespace MemoryNumbers
             if (_programSettings == null) _programSettings = _defaultSettings;
 
             ApplySettings(_programSettings, _defaultSettings, true);
-            
+
         }
 
         #region Initialization ToolStrip

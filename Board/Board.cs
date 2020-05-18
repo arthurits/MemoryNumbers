@@ -739,7 +739,7 @@ namespace Controls
         private async Task ShowError(int sequenceError)
         {
             this.SuspendLayout();
-            while (sequenceError< _roundButton.Length)
+            while (sequenceError < _roundButton.Length)
             {
                 _roundButton[sequenceError].VisibleText = true;
                 _roundButton[sequenceError].VisibleBorder = false;
