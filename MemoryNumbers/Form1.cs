@@ -376,6 +376,7 @@ namespace MemoryNumbers
             settings["WindowHeight"] = this.ClientSize.Height.ToString();
 
             settings["Sound"] = this.toolStripMain_Sound.Checked == true ? "0" : "1";
+            settings["Stats"] = this.toolStripMain_Sound.Checked == true ? "1" : "0";
 
             // Save window settings.
             TextWriter textWriter = StreamWriter.Null;
@@ -439,6 +440,7 @@ namespace MemoryNumbers
             this.board1.BackColor = Color.FromArgb(Convert.ToInt32(programSettings.ContainsKey("BackColor") ? programSettings["BackColor"] : defaultSettings["BackColor"]));
 
             this.toolStripMain_Sound.Checked = Convert.ToInt32((programSettings.ContainsKey("Sound") ? programSettings["Sound"] : defaultSettings["Sound"])) == 0 ? true : false;
+            this.toolStripMain_Graph.Checked = Convert.ToInt32((programSettings.ContainsKey("Stats") ? programSettings["Stats"] : defaultSettings["Stats"])) == 0 ? false : true;
             //this.toolStripMain_Sound.Checked = programSettings.ContainsKey("Sound") ? (Convert.ToInt32(programSettings["Sound"]) == 0 ? true : false) : false;
             this.board1.PlaySounds = !this.toolStripMain_Sound.Checked;
         }
@@ -470,7 +472,8 @@ namespace MemoryNumbers
 
             settings["PlayMode"] = "9";     //Fixed time (1) & random sequence (8)
 
-            settings["Sound"] = "1";        // Sound on unchecked
+            settings["Sound"] = "1";        // Soundoff unchecked
+            settings["Stats"] = "0";        // Stats unchecked
         }
 
 

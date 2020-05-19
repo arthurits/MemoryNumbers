@@ -674,7 +674,7 @@ namespace Controls
         /// <returns></returns>
         public async Task ButtonRight()
         {
-            PlayAudioFile(AudioSoundType.NumberCorrect, AudioSoundMode.Async);
+            await PlayAudioFile(AudioSoundType.NumberCorrect, AudioSoundMode.Async);
         }
 
         /// <summary>
@@ -775,63 +775,44 @@ namespace Controls
         /// <returns></returns>
         private async Task PlayAudioFile(AudioSoundType type, AudioSoundMode mode)
         {
-            // If no sounds are to be played, then exit
-            if (!_sound)
+            // If no sounds are to be played or the sound file wasn't loaded, then wait the corresponding miliseconds
+            if (!_sound || _soundPlayer[(int)type] == null)
             {
                 switch ((int)type)
                 {
                     case 0:
-                        Task.Delay(600);
+                        //Task.Delay(600);
+                        System.Threading.Thread.Sleep(200);
                         break;
                     case 1:
-                        Task.Delay(339);
+                        //Task.Delay(339);
+                        System.Threading.Thread.Sleep(339);
                         break;
                     case 2:
-                        Task.Delay(5548);
+                        //Task.Delay(548);
+                        System.Threading.Thread.Sleep(548);
                         break;
                     case 3:
-                        Task.Delay(522);
+                        //Task.Delay(522);
+                        System.Threading.Thread.Sleep(522);
                         break;
                     case 4:
-                        Task.Delay(522);
+                        //Task.Delay(522);
+                        //System.Threading.Thread.Sleep(522);
                         break;
                     case 5:
-                        Task.Delay(724);
+                        //Task.Delay(724);
+                        //System.Threading.Thread.Sleep(724);
                         break;
                 }
                 return;
-            }
-
-            // Else, play the selected sound in the selected mode
-            if (_soundPlayer[(int)type] != null)
+            }           
+            else    // Else, play the selected sound in the selected mode
             {
                 if (mode == AudioSoundMode.Sync) _soundPlayer[(int)type].PlaySync();
                 else if (mode == AudioSoundMode.Async) _soundPlayer[(int)type].Play();
             }
-            else    // If no sound file was loaded, then wait the corresponding miliseconds
-            {
-                switch ((int)type)
-                {
-                    case 0:
-                        Task.Delay(600);
-                        break;
-                    case 1:
-                        Task.Delay(339);
-                        break;
-                    case 2:
-                        Task.Delay(548);
-                        break;
-                    case 3:
-                        Task.Delay(522);
-                        break;
-                    case 4:
-                        Task.Delay(522);
-                        break;
-                    case 5:
-                        Task.Delay(724);
-                        break;
-                }
-            }
+
         }
 
 

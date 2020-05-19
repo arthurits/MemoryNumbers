@@ -147,7 +147,7 @@
             this.toolStripMain_Stop.Size = new System.Drawing.Size(52, 67);
             this.toolStripMain_Stop.Text = "Stop";
             this.toolStripMain_Stop.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.toolStripMain_Stop.ToolTipText = "Stop the game";
+            this.toolStripMain_Stop.ToolTipText = "Stop the game and reset";
             this.toolStripMain_Stop.Click += new System.EventHandler(this.toolStripMain_Stop_Click);
             // 
             // toolStripSeparator2
@@ -166,7 +166,7 @@
             this.toolStripMain_Sound.Size = new System.Drawing.Size(52, 67);
             this.toolStripMain_Sound.Text = "Sound";
             this.toolStripMain_Sound.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.toolStripMain_Sound.ToolTipText = "Game sounds on";
+            this.toolStripMain_Sound.ToolTipText = "Game sounds off";
             this.toolStripMain_Sound.CheckedChanged += new System.EventHandler(this.toolStripMain_Sound_CheckedChanged);
             // 
             // toolStripMain_Graph
@@ -176,8 +176,9 @@
             this.toolStripMain_Graph.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripMain_Graph.Name = "toolStripMain_Graph";
             this.toolStripMain_Graph.Size = new System.Drawing.Size(52, 67);
-            this.toolStripMain_Graph.Text = "Graph";
+            this.toolStripMain_Graph.Text = "Stats";
             this.toolStripMain_Graph.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripMain_Graph.ToolTipText = "Show stats plot";
             // 
             // toolStripSeparator3
             // 
