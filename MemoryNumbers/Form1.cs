@@ -45,12 +45,12 @@ namespace MemoryNumbers
             //board1.RightSequence += new EventHandler<Board.SequenceEventArgs>(OnCorrectSequence);
             //board1.RightSequence += async (object s, Board.SequenceEventArgs e) => await OnCorrectSequence(s, e);
             //board1.WrongSequence += new EventHandler<Board.SequenceEventArgs>(OnWrongSequence);
-            //_game.CorrectSequence += new EventHandler<Game.CorrectEventArgs>(OnCorrectSequence);
-            //_game.WrongSequence += new EventHandler<Game.WrongEventArgs>(OnWrongSequence);
-            //_game.GameOver += new EventHandler<Game.OverEventArgs>(OnGameOver);
-            _game.CorrectSequence += async (object s, Game.CorrectEventArgs e) => await OnCorrectSequence(s, e);
-            _game.WrongSequence += async (object s, Game.WrongEventArgs e) => await OnWrongSequence(s, e);
-            _game.GameOver += async (object s, Game.OverEventArgs e) => await OnGameOver(s, e);
+            _game.CorrectSequence += new EventHandler<Game.CorrectEventArgs>(OnCorrectSequence);
+            _game.WrongSequence += new EventHandler<Game.WrongEventArgs>(OnWrongSequence);
+            _game.GameOver += new EventHandler<Game.OverEventArgs>(OnGameOver);
+            //_game.CorrectSequence += async (object s, Game.CorrectEventArgs e) => await OnCorrectSequence(s, e);
+            //_game.WrongSequence += async (object s, Game.WrongEventArgs e) => await OnWrongSequence(s, e);
+            //_game.GameOver += async (object s, Game.OverEventArgs e) => await OnGameOver(s, e);
 
             // Read the program settings file and apply them
             LoadProgramSettings(ref _programSettings);
@@ -97,7 +97,7 @@ namespace MemoryNumbers
             if (File.Exists(_path + @"\images\start.ico")) this.toolStripMain_Start.Image = new Icon(_path + @"\images\start.ico", 48, 48).ToBitmap();
             if (File.Exists(_path + @"\images\stop.ico")) this.toolStripMain_Stop.Image = new Icon(_path + @"\images\stop.ico", 48, 48).ToBitmap();
             if (File.Exists(_path + @"\images\soundoff.ico")) this.toolStripMain_Sound.Image = new Icon(_path + @"\images\soundoff.ico", 48, 48).ToBitmap();
-            if (File.Exists(_path + @"\images\graph.ico")) this.toolStripMain_Graph.Image = new Icon(_path + @"\images\graph.ico", 48, 48).ToBitmap();
+            if (File.Exists(_path + @"\images\graph.ico")) this.toolStripMain_Stats.Image = new Icon(_path + @"\images\graph.ico", 48, 48).ToBitmap();
             if (File.Exists(_path + @"\images\settings.ico")) this.toolStripMain_Settings.Image = new Icon(_path + @"\images\settings.ico", 48, 48).ToBitmap();
             //if (File.Exists(path + @"\images\save.ico")) this.toolStripMain_Data.Image = new Icon(path + @"\images\save.ico", 48, 48).ToBitmap();
             //if (File.Exists(path + @"\images\picture.ico")) this.toolStripMain_Picture.Image = new Icon(path + @"\images\picture.ico", 48, 48).ToBitmap();
@@ -205,10 +205,10 @@ namespace MemoryNumbers
             // hide button
         }
 
-        private async Task OnCorrectSequence(object sender, Game.CorrectEventArgs e)
+        private async void OnCorrectSequence(object sender, Game.CorrectEventArgs e)
         {
             // Perform the GUI tasks corresponding to a right sequence (sounds, images, buttons, etc)
-            board1.SequenceRight();
+            Task t = board1.SequenceRight();
 
             // Show the score in the status bar
             this.toolStripStatusLabel_Secuence.Text = e.Score.ToString();
@@ -216,6 +216,7 @@ namespace MemoryNumbers
 
             // Wait before starting a new sequence
             await Task.Delay(100);
+            await t;
 
             // Keep the game going on
             if (_game.Start())
@@ -228,18 +229,22 @@ namespace MemoryNumbers
             }
 
         }
-        private async Task OnWrongSequence(object sender, Game.WrongEventArgs e)
+        private async void OnWrongSequence(object sender, Game.WrongEventArgs e)
         {
             // Perform the GUI tasks corresponding to a wrong sequence (sounds, images, buttons, etc)
-            board1.ButtonWrong();
-            MessageBox.Show("Wrong sequence", "Error");
+            Task t = board1.ButtonWrong();
 
             // Show the score in the status bar
             this.toolStripStatusLabel_Secuence.Text = e.Score.ToString();
             this.toolStripStatusLabel_Secuence.Invalidate();
 
+            MessageBox.Show("Wrong sequence", "Error");
+
             // Wait before starting a new sequence
-            await Task.Delay(100);
+            //await Task.Delay(100);
+            await t;
+
+            
 
             _game.CurrentScore -= 2;
             if (_game.Start())
@@ -253,7 +258,7 @@ namespace MemoryNumbers
 
         }
 
-        private async Task OnGameOver(object sender, Game.OverEventArgs e)
+        private void OnGameOver(object sender, Game.OverEventArgs e)
         {
             //System.Diagnostics.Debug.WriteLine("OnGameOver subscription event");
             MessageBox.Show("You reached the\nend of the game", "Congratulations!", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -376,7 +381,7 @@ namespace MemoryNumbers
             settings["WindowHeight"] = this.ClientSize.Height.ToString();
 
             settings["Sound"] = this.toolStripMain_Sound.Checked == true ? "0" : "1";
-            settings["Stats"] = this.toolStripMain_Sound.Checked == true ? "1" : "0";
+            settings["Stats"] = this.toolStripMain_Stats.Checked == true ? "1" : "0";
 
             // Save window settings.
             TextWriter textWriter = StreamWriter.Null;
@@ -440,7 +445,7 @@ namespace MemoryNumbers
             this.board1.BackColor = Color.FromArgb(Convert.ToInt32(programSettings.ContainsKey("BackColor") ? programSettings["BackColor"] : defaultSettings["BackColor"]));
 
             this.toolStripMain_Sound.Checked = Convert.ToInt32((programSettings.ContainsKey("Sound") ? programSettings["Sound"] : defaultSettings["Sound"])) == 0 ? true : false;
-            this.toolStripMain_Graph.Checked = Convert.ToInt32((programSettings.ContainsKey("Stats") ? programSettings["Stats"] : defaultSettings["Stats"])) == 0 ? false : true;
+            this.toolStripMain_Stats.Checked = Convert.ToInt32((programSettings.ContainsKey("Stats") ? programSettings["Stats"] : defaultSettings["Stats"])) == 0 ? false : true;
             //this.toolStripMain_Sound.Checked = programSettings.ContainsKey("Sound") ? (Convert.ToInt32(programSettings["Sound"]) == 0 ? true : false) : false;
             this.board1.PlaySounds = !this.toolStripMain_Sound.Checked;
         }

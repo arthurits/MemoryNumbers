@@ -40,7 +40,7 @@
             this.toolStripMain_Stop = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMain_Sound = new System.Windows.Forms.ToolStripButton();
-            this.toolStripMain_Graph = new System.Windows.Forms.ToolStripButton();
+            this.toolStripMain_Stats = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMain_Settings = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -101,7 +101,7 @@
             this.toolStripMain_Stop,
             this.toolStripSeparator2,
             this.toolStripMain_Sound,
-            this.toolStripMain_Graph,
+            this.toolStripMain_Stats,
             this.toolStripSeparator3,
             this.toolStripMain_Settings,
             this.toolStripSeparator4,
@@ -169,16 +169,16 @@
             this.toolStripMain_Sound.ToolTipText = "Game sounds off";
             this.toolStripMain_Sound.CheckedChanged += new System.EventHandler(this.toolStripMain_Sound_CheckedChanged);
             // 
-            // toolStripMain_Graph
+            // toolStripMain_Stats
             // 
-            this.toolStripMain_Graph.CheckOnClick = true;
-            this.toolStripMain_Graph.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMain_Graph.Image")));
-            this.toolStripMain_Graph.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripMain_Graph.Name = "toolStripMain_Graph";
-            this.toolStripMain_Graph.Size = new System.Drawing.Size(52, 67);
-            this.toolStripMain_Graph.Text = "Stats";
-            this.toolStripMain_Graph.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.toolStripMain_Graph.ToolTipText = "Show stats plot";
+            this.toolStripMain_Stats.CheckOnClick = true;
+            this.toolStripMain_Stats.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMain_Stats.Image")));
+            this.toolStripMain_Stats.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripMain_Stats.Name = "toolStripMain_Stats";
+            this.toolStripMain_Stats.Size = new System.Drawing.Size(52, 67);
+            this.toolStripMain_Stats.Text = "Stats";
+            this.toolStripMain_Stats.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolStripMain_Stats.ToolTipText = "Show stats plot";
             // 
             // toolStripSeparator3
             // 
@@ -332,7 +332,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel_Secuence;
         private System.Windows.Forms.ToolStripButton toolStripMain_Sound;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.ToolStripButton toolStripMain_Graph;
+        private System.Windows.Forms.ToolStripButton toolStripMain_Stats;
 
     }
 }

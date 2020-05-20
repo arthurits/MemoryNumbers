@@ -672,7 +672,7 @@ namespace Controls
         /// Play the "number correct" audio
         /// </summary>
         /// <returns></returns>
-        public async Task ButtonRight()
+        public async void ButtonRight()
         {
             await PlayAudioFile(AudioSoundType.NumberCorrect, AudioSoundMode.Async);
         }
@@ -688,8 +688,8 @@ namespace Controls
             pctWrong.Update();
             Task taskError = ShowError(_nSequenceCounter);
             await PlayAudioFile(AudioSoundType.SequenceWrong, AudioSoundMode.Async);
-            await Task.Delay(100);
 
+            await Task.Delay(100);  // We wait before showing the MessageBox
             await taskError;
         }
 
@@ -781,28 +781,22 @@ namespace Controls
                 switch ((int)type)
                 {
                     case 0:
-                        //Task.Delay(600);
-                        System.Threading.Thread.Sleep(200);
+                        await Task.Delay(600);
                         break;
                     case 1:
-                        //Task.Delay(339);
-                        System.Threading.Thread.Sleep(339);
+                        await Task.Delay(339);
                         break;
                     case 2:
-                        //Task.Delay(548);
-                        System.Threading.Thread.Sleep(548);
+                        await Task.Delay(548);
                         break;
                     case 3:
-                        //Task.Delay(522);
-                        System.Threading.Thread.Sleep(522);
+                        await Task.Delay(522);
                         break;
                     case 4:
-                        //Task.Delay(522);
-                        //System.Threading.Thread.Sleep(522);
+                        await Task.Delay(522);
                         break;
                     case 5:
-                        //Task.Delay(724);
-                        //System.Threading.Thread.Sleep(724);
+                        await Task.Delay(724);
                         break;
                 }
                 return;
