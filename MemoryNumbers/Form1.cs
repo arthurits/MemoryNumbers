@@ -43,7 +43,6 @@ namespace MemoryNumbers
             //countDown1.TimerEnding += new EventHandler<Controls.TimerEndingEventArgs>(OnTimerEnding);
             board1.ButtonClick += new EventHandler<Board.ButtonClickEventArgs>(OnButtonClick);
             //board1.RightSequence += new EventHandler<Board.SequenceEventArgs>(OnCorrectSequence);
-            //board1.RightSequence += async (object s, Board.SequenceEventArgs e) => await OnCorrectSequence(s, e);
             //board1.WrongSequence += new EventHandler<Board.SequenceEventArgs>(OnWrongSequence);
             _game.CorrectSequence += new EventHandler<Game.CorrectEventArgs>(OnCorrectSequence);
             _game.WrongSequence += new EventHandler<Game.WrongEventArgs>(OnWrongSequence);
