@@ -128,11 +128,26 @@ namespace Utils
     }
 
     /// <summary>
+    /// Tabless TabControl: shows tabs at design time and hides them at runtime
+    /// </summary>
+    public class TablessTabControl : TabControl
+    {
+        protected override void WndProc(ref Message m)
+        {
+            // Hide tabs by trapping the TCM_ADJUSTRECT message
+            if (m.Msg == 0x1328 && !DesignMode)
+                m.Result = (IntPtr)1;
+            else
+                base.WndProc(ref m);
+        }
+    }
+
+    /// <summary>
     /// Subclassed RadioButton to accept double click events
     /// </summary>
-    public class RadioButton : System.Windows.Forms.RadioButton
+    public class RadioButtonClick : System.Windows.Forms.RadioButton
     {
-        public RadioButton()
+        public RadioButtonClick()
         {
             //InitializeComponent();
 
@@ -158,8 +173,7 @@ namespace Utils
 
         }
     }
-
- 
+     
 
     /// <summary>
     /// Defines the properties of the results forms, basically the RichTextBox visual properties

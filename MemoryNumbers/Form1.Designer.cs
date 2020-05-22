@@ -257,7 +257,7 @@
             // 
             // board1
             // 
-            this.board1.BackColor = System.Drawing.Color.Azure;
+            this.board1.BackColor = System.Drawing.Color.White;
             this.board1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.board1.BorderColor = System.Drawing.Color.Black;
             this.board1.BorderRatio = 0.115F;
@@ -333,7 +333,6 @@
         private System.Windows.Forms.ToolStripButton toolStripMain_Sound;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripButton toolStripMain_Stats;
-
     }
 }
 

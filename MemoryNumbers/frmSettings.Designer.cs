@@ -50,6 +50,8 @@
             this.trackTime = new System.Windows.Forms.TrackBar();
             this.lblTime = new System.Windows.Forms.Label();
             this.tabGUI = new System.Windows.Forms.TabPage();
+            this.pctBackColor = new System.Windows.Forms.PictureBox();
+            this.lblBackColor = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.trackResultsRatio = new System.Windows.Forms.TrackBar();
             this.numResultsRatio = new System.Windows.Forms.NumericUpDown();
@@ -69,8 +71,6 @@
             this.btnAccept = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
-            this.lblBackColor = new System.Windows.Forms.Label();
-            this.pctBackColor = new System.Windows.Forms.PictureBox();
             this.tabSettings.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.grpTime.SuspendLayout();
@@ -84,6 +84,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackTime)).BeginInit();
             this.tabGUI.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pctBackColor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackResultsRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numResultsRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackFontRatio)).BeginInit();
@@ -94,7 +95,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numBorderRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numNumbersRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCountRatio)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pctBackColor)).BeginInit();
             this.SuspendLayout();
             // 
             // tabSettings
@@ -102,6 +102,7 @@
             this.tabSettings.Controls.Add(this.tabPage1);
             this.tabSettings.Controls.Add(this.tabSettingsGame);
             this.tabSettings.Controls.Add(this.tabGUI);
+            this.tabSettings.ItemSize = new System.Drawing.Size(77, 24);
             this.tabSettings.Location = new System.Drawing.Point(16, 15);
             this.tabSettings.Margin = new System.Windows.Forms.Padding(4);
             this.tabSettings.Name = "tabSettings";
@@ -113,10 +114,10 @@
             // 
             this.tabPage1.Controls.Add(this.grpTime);
             this.tabPage1.Controls.Add(this.grpSequence);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Location = new System.Drawing.Point(4, 28);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(567, 316);
+            this.tabPage1.Size = new System.Drawing.Size(567, 313);
             this.tabPage1.TabIndex = 2;
             this.tabPage1.Text = "Play mode";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -204,11 +205,11 @@
             this.tabSettingsGame.Controls.Add(this.lblMaxAttempts);
             this.tabSettingsGame.Controls.Add(this.trackTime);
             this.tabSettingsGame.Controls.Add(this.lblTime);
-            this.tabSettingsGame.Location = new System.Drawing.Point(4, 25);
+            this.tabSettingsGame.Location = new System.Drawing.Point(4, 28);
             this.tabSettingsGame.Margin = new System.Windows.Forms.Padding(4);
             this.tabSettingsGame.Name = "tabSettingsGame";
             this.tabSettingsGame.Padding = new System.Windows.Forms.Padding(4);
-            this.tabSettingsGame.Size = new System.Drawing.Size(567, 316);
+            this.tabSettingsGame.Size = new System.Drawing.Size(567, 313);
             this.tabSettingsGame.TabIndex = 0;
             this.tabSettingsGame.Text = "Game";
             // 
@@ -348,13 +349,33 @@
             this.tabGUI.Controls.Add(this.lblBorderRatio);
             this.tabGUI.Controls.Add(this.lblNumbersRatio);
             this.tabGUI.Controls.Add(this.lblCountRatio);
-            this.tabGUI.Location = new System.Drawing.Point(4, 25);
+            this.tabGUI.Location = new System.Drawing.Point(4, 28);
             this.tabGUI.Margin = new System.Windows.Forms.Padding(4);
             this.tabGUI.Name = "tabGUI";
             this.tabGUI.Padding = new System.Windows.Forms.Padding(4);
-            this.tabGUI.Size = new System.Drawing.Size(567, 316);
+            this.tabGUI.Size = new System.Drawing.Size(567, 313);
             this.tabGUI.TabIndex = 1;
             this.tabGUI.Text = "Interface";
+            // 
+            // pctBackColor
+            // 
+            this.pctBackColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pctBackColor.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pctBackColor.Location = new System.Drawing.Point(183, 224);
+            this.pctBackColor.Name = "pctBackColor";
+            this.pctBackColor.Size = new System.Drawing.Size(25, 25);
+            this.pctBackColor.TabIndex = 20;
+            this.pctBackColor.TabStop = false;
+            this.pctBackColor.Click += new System.EventHandler(this.pctBackColor_Click);
+            // 
+            // lblBackColor
+            // 
+            this.lblBackColor.AutoSize = true;
+            this.lblBackColor.Location = new System.Drawing.Point(52, 228);
+            this.lblBackColor.Name = "lblBackColor";
+            this.lblBackColor.Size = new System.Drawing.Size(119, 17);
+            this.lblBackColor.TabIndex = 19;
+            this.lblBackColor.Text = "Board back color:";
             // 
             // checkBox1
             // 
@@ -590,26 +611,6 @@
             this.btnReset.UseVisualStyleBackColor = true;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
-            // lblBackColor
-            // 
-            this.lblBackColor.AutoSize = true;
-            this.lblBackColor.Location = new System.Drawing.Point(52, 228);
-            this.lblBackColor.Name = "lblBackColor";
-            this.lblBackColor.Size = new System.Drawing.Size(119, 17);
-            this.lblBackColor.TabIndex = 19;
-            this.lblBackColor.Text = "Board back color:";
-            // 
-            // pctBackColor
-            // 
-            this.pctBackColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pctBackColor.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pctBackColor.Location = new System.Drawing.Point(183, 224);
-            this.pctBackColor.Name = "pctBackColor";
-            this.pctBackColor.Size = new System.Drawing.Size(25, 25);
-            this.pctBackColor.TabIndex = 20;
-            this.pctBackColor.TabStop = false;
-            this.pctBackColor.Click += new System.EventHandler(this.pctBackColor_Click);
-            // 
             // frmSettings
             // 
             this.AcceptButton = this.btnAccept;
@@ -644,6 +645,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackTime)).EndInit();
             this.tabGUI.ResumeLayout(false);
             this.tabGUI.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pctBackColor)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackResultsRatio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numResultsRatio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackFontRatio)).EndInit();
@@ -654,7 +656,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numBorderRatio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numNumbersRatio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCountRatio)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pctBackColor)).EndInit();
             this.ResumeLayout(false);
 
         }
