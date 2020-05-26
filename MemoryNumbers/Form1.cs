@@ -190,7 +190,7 @@ namespace MemoryNumbers
 
         private void roundButton1_Click(object sender, EventArgs e)
         {
-            roundButton1.VisibleBorder = false;
+            //roundButton1.VisibleBorder = false;
         }
 
         #endregion Form events

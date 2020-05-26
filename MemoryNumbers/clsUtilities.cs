@@ -127,53 +127,6 @@ namespace Utils
         private struct RECT { public int Left; public int Top; public int Right; public int Bottom; }
     }
 
-    /// <summary>
-    /// Tabless TabControl: shows tabs at design time and hides them at runtime
-    /// </summary>
-    public class TablessTabControl : TabControl
-    {
-        protected override void WndProc(ref Message m)
-        {
-            // Hide tabs by trapping the TCM_ADJUSTRECT message
-            if (m.Msg == 0x1328 && !DesignMode)
-                m.Result = (IntPtr)1;
-            else
-                base.WndProc(ref m);
-        }
-    }
-
-    /// <summary>
-    /// Subclassed RadioButton to accept double click events
-    /// </summary>
-    public class RadioButtonClick : System.Windows.Forms.RadioButton
-    {
-        public RadioButtonClick()
-        {
-            //InitializeComponent();
-
-            this.SetStyle(ControlStyles.StandardClick | ControlStyles.StandardDoubleClick, true);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Always), Browsable(true)]
-        public new event MouseEventHandler MouseDoubleClick;
-
-        protected override void OnMouseDoubleClick(MouseEventArgs e)
-        {
-            base.OnMouseDoubleClick(e);
-
-            // raise the event
-            if (this.MouseDoubleClick != null)
-                this.MouseDoubleClick(this, e);
-        }
-
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            this.ResumeLayout(false);
-
-        }
-    }
-     
 
     /// <summary>
     /// Defines the properties of the results forms, basically the RichTextBox visual properties
@@ -430,11 +383,60 @@ namespace Utils
 namespace System.Windows.Forms
 {
     /// <summary>
+    /// Tabless TabControl: shows tabs at design time and hides them at runtime
+    /// </summary>
+    public class TablessTabControl : TabControl
+    {
+        protected override void WndProc(ref Message m)
+        {
+            // Hide tabs by trapping the TCM_ADJUSTRECT message
+            if (m.Msg == 0x1328 && !DesignMode)
+                m.Result = (IntPtr)1;
+            else
+                base.WndProc(ref m);
+        }
+    }
+
+    /// <summary>
+    /// Subclassed RadioButton to accept double click events
+    /// </summary>
+    public class RadioButtonClick : System.Windows.Forms.RadioButton
+    {
+        public RadioButtonClick() : base ()
+        {
+            //InitializeComponent();
+
+            this.SetStyle(ControlStyles.StandardClick | ControlStyles.StandardDoubleClick, true);
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Always), Browsable(true)]
+        public new event MouseEventHandler MouseDoubleClick;
+
+        protected override void OnMouseDoubleClick(MouseEventArgs e)
+        {
+            base.OnMouseDoubleClick(e);
+
+            // raise the event
+            if (this.MouseDoubleClick != null)
+                this.MouseDoubleClick(this, e);
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            this.ResumeLayout(false);
+
+        }
+    }
+
+
+
+    /// <summary>
     /// Declare a class that inherits from ToolStripControlHost.
     /// https://docs.microsoft.com/en-us/dotnet/framework/winforms/controls/how-to-wrap-a-windows-forms-control-with-toolstripcontrolhost
     /// </summary>
     [System.Windows.Forms.Design.ToolStripItemDesignerAvailability(System.Windows.Forms.Design.ToolStripItemDesignerAvailability.ToolStrip)]
-    public class ToolStripNumericUpDown : ToolStripControlHost
+    public class ToolStripNumericUpDown : System.Windows.Forms.ToolStripControlHost
     {
         /// <summary>
         /// // Call the base constructor passing in a NumericUpDown instance.

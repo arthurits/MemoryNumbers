@@ -45,8 +45,6 @@
             this.toolStripMain_Settings = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMain_About = new System.Windows.Forms.ToolStripButton();
-            this.roundButton1 = new Controls.RoundButton();
-            this.countDown1 = new Controls.CountDown();
             this.board1 = new Controls.Board();
             this.statusStrip.SuspendLayout();
             this.toolStripMain.SuspendLayout();
@@ -211,56 +209,11 @@
             this.toolStripMain_About.ToolTipText = "About this software";
             this.toolStripMain_About.Click += new System.EventHandler(this.toolStripMain_About_Click);
             // 
-            // roundButton1
-            // 
-            this.roundButton1.BackColor = System.Drawing.Color.Transparent;
-            this.roundButton1.BorderColor = System.Drawing.Color.Black;
-            this.roundButton1.BorderWidth = 10F;
-            this.roundButton1.FillColor = System.Drawing.Color.Pink;
-            this.roundButton1.Font = new System.Drawing.Font("Microsoft Sans Serif", 50F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.roundButton1.Location = new System.Drawing.Point(75, 91);
-            this.roundButton1.Name = "roundButton1";
-            this.roundButton1.RegionOffset = 0F;
-            this.roundButton1.Size = new System.Drawing.Size(224, 144);
-            this.roundButton1.TabIndex = 1;
-            this.roundButton1.Text = "0";
-            this.roundButton1.Visible = false;
-            this.roundButton1.VisibleBorder = true;
-            this.roundButton1.VisibleText = true;
-            this.roundButton1.xRadius = 50F;
-            this.roundButton1.yRadius = 50F;
-            // 
-            // countDown1
-            // 
-            this.countDown1.BackColor = System.Drawing.Color.Transparent;
-            this.countDown1.BorderColor = System.Drawing.Color.Blue;
-            this.countDown1.BorderWidth = 7F;
-            this.countDown1.EndingTime = 0F;
-            this.countDown1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.countDown1.Font = new System.Drawing.Font("Microsoft Sans Serif", 35F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.countDown1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.countDown1.Location = new System.Drawing.Point(403, 91);
-            this.countDown1.Margin = new System.Windows.Forms.Padding(20, 18, 20, 18);
-            this.countDown1.Name = "countDown1";
-            this.countDown1.PlaySounds = false;
-            this.countDown1.RegionOffset = 0F;
-            this.countDown1.Size = new System.Drawing.Size(100, 100);
-            this.countDown1.StartingTime = 5F;
-            this.countDown1.TabIndex = 2;
-            this.countDown1.Text = "5";
-            this.countDown1.TimeInterval = 1000D;
-            this.countDown1.Visible = false;
-            this.countDown1.VisibleBorder = true;
-            this.countDown1.VisibleText = true;
-            this.countDown1.xRadius = 50F;
-            this.countDown1.yRadius = 50F;
-            // 
             // board1
             // 
             this.board1.BackColor = System.Drawing.Color.White;
-            this.board1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.board1.BorderColor = System.Drawing.Color.Black;
-            this.board1.BorderRatio = 0.115F;
+            this.board1.BorderRatio = 0.12F;
             this.board1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.board1.CountDownRatio = 0.37F;
             this.board1.Diameter = 67;
@@ -268,8 +221,6 @@
             this.board1.FillColor = System.Drawing.Color.Transparent;
             this.board1.FontRatio = 0.6F;
             this.board1.Location = new System.Drawing.Point(0, 70);
-            this.board1.MaxNumber = 9;
-            this.board1.MinNumber = 0;
             this.board1.Name = "board1";
             this.board1.NumbersRatio = 0.25F;
             this.board1.PlaySounds = false;
@@ -286,12 +237,10 @@
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(538, 366);
             this.Controls.Add(this.board1);
-            this.Controls.Add(this.roundButton1);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.toolStripMain);
             this.Controls.Add(this.tspBottom);
             this.Controls.Add(this.tspTop);
-            this.Controls.Add(this.countDown1);
             this.DoubleBuffered = true;
             this.MinimumSize = new System.Drawing.Size(550, 400);
             this.Name = "Form1";
@@ -313,8 +262,6 @@
         }
 
         #endregion
-        private Controls.RoundButton roundButton1;
-        private Controls.CountDown countDown1;
         private Controls.Board board1;
 
         private System.Windows.Forms.ToolStripPanel tspTop;

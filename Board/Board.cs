@@ -28,10 +28,10 @@ namespace Controls
         private int _nSequenceCounter = 0;
         private int _nSequenceLength = 0;
         //private int _nButtons = 10;
-        private int _nDiameter = 45;
-        private int _nMinDimension;
-        private int _nMaxNum = 9;
-        private int _nMinNum = 0;
+        private int _nDiameter = 1;
+        private int _nMinDimension = 0;
+        //private int _nMaxNum = 9;
+        //private int _nMinNum = 0;
         private int _nTime = 700;
         //private int _nTimeIncrement = 300;
         private float _fBorderWidth = 0.12f;
@@ -79,7 +79,7 @@ namespace Controls
             get { return _nDiameter; }
             set { _nDiameter = value < 0 ? 0 : value; Invalidate(); }
         }
-
+        /*
         /// <summary>
         /// Maximum number (excluded) for the buttons (must be >=0")
         /// </summary>
@@ -107,7 +107,7 @@ namespace Controls
             get { return _nMinNum; }
             set { _nMinNum = value < 0 ? 0 : value; }
         }
-
+        */
         /// <summary>
         /// The time interval (miliseconds) for flashing the sequence to the player
         /// </summary>
@@ -373,7 +373,7 @@ namespace Controls
         // https://stackoverflow.com/questions/4446478/how-do-i-create-a-colored-border-on-a-picturebox-control
         protected override void OnPaint(PaintEventArgs e)
         {
-            //base.OnPaint(e);
+            base.OnPaint(e);
             //ControlPaint.DrawBorder(e.Graphics, e.ClipRectangle, Color.Black, ButtonBorderStyle.Solid);
         }
 
@@ -381,7 +381,7 @@ namespace Controls
         protected override void OnResize(EventArgs e)
         {            
             base.OnResize(e);
-
+            
             //this.SuspendLayout();
             _nMinDimension = Math.Min(this.Width, this.Height);
             _nDiameter = (int)(_nMinDimension * _fNumbersFactor);
@@ -395,9 +395,10 @@ namespace Controls
             {
                 //if (countDown != null) CountDownUpdate();
                 //if (pctCorrect != null) PictureBoxResultUpdate();
-                ResizeChildControls();
+                if (countDown != null && pctCorrect != null)
+                    ResizeChildControls();
             }
-
+            
             //base.OnResize(e);
             //this.ResumeLayout(true);
             //this.PerformLayout();

@@ -15,7 +15,7 @@ namespace Controls
     public partial class CountDown: Controls.RoundButton
     {
         private readonly System.Timers.Timer t;
-        private float _fStart = 10f;
+        private float _fStart = 0f;
         private float _fEnd = 0f;
         private double _dInterval = 1000; // 1 s
         private double _dCounter;
