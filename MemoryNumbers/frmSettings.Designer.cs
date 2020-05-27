@@ -52,7 +52,7 @@
             this.tabGUI = new System.Windows.Forms.TabPage();
             this.pctBackColor = new System.Windows.Forms.PictureBox();
             this.lblBackColor = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.chkStartUp = new System.Windows.Forms.CheckBox();
             this.trackResultsRatio = new System.Windows.Forms.TrackBar();
             this.numResultsRatio = new System.Windows.Forms.NumericUpDown();
             this.lblResultsRatio = new System.Windows.Forms.Label();
@@ -71,6 +71,8 @@
             this.btnAccept = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
+            this.lblMinLength = new System.Windows.Forms.Label();
+            this.numMinLength = new System.Windows.Forms.NumericUpDown();
             this.tabSettings.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.grpTime.SuspendLayout();
@@ -95,6 +97,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numBorderRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numNumbersRatio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCountRatio)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numMinLength)).BeginInit();
             this.SuspendLayout();
             // 
             // tabSettings
@@ -193,6 +196,8 @@
             // tabSettingsGame
             // 
             this.tabSettingsGame.BackColor = System.Drawing.Color.White;
+            this.tabSettingsGame.Controls.Add(this.numMinLength);
+            this.tabSettingsGame.Controls.Add(this.lblMinLength);
             this.tabSettingsGame.Controls.Add(this.trackTimeIncrement);
             this.tabSettingsGame.Controls.Add(this.numTimeIncrement);
             this.tabSettingsGame.Controls.Add(this.lblTimeIncrement);
@@ -248,21 +253,21 @@
             // 
             // numMaxDigit
             // 
-            this.numMaxDigit.Location = new System.Drawing.Point(179, 215);
+            this.numMaxDigit.Location = new System.Drawing.Point(179, 249);
             this.numMaxDigit.Name = "numMaxDigit";
             this.numMaxDigit.Size = new System.Drawing.Size(50, 23);
             this.numMaxDigit.TabIndex = 12;
             // 
             // numMinDigit
             // 
-            this.numMinDigit.Location = new System.Drawing.Point(179, 181);
+            this.numMinDigit.Location = new System.Drawing.Point(179, 215);
             this.numMinDigit.Name = "numMinDigit";
             this.numMinDigit.Size = new System.Drawing.Size(50, 23);
             this.numMinDigit.TabIndex = 11;
             // 
             // numMaxAttempts
             // 
-            this.numMaxAttempts.Location = new System.Drawing.Point(179, 147);
+            this.numMaxAttempts.Location = new System.Drawing.Point(179, 181);
             this.numMaxAttempts.Name = "numMaxAttempts";
             this.numMaxAttempts.Size = new System.Drawing.Size(50, 23);
             this.numMaxAttempts.TabIndex = 10;
@@ -284,7 +289,7 @@
             // lblMaxDigit
             // 
             this.lblMaxDigit.AutoSize = true;
-            this.lblMaxDigit.Location = new System.Drawing.Point(49, 217);
+            this.lblMaxDigit.Location = new System.Drawing.Point(49, 251);
             this.lblMaxDigit.Name = "lblMaxDigit";
             this.lblMaxDigit.Size = new System.Drawing.Size(100, 17);
             this.lblMaxDigit.TabIndex = 4;
@@ -293,7 +298,7 @@
             // lblMinDigit
             // 
             this.lblMinDigit.AutoSize = true;
-            this.lblMinDigit.Location = new System.Drawing.Point(49, 183);
+            this.lblMinDigit.Location = new System.Drawing.Point(49, 217);
             this.lblMinDigit.Name = "lblMinDigit";
             this.lblMinDigit.Size = new System.Drawing.Size(97, 17);
             this.lblMinDigit.TabIndex = 3;
@@ -302,7 +307,7 @@
             // lblMaxAttempts
             // 
             this.lblMaxAttempts.AutoSize = true;
-            this.lblMaxAttempts.Location = new System.Drawing.Point(49, 149);
+            this.lblMaxAttempts.Location = new System.Drawing.Point(49, 183);
             this.lblMaxAttempts.Name = "lblMaxAttempts";
             this.lblMaxAttempts.Size = new System.Drawing.Size(124, 17);
             this.lblMaxAttempts.TabIndex = 2;
@@ -333,7 +338,7 @@
             this.tabGUI.BackColor = System.Drawing.Color.White;
             this.tabGUI.Controls.Add(this.pctBackColor);
             this.tabGUI.Controls.Add(this.lblBackColor);
-            this.tabGUI.Controls.Add(this.checkBox1);
+            this.tabGUI.Controls.Add(this.chkStartUp);
             this.tabGUI.Controls.Add(this.trackResultsRatio);
             this.tabGUI.Controls.Add(this.numResultsRatio);
             this.tabGUI.Controls.Add(this.lblResultsRatio);
@@ -377,17 +382,17 @@
             this.lblBackColor.TabIndex = 19;
             this.lblBackColor.Text = "Board back color:";
             // 
-            // checkBox1
+            // chkStartUp
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox1.Location = new System.Drawing.Point(52, 275);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(266, 21);
-            this.checkBox1.TabIndex = 18;
-            this.checkBox1.Text = "Remember window position on startup";
-            this.checkBox1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.chkStartUp.AutoSize = true;
+            this.chkStartUp.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkStartUp.Location = new System.Drawing.Point(52, 275);
+            this.chkStartUp.Name = "chkStartUp";
+            this.chkStartUp.Size = new System.Drawing.Size(266, 21);
+            this.chkStartUp.TabIndex = 18;
+            this.chkStartUp.Text = "Remember window position on startup";
+            this.chkStartUp.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkStartUp.UseVisualStyleBackColor = true;
             // 
             // trackResultsRatio
             // 
@@ -611,6 +616,37 @@
             this.btnReset.UseVisualStyleBackColor = true;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
+            // lblMinLength
+            // 
+            this.lblMinLength.AutoSize = true;
+            this.lblMinLength.Location = new System.Drawing.Point(49, 149);
+            this.lblMinLength.Name = "lblMinLength";
+            this.lblMinLength.Size = new System.Drawing.Size(124, 17);
+            this.lblMinLength.TabIndex = 16;
+            this.lblMinLength.Text = "Startup sequence:";
+            // 
+            // numMinLength
+            // 
+            this.numMinLength.Location = new System.Drawing.Point(179, 147);
+            this.numMinLength.Maximum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.numMinLength.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numMinLength.Name = "numMinLength";
+            this.numMinLength.Size = new System.Drawing.Size(50, 23);
+            this.numMinLength.TabIndex = 17;
+            this.numMinLength.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // frmSettings
             // 
             this.AcceptButton = this.btnAccept;
@@ -656,6 +692,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numBorderRatio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numNumbersRatio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCountRatio)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numMinLength)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -701,9 +738,11 @@
         private System.Windows.Forms.TrackBar trackResultsRatio;
         private System.Windows.Forms.NumericUpDown numResultsRatio;
         private System.Windows.Forms.Label lblResultsRatio;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox chkStartUp;
         private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.PictureBox pctBackColor;
         private System.Windows.Forms.Label lblBackColor;
+        private System.Windows.Forms.NumericUpDown numMinLength;
+        private System.Windows.Forms.Label lblMinLength;
     }
 }

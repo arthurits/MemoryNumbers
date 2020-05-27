@@ -429,6 +429,7 @@ namespace MemoryNumbers
                 }
             }
 
+            this._game.MinimumLength = Convert.ToInt32(programSettings.ContainsKey("MinimumLength") ? programSettings["MinimumLength"] : defaultSettings["MinimumLength"]);
             this._game.MaximumAttempts = Convert.ToInt32(programSettings.ContainsKey("MaximumAttempts") ? programSettings["MaximumAttempts"] : defaultSettings["MaximumAttempts"]);
             this._game.MaximumDigit = Convert.ToInt32(programSettings.ContainsKey("MaximumDigit") ? programSettings["MaximumDigit"] : defaultSettings["MaximumDigit"]);
             this._game.MinimumDigit = Convert.ToInt32(programSettings.ContainsKey("MinimumDigit") ? programSettings["MinimumDigit"] : defaultSettings["MinimumDigit"]);
@@ -465,6 +466,7 @@ namespace MemoryNumbers
             settings["MaximumDigit"] = "9";
             settings["MinimumDigit"] = "0";
             settings["MaximumAttempts"] = "10";
+            settings["MinimumLength"] = "2";
 
             settings["CountDownRatio"] = "0.37";
             settings["NumbersRatio"] = "0.25";

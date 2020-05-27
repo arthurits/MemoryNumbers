@@ -45,6 +45,7 @@ namespace MemoryNumbers
                 this.numMaxDigit.Value = Convert.ToInt32(_settings.ContainsKey("MaximumDigit") ? _settings["MaximumDigit"] : _default["MaximumDigit"]);
                 this.numMinDigit.Value = Convert.ToInt32(_settings.ContainsKey("MinimumDigit") ? _settings["MinimumDigit"] : _default["MinimumDigit"]);
                 this.numMaxAttempts.Value = Convert.ToInt32(_settings.ContainsKey("MaximumAttempts") ? _settings["MaximumAttempts"] : _default["MaximumAttempts"]);
+                this.numMinLength.Value = Convert.ToInt32(_settings.ContainsKey("MinimumLength") ? _settings["MinimumLength"] : _default["MinimumLength"]);
 
                 this.numCountRatio.Value = Convert.ToDecimal(_settings.ContainsKey("CountDownRatio") ? _settings["CountDownRatio"]: _default["CountDownRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 this.numNumbersRatio.Value = Convert.ToDecimal(_settings.ContainsKey("NumbersRatio") ? _settings["NumbersRatio"] : _default["NumbersRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
@@ -52,7 +53,7 @@ namespace MemoryNumbers
                 this.numFontRatio.Value = Convert.ToDecimal(_settings.ContainsKey("FontRatio") ? _settings["FontRatio"] : _default["FontRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 this.numResultsRatio.Value = Convert.ToDecimal(_settings.ContainsKey("ResultsRatio") ? _settings["ResultsRatio"] : _default["ResultsRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 this.pctBackColor.BackColor = Color.FromArgb(Convert.ToInt32(_settings.ContainsKey("BackColor") ? _settings["BackColor"] : _default["BackColor"]));
-                this.checkBox1.Checked = Convert.ToInt32(_settings.ContainsKey("WindowPosition") ? _settings["WindowPosition"] : _default["WindowPosition"]) == 1 ? true : false;
+                this.chkStartUp.Checked = Convert.ToInt32(_settings.ContainsKey("WindowPosition") ? _settings["WindowPosition"] : _default["WindowPosition"]) == 1 ? true : false;
 
             }
             catch (KeyNotFoundException e)
@@ -74,6 +75,7 @@ namespace MemoryNumbers
             settings["MaximumDigit"] = this.numMaxDigit.Value.ToString();
             settings["MinimumDigit"] = this.numMinDigit.Value.ToString();
             settings["MaximumAttempts"] = this.numMaxAttempts.Value.ToString();
+            settings["MinimumLength"] = this.numMinLength.Value.ToString();
 
             settings["CountDownRatio"] = this.numCountRatio.Value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             settings["NumbersRatio"] = this.numNumbersRatio.Value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
@@ -81,7 +83,7 @@ namespace MemoryNumbers
             settings["FontRatio"] = this.numFontRatio.Value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             settings["ResultsRatio"] = this.numResultsRatio.Value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             settings["BackColor"] = this.pctBackColor.BackColor.ToArgb().ToString();
-            settings["WindowPosition"] = (this.checkBox1.Checked ? 1 : 0).ToString();
+            settings["WindowPosition"] = (this.chkStartUp.Checked ? 1 : 0).ToString();
 
             settings["PlayMode"] = (
                                     (this.radFixed.Checked ? 1 : 0) * 1 +
@@ -110,6 +112,7 @@ namespace MemoryNumbers
                 this.numMaxDigit.Value = Convert.ToInt32(_settings["MaximumDigit"]);
                 this.numMinDigit.Value = Convert.ToInt32(_settings["MinimumDigit"]);
                 this.numMaxAttempts.Value = Convert.ToInt32(_settings["MaximumAttempts"]);
+                this.numMinLength.Value = Convert.ToInt32(_settings["MinimumLength"]);
 
                 this.numCountRatio.Value = Convert.ToDecimal(_settings["CountDownRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 this.numNumbersRatio.Value = Convert.ToDecimal(_settings["NumbersRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
@@ -117,7 +120,7 @@ namespace MemoryNumbers
                 this.numFontRatio.Value = Convert.ToDecimal(_settings["FontRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 this.numResultsRatio.Value = Convert.ToDecimal(_settings["ResultsRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 this.pctBackColor.BackColor = Color.FromArgb(Convert.ToInt32(settings["BackColor"]));
-                this.checkBox1.Checked = Convert.ToInt32(_settings["WindowPosition"]) == 1 ? true : false;
+                this.chkStartUp.Checked = Convert.ToInt32(_settings["WindowPosition"]) == 1 ? true : false;
 
             }
             catch (KeyNotFoundException e)
