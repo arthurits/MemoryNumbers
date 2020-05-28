@@ -323,7 +323,7 @@ namespace Controls
                 EndingTime = 0F,
                 //FillColor = System.Drawing.Color.Transparent,
                 Name = "CountDown",
-                Parent = this,
+                //Parent = this,
                 RegionOffset = 1f,
                 Size = new System.Drawing.Size(100, 100),
                 StartingTime = 3F,
@@ -347,7 +347,7 @@ namespace Controls
                 //BackColor = Color.Transparent,
                 BackgroundImageLayout = ImageLayout.Stretch,
                 Dock = DockStyle.None,
-                Parent = this,
+                //Parent = this,
                 Visible = false
             };
             pctWrong = new System.Windows.Forms.PictureBox()

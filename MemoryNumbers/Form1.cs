@@ -417,7 +417,7 @@ namespace MemoryNumbers
         {
             if (WindowSettings)
             {
-                if (Convert.ToInt32(programSettings.ContainsKey("WindowPosition") ? programSettings["WindowPosition"] : defaultSettings["WindowPosition"]) == 1 ? true : false)
+                if (Convert.ToInt32(programSettings.ContainsKey("WindowPosition") ? programSettings["WindowPosition"] : defaultSettings["WindowPosition"]) == 1)
                 {
                     //var startPos = this.StartPosition;
                     this.StartPosition = FormStartPosition.Manual;
