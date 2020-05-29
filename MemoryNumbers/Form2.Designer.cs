@@ -56,7 +56,7 @@
             this.countDown1.BorderWidth = 5F;
             this.countDown1.EndingTime = 0F;
             this.countDown1.FillColor = System.Drawing.Color.Transparent;
-            this.countDown1.Location = new System.Drawing.Point(312, 58);
+            this.countDown1.Location = new System.Drawing.Point(310, 43);
             this.countDown1.Name = "countDown1";
             this.countDown1.PlaySounds = false;
             this.countDown1.RegionOffset = 1F;

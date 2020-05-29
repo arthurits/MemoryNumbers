@@ -33,7 +33,7 @@
             // 
             // Board
             // 
-            this.BackColor = System.Drawing.Color.Transparent;
+            this.BackColor = System.Drawing.Color.White;
             this.Size = new System.Drawing.Size(100, 100);
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
             this.ResumeLayout(false);

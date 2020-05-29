@@ -22,8 +22,8 @@ namespace Controls
 
         private Controls.RoundButton[] _roundButton;
         private Controls.CountDown countDown;
-        private System.Windows.Forms.PictureBox pctCorrect;
-        private System.Windows.Forms.PictureBox pctWrong;
+        private readonly System.Windows.Forms.PictureBox pctCorrect;
+        private readonly System.Windows.Forms.PictureBox pctWrong;
         //private int[] _nSequence;
         private int _nSequenceCounter = 0;
         private int _nSequenceLength = 0;
@@ -40,7 +40,7 @@ namespace Controls
         private float _fResultFactor = 0.56f;
         private float _fFontFactor = 0.60f;
         private Color _cBorderColor = Color.Black;
-        private Color _cBackColor = Color.Transparent;
+        private Color _cBackColor = Color.White;
         private string _path;
         private bool _sound;
         private System.Media.SoundPlayer[] _soundPlayer;
@@ -316,18 +316,20 @@ namespace Controls
             // Set the CountDown control
             countDown = new Controls.CountDown()
             {
-                Anchor = AnchorStyles.None,
-                //BorderColor = System.Drawing.Color.Black,
+                //Anchor = AnchorStyles.None,
+                BorderColor = System.Drawing.Color.Black,
                 BackColor = Color.Transparent,
                 BorderWidth = 4F,
                 EndingTime = 0F,
-                //FillColor = System.Drawing.Color.Transparent,
+                FillColor = System.Drawing.Color.Transparent,
+                Location = new System.Drawing.Point(0, 0),
                 Name = "CountDown",
                 //Parent = this,
+                PlaySounds = false,
                 RegionOffset = 1f,
                 Size = new System.Drawing.Size(100, 100),
                 StartingTime = 3F,
-                //TabIndex = 0,
+                TabIndex = 0,
                 //Text = "3",
                 TimeInterval = 1000D,
                 Visible = false,
@@ -344,7 +346,7 @@ namespace Controls
             pctCorrect = new System.Windows.Forms.PictureBox()
             {
                 Anchor = AnchorStyles.None,
-                //BackColor = Color.Transparent,
+                BackColor = Color.Transparent,
                 BackgroundImageLayout = ImageLayout.Stretch,
                 Dock = DockStyle.None,
                 //Parent = this,
@@ -353,10 +355,10 @@ namespace Controls
             pctWrong = new System.Windows.Forms.PictureBox()
             {
                 Anchor = AnchorStyles.None,
-                //BackColor = Color.Transparent,
+                BackColor = Color.Transparent,
                 BackgroundImageLayout = ImageLayout.Stretch,
                 Dock = DockStyle.None,
-                Parent = this,
+                //Parent = this,
                 Visible = false
             };
             this.Controls.Add(pctCorrect);
