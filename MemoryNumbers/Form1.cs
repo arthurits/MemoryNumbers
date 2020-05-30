@@ -37,7 +37,7 @@ namespace MemoryNumbers
             InitializeMenuStrip();
             InitializeStatusStrip();
 
-            board1.Parent = this;
+            //board1.Parent = this;
 
             // Subscribe to events
             //countDown1.TimerEnding += new EventHandler<Controls.TimerEndingEventArgs>(OnTimerEnding);

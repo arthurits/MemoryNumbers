@@ -17,13 +17,23 @@ namespace Controls
     {
         #region Private variables
 
+        // Internal variables to place the buttons on the board
         const int nMaxPartialAttempts = 12;
         const int nMaxTotalAttempts = 250;
 
-        private Controls.RoundButton[] _roundButton;
-        private Controls.CountDown countDown;
+        // Controls contained inside the control
+        private readonly Controls.CountDown countDown;
         private readonly System.Windows.Forms.PictureBox pctCorrect;
         private readonly System.Windows.Forms.PictureBox pctWrong;
+        private Controls.RoundButton[] _roundButton;
+
+        // Internal controls
+        private readonly System.Media.SoundPlayer[] _soundPlayer;
+        private readonly Svg.SvgDocument _svgCorrect = null;
+        private readonly Svg.SvgDocument _svgWrong = null;
+
+        // Internal variables
+        private string _path;                       // Path of the executable
         //private int[] _nSequence;
         private int _nSequenceCounter = 0;
         private int _nSequenceLength = 0;
@@ -41,11 +51,8 @@ namespace Controls
         private float _fFontFactor = 0.60f;
         private Color _cBorderColor = Color.Black;
         private Color _cBackColor = Color.White;
-        private string _path;
-        private bool _sound;
-        private System.Media.SoundPlayer[] _soundPlayer;
-        private Svg.SvgDocument _svgCorrect = null;
-        private Svg.SvgDocument _svgWrong = null;
+        private bool _sound = true;
+        
         private enum AudioSoundType
         {
             NumberCorrect,
@@ -79,35 +86,7 @@ namespace Controls
             get { return _nDiameter; }
             set { _nDiameter = value < 0 ? 0 : value; Invalidate(); }
         }
-        /*
-        /// <summary>
-        /// Maximum number (excluded) for the buttons (must be >=0")
-        /// </summary>
-        [Description("Maximum value of the buttons (must be >=0"),
-        Category("Digit button properties"),
-        Browsable(true),
-        EditorBrowsable(EditorBrowsableState.Always),
-        DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        public int MaxNumber
-        {
-            get { return _nMaxNum; }
-            set { _nMaxNum = value < 0 ? 0 : value; }
-        }
-
-        /// <summary>
-        /// Minimum number (included) for the buttons (must be >=0")
-        /// </summary>
-        [Description("Minimum value of the buttons (must be >=0)"),
-        Category("Digit button properties"),
-        Browsable(true),
-        EditorBrowsable(EditorBrowsableState.Always),
-        DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        public int MinNumber
-        {
-            get { return _nMinNum; }
-            set { _nMinNum = value < 0 ? 0 : value; }
-        }
-        */
+ 
         /// <summary>
         /// The time interval (miliseconds) for flashing the sequence to the player
         /// </summary>
@@ -178,24 +157,6 @@ namespace Controls
         }
 
         /// <summary>
-        /// Ratio of the size of the button with respect to the heigth/width of the button
-        /// </summary>
-        [Description("Ratio of the font for the round controls (CountDown and Digits)"),
-        Category("Digit button properties"),
-        Browsable(true),
-        EditorBrowsable(EditorBrowsableState.Always),
-        DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        public float FontRatio
-        {
-            get { return _fFontFactor; }
-            set
-            {
-                _fFontFactor = value < 0 ? 0f : value;
-                CountDownUpdate();
-            }
-        }
-
-        /// <summary>
         /// Ratio of the heigth/width of the results picture with respect to the heigth/width of the board
         /// </summary>
         [Description("Ratio of the picture-result controls"),
@@ -210,6 +171,24 @@ namespace Controls
             {
                 _fResultFactor = value < 0 ? 0f : value;
                 PictureBoxResultUpdate();
+            }
+        }
+
+        /// <summary>
+        /// Ratio of the size of the button with respect to the heigth/width of the button
+        /// </summary>
+        [Description("Ratio of the font for the round controls (CountDown and Digits)"),
+        Category("Digit button properties"),
+        Browsable(true),
+        EditorBrowsable(EditorBrowsableState.Always),
+        DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public float FontRatio
+        {
+            get { return _fFontFactor; }
+            set
+            {
+                _fFontFactor = value < 0 ? 0f : value;
+                CountDownUpdate();
             }
         }
 
@@ -277,19 +256,6 @@ namespace Controls
         // https://github.com/Microsoft/SimpleStubs/issues/35
         // https://codereview.stackexchange.com/questions/133464/use-of-async-await-for-eventhandlers
         // https://stackoverflow.com/questions/1916095/how-do-i-make-an-eventhandler-run-asynchronously
-        //public delegate Task AsyncEventHandler<TEventArgs>(object sender, SequenceEventArgs e);
-        //public AsyncEventHandler<SequenceEventArgs> RightSequence;
-        public event EventHandler<SequenceEventArgs> RightSequence;
-        protected virtual void OnRightSequence(Board.SequenceEventArgs e)
-        {
-            if (RightSequence != null) RightSequence.Invoke(this, e);
-        }
-        public class SequenceEventArgs : EventArgs
-        {
-            public readonly int SequenceLength;
-            public SequenceEventArgs(int length) { SequenceLength = length; }
-        }
-
         #endregion Events
 
         public Board()
@@ -300,6 +266,7 @@ namespace Controls
             this.DoubleBuffered = true;
             this.ResizeRedraw = true;
             this.BorderStyle = BorderStyle.FixedSingle;
+            
             // Load the sounds
             _path = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
             _soundPlayer = new System.Media.SoundPlayer[Enum.GetNames(typeof(AudioSoundType)).Length];  // https://stackoverflow.com/questions/856154/total-number-of-items-defined-in-an-enum
@@ -312,7 +279,7 @@ namespace Controls
 
             // Set the array of buttons to 0 elements
             _roundButton = new Controls.RoundButton[0];
-
+            
             // Set the CountDown control
             countDown = new Controls.CountDown()
             {
@@ -406,9 +373,9 @@ namespace Controls
             //this.PerformLayout();
         }
 
-        public async void ResizeChildControls()
+        public void ResizeChildControls()
         {
-            await PictureBoxResultUpdate();
+            PictureBoxResultUpdate();
             CountDownUpdate();
         }
 
