@@ -36,6 +36,9 @@ namespace MemoryNumbers
             InitializeToolStrip();
             InitializeMenuStrip();
             InitializeStatusStrip();
+            InitializeChartStats();
+
+            splitStats.SplitterWidth = 1;   // This is a known bug
 
             //board1.Parent = this;
 
@@ -131,6 +134,85 @@ namespace MemoryNumbers
             return;
         }
 
+        private void InitializeChartStats ()
+        {
+            // Chart1.Series[0].IsVisibleInLegend = false; 
+            this.chartStatsNumbers.Legends["Legend1"].Enabled = false;
+            this.chartStatsTime.Legends["Legend1"].Enabled = false;
+
+            // this.chartStatsNumbers.Series["Series1"].Points.Clear();
+            this.chartStatsNumbers.Series["Right"].Points.AddXY("#1", 60);
+            this.chartStatsNumbers.Series["Wrong"].Points.AddXY("#1", 40);
+            this.chartStatsNumbers.Series["Right"].Points.AddXY("#2", 68);
+            this.chartStatsNumbers.Series["Wrong"].Points.AddXY("#2", 32);
+            this.chartStatsNumbers.Series["Right"].Points.AddXY("#3", 82);
+            this.chartStatsNumbers.Series["Wrong"].Points.AddXY("#3", 28);
+
+            this.chartStatsTime.Series["Time"].Points.AddXY("2", 5);
+            this.chartStatsTime.Series["Time"].Points.AddXY("2", 10);
+
+            /*
+            
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+
+            // 
+            // chartStatsNumbers
+            // 
+            chartArea1.AxisY.Title = "Percentage";
+            chartArea1.Name = "ChartArea1";
+            this.chartStatsNumbers.ChartAreas.Add(chartArea1);
+            this.chartStatsNumbers.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend1.Enabled = false;
+            legend1.Name = "Legend1";
+            this.chartStatsNumbers.Legends.Add(legend1);
+            this.chartStatsNumbers.Location = new System.Drawing.Point(0, 0);
+            this.chartStatsNumbers.Name = "chartStatsNumbers";
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+            series1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(200)))), ((int)(((byte)(0)))));
+            series1.Legend = "Legend1";
+            series1.Name = "Right";
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+            series2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            series2.Legend = "Legend1";
+            series2.Name = "Wrong";
+            this.chartStatsNumbers.Series.Add(series1);
+            this.chartStatsNumbers.Series.Add(series2);
+            this.chartStatsNumbers.Size = new System.Drawing.Size(262, 256);
+            this.chartStatsNumbers.TabIndex = 0;
+            this.chartStatsNumbers.Text = "chartStatsNumber";
+            // 
+            // chartStatsTime
+            // 
+            chartArea2.AxisY.Title = "Time in seconds";
+            chartArea2.Name = "ChartArea1";
+            this.chartStatsTime.ChartAreas.Add(chartArea2);
+            this.chartStatsTime.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend2.Enabled = false;
+            legend2.Name = "Legend1";
+            this.chartStatsTime.Legends.Add(legend2);
+            this.chartStatsTime.Location = new System.Drawing.Point(0, 0);
+            this.chartStatsTime.Name = "chartStatsTime";
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn;
+            series3.Legend = "Legend1";
+            series3.Name = "Time";
+            this.chartStatsTime.Series.Add(series3);
+            this.chartStatsTime.Size = new System.Drawing.Size(260, 256);
+            this.chartStatsTime.TabIndex = 0;
+            this.chartStatsTime.Text = "chartStatsTime";
+             */
+
+
+        }
+
         #endregion Initialization ToolStrip
 
         #region Form events
@@ -186,11 +268,6 @@ namespace MemoryNumbers
         private void Form1_ResizeEnd(object sender, EventArgs e)
         {
 
-        }
-
-        private void roundButton1_Click(object sender, EventArgs e)
-        {
-            //roundButton1.VisibleBorder = false;
         }
 
         #endregion Form events
@@ -262,6 +339,7 @@ namespace MemoryNumbers
             //System.Diagnostics.Debug.WriteLine("OnGameOver subscription event");
             MessageBox.Show("You reached the\nend of the game", "Congratulations!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             board1.ClearBoard();
+            this.toolStripMain_Start.Enabled = true;
         }
 
         #endregion Events subscription
@@ -275,8 +353,7 @@ namespace MemoryNumbers
 
         private async void toolStripMain_Start_Click(object sender, EventArgs e)
         {
-            //countDown1.Start();
-            //_game.CurrentScore = _game.MinimumLength - 1;
+            this.toolStripMain_Start.Enabled = false;
             _game.ReSet();
 
             // Show the score in the status bar
@@ -304,11 +381,18 @@ namespace MemoryNumbers
             board1.ClearBoard();
             this.toolStripStatusLabel_Secuence.Text = "";
             this.toolStripStatusLabel_Secuence.Invalidate();
+            this.toolStripMain_Start.Enabled = true;
         }
 
         private void toolStripMain_Sound_CheckedChanged(object sender, EventArgs e)
         {
             this.board1.PlaySounds = !toolStripMain_Sound.Checked;
+        }
+
+        private void toolStripMain_Stats_CheckedChanged(object sender, EventArgs e)
+        {
+            this.tabGame.SelectedIndex = toolStripMain_Stats.Checked ? 1 : 0;
+            this.toolStripMain_Start.Enabled = !toolStripMain_Stats.Checked;
         }
 
         private void toolStripMain_Settings_Click(object sender, EventArgs e)

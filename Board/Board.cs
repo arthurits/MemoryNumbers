@@ -18,8 +18,8 @@ namespace Controls
         #region Private variables
 
         // Internal variables to place the buttons on the board
-        const int nMaxPartialAttempts = 12;
-        const int nMaxTotalAttempts = 250;
+        internal const int nMaxPartialAttempts = 12;
+        internal const int nMaxTotalAttempts = 250;
 
         // Controls contained inside the control
         private readonly Controls.CountDown countDown;
@@ -291,7 +291,7 @@ namespace Controls
                 FillColor = System.Drawing.Color.Transparent,
                 Location = new System.Drawing.Point(0, 0),
                 Name = "CountDown",
-                //Parent = this,
+                Parent = this,
                 PlaySounds = false,
                 RegionOffset = 1f,
                 Size = new System.Drawing.Size(100, 100),
@@ -316,7 +316,7 @@ namespace Controls
                 BackColor = Color.Transparent,
                 BackgroundImageLayout = ImageLayout.Stretch,
                 Dock = DockStyle.None,
-                //Parent = this,
+                Parent = this,
                 Visible = false
             };
             pctWrong = new System.Windows.Forms.PictureBox()
@@ -325,7 +325,7 @@ namespace Controls
                 BackColor = Color.Transparent,
                 BackgroundImageLayout = ImageLayout.Stretch,
                 Dock = DockStyle.None,
-                //Parent = this,
+                Parent = this,
                 Visible = false
             };
             this.Controls.Add(pctCorrect);
@@ -436,51 +436,7 @@ namespace Controls
 
             }
 
-
-                /*
-                System.Diagnostics.Debug.WriteLine("Mark stamp #1");
-                if (pctCorrect != null)
-                {
-                    Bitmap bmpCorrect = null;
-                    this.pctCorrect.Size = new Size((int)(_nMinDimension * _fResultFactor), (int)(_nMinDimension * _fResultFactor));
-                    this.pctCorrect.Location = new System.Drawing.Point((this.Size.Width - pctCorrect.Size.Width) / 2, (this.Size.Height - pctCorrect.Size.Height) / 2);
-                    if (_svgCorrect != null)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Mark stamp #2");
-                        bmpCorrect = await DrawSVG(_svgCorrect, this.pctCorrect.Width, this.pctCorrect.Height);
-                        System.Diagnostics.Debug.WriteLine("Mark stamp #3");
-                    }
-                    if (bmpCorrect != null)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Mark stamp #4");
-                        this.pctCorrect.Image = bmpCorrect;
-                        this.pctCorrect.Region = new Region(await GetRegionFromTransparentBitmap(bmpCorrect));
-                        System.Diagnostics.Debug.WriteLine("Mark stamp #5");
-                    }
-                }
-                System.Diagnostics.Debug.WriteLine("Mark stamp #6");
-                if (pctWrong != null)
-                {
-                    Bitmap bmpWrong = null;
-                    this.pctWrong.Size = new Size((int)(_nMinDimension * _fResultFactor), (int)(_nMinDimension * _fResultFactor));
-                    this.pctWrong.Location = new System.Drawing.Point((this.Size.Width - pctWrong.Size.Width) / 2, (this.Size.Height - pctWrong.Size.Height) / 2);
-                    if (_svgWrong != null)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Mark stamp #7");
-                        bmpWrong = await DrawSVG(_svgWrong, this.pctWrong.Width, this.pctWrong.Height);
-                        System.Diagnostics.Debug.WriteLine("Mark stamp #8");
-                    }
-                    if (bmpWrong != null)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Mark stamp #9");
-                        this.pctWrong.Image = bmpWrong;
-                        this.pctWrong.Region = new Region(await GetRegionFromTransparentBitmap(bmpWrong));
-                        System.Diagnostics.Debug.WriteLine("Mark stamp #10");
-                    }
-                }
-                */
-
-            }
+        }
 
         public async Task<bool> Start(int[] numbers, int Time)
         {

@@ -29,6 +29,13 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tspTop = new System.Windows.Forms.ToolStripPanel();
             this.tspBottom = new System.Windows.Forms.ToolStripPanel();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
@@ -45,10 +52,25 @@
             this.toolStripMain_Settings = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMain_About = new System.Windows.Forms.ToolStripButton();
+            this.tabGame = new System.Windows.Forms.TabControl();
+            this.tabBoard = new System.Windows.Forms.TabPage();
             this.board1 = new Controls.Board();
+            this.tabStats = new System.Windows.Forms.TabPage();
+            this.splitStats = new System.Windows.Forms.SplitContainer();
+            this.chartStatsNumbers = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.chartStatsTime = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.statusStrip.SuspendLayout();
             this.toolStripMain.SuspendLayout();
+            this.tabGame.SuspendLayout();
+            this.tabBoard.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.board1)).BeginInit();
+            this.tabStats.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitStats)).BeginInit();
+            this.splitStats.Panel1.SuspendLayout();
+            this.splitStats.Panel2.SuspendLayout();
+            this.splitStats.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chartStatsNumbers)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartStatsTime)).BeginInit();
             this.SuspendLayout();
             // 
             // tspTop
@@ -177,6 +199,7 @@
             this.toolStripMain_Stats.Text = "Stats";
             this.toolStripMain_Stats.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripMain_Stats.ToolTipText = "Show stats plot";
+            this.toolStripMain_Stats.CheckedChanged += new System.EventHandler(this.toolStripMain_Stats_CheckedChanged);
             // 
             // toolStripSeparator3
             // 
@@ -209,6 +232,33 @@
             this.toolStripMain_About.ToolTipText = "About this software";
             this.toolStripMain_About.Click += new System.EventHandler(this.toolStripMain_About_Click);
             // 
+            // tabGame
+            // 
+            this.tabGame.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
+            this.tabGame.Controls.Add(this.tabBoard);
+            this.tabGame.Controls.Add(this.tabStats);
+            this.tabGame.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabGame.ItemSize = new System.Drawing.Size(0, 1);
+            this.tabGame.Location = new System.Drawing.Point(0, 70);
+            this.tabGame.Margin = new System.Windows.Forms.Padding(0);
+            this.tabGame.Name = "tabGame";
+            this.tabGame.Padding = new System.Drawing.Point(0, 0);
+            this.tabGame.SelectedIndex = 0;
+            this.tabGame.Size = new System.Drawing.Size(538, 271);
+            this.tabGame.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.tabGame.TabIndex = 7;
+            // 
+            // tabBoard
+            // 
+            this.tabBoard.Controls.Add(this.board1);
+            this.tabBoard.Location = new System.Drawing.Point(4, 5);
+            this.tabBoard.Margin = new System.Windows.Forms.Padding(0);
+            this.tabBoard.Name = "tabBoard";
+            this.tabBoard.Size = new System.Drawing.Size(530, 262);
+            this.tabBoard.TabIndex = 0;
+            this.tabBoard.Text = "Board";
+            this.tabBoard.UseVisualStyleBackColor = true;
+            // 
             // board1
             // 
             this.board1.BackColor = System.Drawing.Color.White;
@@ -216,19 +266,101 @@
             this.board1.BorderRatio = 0.12F;
             this.board1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.board1.CountDownRatio = 0.37F;
-            this.board1.Diameter = 67;
+            this.board1.Diameter = 65;
             this.board1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.board1.FillColor = System.Drawing.Color.White;
             this.board1.FontRatio = 0.6F;
-            this.board1.Location = new System.Drawing.Point(0, 70);
+            this.board1.Location = new System.Drawing.Point(0, 0);
             this.board1.Name = "board1";
             this.board1.NumbersRatio = 0.25F;
             this.board1.PlaySounds = true;
             this.board1.ResultRatio = 0.56F;
-            this.board1.Size = new System.Drawing.Size(538, 271);
-            this.board1.TabIndex = 0;
+            this.board1.Size = new System.Drawing.Size(530, 262);
+            this.board1.TabIndex = 11;
             this.board1.TabStop = false;
             this.board1.Time = 700;
+            // 
+            // tabStats
+            // 
+            this.tabStats.Controls.Add(this.splitStats);
+            this.tabStats.Location = new System.Drawing.Point(4, 5);
+            this.tabStats.Margin = new System.Windows.Forms.Padding(0);
+            this.tabStats.Name = "tabStats";
+            this.tabStats.Size = new System.Drawing.Size(530, 262);
+            this.tabStats.TabIndex = 1;
+            this.tabStats.Text = "Stats";
+            this.tabStats.UseVisualStyleBackColor = true;
+            // 
+            // splitStats
+            // 
+            this.splitStats.BackColor = System.Drawing.Color.Silver;
+            this.splitStats.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitStats.Location = new System.Drawing.Point(0, 0);
+            this.splitStats.Margin = new System.Windows.Forms.Padding(0);
+            this.splitStats.Name = "splitStats";
+            // 
+            // splitStats.Panel1
+            // 
+            this.splitStats.Panel1.Controls.Add(this.chartStatsNumbers);
+            // 
+            // splitStats.Panel2
+            // 
+            this.splitStats.Panel2.Controls.Add(this.chartStatsTime);
+            this.splitStats.Size = new System.Drawing.Size(530, 262);
+            this.splitStats.SplitterDistance = 265;
+            this.splitStats.SplitterWidth = 1;
+            this.splitStats.TabIndex = 0;
+            // 
+            // chartStatsNumbers
+            // 
+            this.chartStatsNumbers.BorderlineColor = System.Drawing.Color.Black;
+            this.chartStatsNumbers.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
+            chartArea1.AxisY.Title = "Percentage";
+            chartArea1.Name = "ChartArea1";
+            this.chartStatsNumbers.ChartAreas.Add(chartArea1);
+            this.chartStatsNumbers.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend1.Enabled = false;
+            legend1.Name = "Legend1";
+            this.chartStatsNumbers.Legends.Add(legend1);
+            this.chartStatsNumbers.Location = new System.Drawing.Point(0, 0);
+            this.chartStatsNumbers.Name = "chartStatsNumbers";
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+            series1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(200)))), ((int)(((byte)(0)))));
+            series1.Legend = "Legend1";
+            series1.Name = "Right";
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
+            series2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            series2.Legend = "Legend1";
+            series2.Name = "Wrong";
+            this.chartStatsNumbers.Series.Add(series1);
+            this.chartStatsNumbers.Series.Add(series2);
+            this.chartStatsNumbers.Size = new System.Drawing.Size(265, 262);
+            this.chartStatsNumbers.TabIndex = 0;
+            this.chartStatsNumbers.Text = "chartStatsNumber";
+            // 
+            // chartStatsTime
+            // 
+            this.chartStatsTime.BorderlineColor = System.Drawing.Color.Black;
+            this.chartStatsTime.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
+            chartArea2.AxisY.Title = "Time in seconds";
+            chartArea2.Name = "ChartArea1";
+            this.chartStatsTime.ChartAreas.Add(chartArea2);
+            this.chartStatsTime.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend2.Enabled = false;
+            legend2.Name = "Legend1";
+            this.chartStatsTime.Legends.Add(legend2);
+            this.chartStatsTime.Location = new System.Drawing.Point(0, 0);
+            this.chartStatsTime.Name = "chartStatsTime";
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn;
+            series3.Legend = "Legend1";
+            series3.Name = "Time";
+            this.chartStatsTime.Series.Add(series3);
+            this.chartStatsTime.Size = new System.Drawing.Size(264, 262);
+            this.chartStatsTime.TabIndex = 0;
+            this.chartStatsTime.Text = "chartStatsTime";
             // 
             // Form1
             // 
@@ -236,7 +368,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(538, 366);
-            this.Controls.Add(this.board1);
+            this.Controls.Add(this.tabGame);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.toolStripMain);
             this.Controls.Add(this.tspBottom);
@@ -255,15 +387,22 @@
             this.statusStrip.PerformLayout();
             this.toolStripMain.ResumeLayout(false);
             this.toolStripMain.PerformLayout();
+            this.tabGame.ResumeLayout(false);
+            this.tabBoard.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.board1)).EndInit();
+            this.tabStats.ResumeLayout(false);
+            this.splitStats.Panel1.ResumeLayout(false);
+            this.splitStats.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitStats)).EndInit();
+            this.splitStats.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chartStatsNumbers)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartStatsTime)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private Controls.Board board1;
-
         private System.Windows.Forms.ToolStripPanel tspTop;
         private System.Windows.Forms.ToolStripPanel tspBottom;
         private System.Windows.Forms.StatusStrip statusStrip;
@@ -280,6 +419,13 @@
         private System.Windows.Forms.ToolStripButton toolStripMain_Sound;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripButton toolStripMain_Stats;
+        private System.Windows.Forms.TabControl tabGame;
+        private System.Windows.Forms.TabPage tabBoard;
+        private System.Windows.Forms.TabPage tabStats;
+        private System.Windows.Forms.SplitContainer splitStats;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartStatsNumbers;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartStatsTime;
+        private Controls.Board board1;
     }
 }
 
