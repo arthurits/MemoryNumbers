@@ -84,7 +84,6 @@ namespace MemoryNumbers
         /// Current score of the game: the length of the sequence correctly guessed by the player (the length of the array).
         /// Only positive numbers >= 0.
         /// </summary>
-        /// [Description("Minimum digits (minimum 1 digit)"),
         [Description("Current score (length og the numeric sequence"),
         Category("Game properties"),
         Browsable(true),
@@ -103,7 +102,27 @@ namespace MemoryNumbers
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int[] GetSequence { get => _nSequence; }
 
-                /// <summary>
+        /// <summary>
+        /// Index (button clicked) whithin the _nSequence array.
+        /// </summary>
+        [Description("Current score (length og the numeric sequence"),
+        Category("Game properties"),
+        Browsable(true),
+        EditorBrowsable(EditorBrowsableState.Always),
+        DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public int GetCurrentAttempt { get => _nCurrAttempt; }
+
+        /// <summary>
+        /// Index (button clicked) whithin the _nSequence array.
+        /// </summary>
+        [Description("Current score (length og the numeric sequence"),
+        Category("Game properties"),
+        Browsable(true),
+        EditorBrowsable(EditorBrowsableState.Always),
+        DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public int GetSequenceIndex { get => _nSequenceIndex; }
+
+        /// <summary>
         /// The actual play-mode selected by the user (time and sequence mode).
         /// </summary>
         [Description("The actual play-mode selected by the user (time and sequence mode)"),
@@ -331,7 +350,7 @@ namespace MemoryNumbers
         /// <param name="value">Number of the button clicked</param>
         public bool Check(int value)
         {
-            // First check if the value clicked is correct
+            // First check if the value clicked is wrong
             if (_nSequence[_nSequenceIndex] != value)
             {
                 // If the playmode is Time Incremental, reduce the total time

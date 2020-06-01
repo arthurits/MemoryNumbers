@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Svg;
 using System.Runtime.CompilerServices;
+using System.Diagnostics;
 
 namespace Controls
 {
@@ -34,6 +35,8 @@ namespace Controls
 
         // Internal variables
         private string _path;                       // Path of the executable
+        private DateTime _nowStart;
+        private DateTime _nowEnd;
         //private int[] _nSequence;
         private int _nSequenceCounter = 0;
         private int _nSequenceLength = 0;
@@ -249,7 +252,12 @@ namespace Controls
         public class ButtonClickEventArgs : EventArgs
         {
             public readonly int ButtonValue;
-            public ButtonClickEventArgs(int button) { ButtonValue = button; }
+            public readonly double Seconds;
+            public ButtonClickEventArgs(int button, double seconds)
+            {
+                ButtonValue = button;
+                Seconds = seconds;
+            }
         }
 
         // Async events https://stackoverflow.com/questions/12451609/how-to-await-raising-an-eventhandler-event
@@ -502,6 +510,7 @@ namespace Controls
                 btn.VisibleText = false;
                 btn.VisibleBorder = true;
             }
+            _nowStart = DateTime.Now;
         }
 
         public async Task<bool> CreateButtons (int[] numbers)
@@ -647,9 +656,6 @@ namespace Controls
 
         private async void ButtonClicked(object sender, RoundButton.ButtonClickEventArgs e)
         {
-            
-            //System.Diagnostics.Debug.WriteLine("Button clicked");
-
             //Application.DoEvents();
             // Change the state of the clicked button
             var roundButton = (RoundButton)sender;
@@ -658,7 +664,10 @@ namespace Controls
             roundButton.Update();
             //_roundButton[_nSequenceCounter].VisibleBorder = false;
 
-            OnButtonClick(new ButtonClickEventArgs(e.ButtonValue));
+            _nowEnd = DateTime.Now;
+            double SecondsElapsed = (_nowEnd.Subtract(_nowStart)).TotalSeconds;
+            _nowStart = _nowEnd;
+            OnButtonClick(new ButtonClickEventArgs(e.ButtonValue, SecondsElapsed));
 
         }
 

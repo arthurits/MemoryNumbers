@@ -9,6 +9,7 @@ using System.Net.Configuration;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 using Controls;
 using Utils;
 
@@ -94,17 +95,12 @@ namespace MemoryNumbers
 
             toolStripMain.Renderer = new customRenderer(Brushes.SteelBlue, Brushes.LightSkyBlue);
 
-            //var path = Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
             if (File.Exists(_path + @"\images\exit.ico")) this.toolStripMain_Exit.Image = new Icon(_path + @"\images\exit.ico", 48, 48).ToBitmap();
             if (File.Exists(_path + @"\images\start.ico")) this.toolStripMain_Start.Image = new Icon(_path + @"\images\start.ico", 48, 48).ToBitmap();
             if (File.Exists(_path + @"\images\stop.ico")) this.toolStripMain_Stop.Image = new Icon(_path + @"\images\stop.ico", 48, 48).ToBitmap();
             if (File.Exists(_path + @"\images\soundoff.ico")) this.toolStripMain_Sound.Image = new Icon(_path + @"\images\soundoff.ico", 48, 48).ToBitmap();
             if (File.Exists(_path + @"\images\graph.ico")) this.toolStripMain_Stats.Image = new Icon(_path + @"\images\graph.ico", 48, 48).ToBitmap();
             if (File.Exists(_path + @"\images\settings.ico")) this.toolStripMain_Settings.Image = new Icon(_path + @"\images\settings.ico", 48, 48).ToBitmap();
-            //if (File.Exists(path + @"\images\save.ico")) this.toolStripMain_Data.Image = new Icon(path + @"\images\save.ico", 48, 48).ToBitmap();
-            //if (File.Exists(path + @"\images\picture.ico")) this.toolStripMain_Picture.Image = new Icon(path + @"\images\picture.ico", 48, 48).ToBitmap();
-            //if (File.Exists(path + @"\images\reflect-horizontal.ico")) this.toolStripMain_Mirror.Image = new Icon(path + @"\images\reflect-horizontal.ico", 48, 48).ToBitmap();
-            //if (File.Exists(path + @"\images\plot.ico")) this.toolStripMain_Plots.Image = new Icon(path + @"\images\plot.ico", 48, 48).ToBitmap();
             if (File.Exists(_path + @"\images\about.ico")) this.toolStripMain_About.Image = new Icon(_path + @"\images\about.ico", 48, 48).ToBitmap();
 
             /*
@@ -148,8 +144,30 @@ namespace MemoryNumbers
             this.chartStatsNumbers.Series["Right"].Points.AddXY("#3", 82);
             this.chartStatsNumbers.Series["Wrong"].Points.AddXY("#3", 28);
 
-            this.chartStatsTime.Series["Time"].Points.AddXY("2", 5);
-            this.chartStatsTime.Series["Time"].Points.AddXY("2", 10);
+            this.chartStatsTime.Series.Clear();
+            this.chartStatsTime.Series.Add(new Series() { ChartType = SeriesChartType.StackedColumn });
+            this.chartStatsTime.Series.Add(new Series() { ChartType = SeriesChartType.StackedColumn });
+            this.chartStatsTime.Series.Add(new Series() { ChartType = SeriesChartType.StackedColumn });
+            this.chartStatsTime.Series[0].Points.AddXY(1, 0.3852591);
+            this.chartStatsTime.Series[1].Points.AddXY(1, 0.7029007);
+            
+
+            this.chartStatsTime.Series[0].Points.AddXY(2, 0.3323844);
+            this.chartStatsTime.Series[1].Points.AddXY(2, 0.3194352);
+            
+            this.chartStatsTime.Series[2].Points.AddXY(2, 0.8386591);
+            this.chartStatsTime.Series[2].Points.AddXY(1, 0);
+
+            this.chartStatsTime.Series[0].Points.AddXY(3, 1.5502257);
+            this.chartStatsTime.Series[1].Points.AddXY(3, 0.6354501);
+            this.chartStatsTime.Series[2].Points.AddXY(3, 0.4801333);
+            this.chartStatsTime.Series.Add(new Series() { ChartType = SeriesChartType.StackedColumn });
+            this.chartStatsTime.Series[3].Points.AddXY(3, 0.4382886);
+            this.chartStatsTime.Series[3].Points.AddXY(1, 0);
+            this.chartStatsTime.Series[3].Points.AddXY(2, 0);
+
+            //this.chartStatsTime.Series["Time"].Points.AddXY("2", 5);
+            //this.chartStatsTime.Series["Time"].Points.AddXY("2", 10);
 
             /*
             
@@ -277,7 +295,18 @@ namespace MemoryNumbers
         private void OnButtonClick(object sender, Board.ButtonClickEventArgs e)
         {
 
+            if (_game.GetSequenceIndex > this.chartStatsTime.Series.Count - 1)
+                this.chartStatsTime.Series.Add(new Series()
+                {
+                    ChartType = SeriesChartType.StackedColumn,
+                    YValueType = ChartValueType.Double
+                });
+            this.chartStatsTime.Series[_game.GetSequenceIndex].Points.AddXY(_game.GetCurrentAttempt.ToString(), e.Seconds);
+            System.Diagnostics.Debug.Write(_game.GetSequenceIndex + " — ");
+            System.Diagnostics.Debug.Write(_game.GetCurrentAttempt + " — ");
+            System.Diagnostics.Debug.WriteLine(e.Seconds.ToString());
             if (_game.Check(e.ButtonValue)) board1.ButtonRight();
+            
             // hide button
         }
 
@@ -318,9 +347,7 @@ namespace MemoryNumbers
 
             // Wait before starting a new sequence
             //await Task.Delay(100);
-            await t;
-
-            
+            await t;        
 
             _game.CurrentScore -= 2;
             if (_game.Start())
@@ -354,6 +381,7 @@ namespace MemoryNumbers
         private async void toolStripMain_Start_Click(object sender, EventArgs e)
         {
             this.toolStripMain_Start.Enabled = false;
+            this.chartStatsTime.Series.Clear();
             _game.ReSet();
 
             // Show the score in the status bar
@@ -392,7 +420,6 @@ namespace MemoryNumbers
         private void toolStripMain_Stats_CheckedChanged(object sender, EventArgs e)
         {
             this.tabGame.SelectedIndex = toolStripMain_Stats.Checked ? 1 : 0;
-            this.toolStripMain_Start.Enabled = !toolStripMain_Stats.Checked;
         }
 
         private void toolStripMain_Settings_Click(object sender, EventArgs e)

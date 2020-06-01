@@ -36,6 +36,17 @@
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series11 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series12 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series13 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series14 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tspTop = new System.Windows.Forms.ToolStripPanel();
             this.tspBottom = new System.Windows.Forms.ToolStripPanel();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
@@ -54,16 +65,15 @@
             this.toolStripMain_About = new System.Windows.Forms.ToolStripButton();
             this.tabGame = new System.Windows.Forms.TabControl();
             this.tabBoard = new System.Windows.Forms.TabPage();
-            this.board1 = new Controls.Board();
             this.tabStats = new System.Windows.Forms.TabPage();
             this.splitStats = new System.Windows.Forms.SplitContainer();
             this.chartStatsNumbers = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartStatsTime = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.board1 = new Controls.Board();
             this.statusStrip.SuspendLayout();
             this.toolStripMain.SuspendLayout();
             this.tabGame.SuspendLayout();
             this.tabBoard.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.board1)).BeginInit();
             this.tabStats.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitStats)).BeginInit();
             this.splitStats.Panel1.SuspendLayout();
@@ -71,6 +81,7 @@
             this.splitStats.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartStatsNumbers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartStatsTime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.board1)).BeginInit();
             this.SuspendLayout();
             // 
             // tspTop
@@ -259,27 +270,6 @@
             this.tabBoard.Text = "Board";
             this.tabBoard.UseVisualStyleBackColor = true;
             // 
-            // board1
-            // 
-            this.board1.BackColor = System.Drawing.Color.White;
-            this.board1.BorderColor = System.Drawing.Color.Black;
-            this.board1.BorderRatio = 0.12F;
-            this.board1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.board1.CountDownRatio = 0.37F;
-            this.board1.Diameter = 65;
-            this.board1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.board1.FillColor = System.Drawing.Color.White;
-            this.board1.FontRatio = 0.6F;
-            this.board1.Location = new System.Drawing.Point(0, 0);
-            this.board1.Name = "board1";
-            this.board1.NumbersRatio = 0.25F;
-            this.board1.PlaySounds = true;
-            this.board1.ResultRatio = 0.56F;
-            this.board1.Size = new System.Drawing.Size(530, 262);
-            this.board1.TabIndex = 11;
-            this.board1.TabStop = false;
-            this.board1.Time = 700;
-            // 
             // tabStats
             // 
             this.tabStats.Controls.Add(this.splitStats);
@@ -357,10 +347,86 @@
             series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn;
             series3.Legend = "Legend1";
             series3.Name = "Time";
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn;
+            series4.Legend = "Legend1";
+            series4.Name = "Series2";
+            series5.ChartArea = "ChartArea1";
+            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn;
+            series5.Legend = "Legend1";
+            series5.Name = "Series3";
+            series6.ChartArea = "ChartArea1";
+            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn;
+            series6.Legend = "Legend1";
+            series6.Name = "Series4";
+            series7.ChartArea = "ChartArea1";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn;
+            series7.Legend = "Legend1";
+            series7.Name = "Series5";
+            series8.ChartArea = "ChartArea1";
+            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn;
+            series8.Legend = "Legend1";
+            series8.Name = "Series6";
+            series9.ChartArea = "ChartArea1";
+            series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn;
+            series9.Legend = "Legend1";
+            series9.Name = "Series7";
+            series10.ChartArea = "ChartArea1";
+            series10.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn;
+            series10.Legend = "Legend1";
+            series10.Name = "Series8";
+            series11.ChartArea = "ChartArea1";
+            series11.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn;
+            series11.Legend = "Legend1";
+            series11.Name = "Series9";
+            series12.ChartArea = "ChartArea1";
+            series12.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn;
+            series12.Legend = "Legend1";
+            series12.Name = "Series10";
+            series13.ChartArea = "ChartArea1";
+            series13.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn;
+            series13.Legend = "Legend1";
+            series13.Name = "Series11";
+            series14.ChartArea = "ChartArea1";
+            series14.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn;
+            series14.Legend = "Legend1";
+            series14.Name = "Series12";
             this.chartStatsTime.Series.Add(series3);
+            this.chartStatsTime.Series.Add(series4);
+            this.chartStatsTime.Series.Add(series5);
+            this.chartStatsTime.Series.Add(series6);
+            this.chartStatsTime.Series.Add(series7);
+            this.chartStatsTime.Series.Add(series8);
+            this.chartStatsTime.Series.Add(series9);
+            this.chartStatsTime.Series.Add(series10);
+            this.chartStatsTime.Series.Add(series11);
+            this.chartStatsTime.Series.Add(series12);
+            this.chartStatsTime.Series.Add(series13);
+            this.chartStatsTime.Series.Add(series14);
             this.chartStatsTime.Size = new System.Drawing.Size(264, 262);
             this.chartStatsTime.TabIndex = 0;
             this.chartStatsTime.Text = "chartStatsTime";
+            // 
+            // board1
+            // 
+            this.board1.BackColor = System.Drawing.Color.White;
+            this.board1.BorderColor = System.Drawing.Color.Black;
+            this.board1.BorderRatio = 0.12F;
+            this.board1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.board1.CountDownRatio = 0.37F;
+            this.board1.Diameter = 65;
+            this.board1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.board1.FillColor = System.Drawing.Color.White;
+            this.board1.FontRatio = 0.6F;
+            this.board1.Location = new System.Drawing.Point(0, 0);
+            this.board1.Name = "board1";
+            this.board1.NumbersRatio = 0.25F;
+            this.board1.PlaySounds = true;
+            this.board1.ResultRatio = 0.56F;
+            this.board1.Size = new System.Drawing.Size(530, 262);
+            this.board1.TabIndex = 11;
+            this.board1.TabStop = false;
+            this.board1.Time = 700;
             // 
             // Form1
             // 
@@ -389,7 +455,6 @@
             this.toolStripMain.PerformLayout();
             this.tabGame.ResumeLayout(false);
             this.tabBoard.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.board1)).EndInit();
             this.tabStats.ResumeLayout(false);
             this.splitStats.Panel1.ResumeLayout(false);
             this.splitStats.Panel2.ResumeLayout(false);
@@ -397,12 +462,14 @@
             this.splitStats.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chartStatsNumbers)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartStatsTime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.board1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
+        
         private System.Windows.Forms.ToolStripPanel tspTop;
         private System.Windows.Forms.ToolStripPanel tspBottom;
         private System.Windows.Forms.StatusStrip statusStrip;
