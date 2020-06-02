@@ -147,24 +147,26 @@ namespace MemoryNumbers
             this.chartStatsTime.Series.Clear();
             this.chartStatsTime.Series.Add(new Series() { ChartType = SeriesChartType.StackedColumn });
             this.chartStatsTime.Series.Add(new Series() { ChartType = SeriesChartType.StackedColumn });
-            this.chartStatsTime.Series.Add(new Series() { ChartType = SeriesChartType.StackedColumn });
+            
             this.chartStatsTime.Series[0].Points.AddXY(1, 0.3852591);
             this.chartStatsTime.Series[1].Points.AddXY(1, 0.7029007);
-            
+
+            this.chartStatsTime.Series.Add(new Series() { ChartType = SeriesChartType.StackedColumn });
+            this.chartStatsTime.Series[2].Points.AddXY(1, 0);
 
             this.chartStatsTime.Series[0].Points.AddXY(2, 0.3323844);
             this.chartStatsTime.Series[1].Points.AddXY(2, 0.3194352);
-            
             this.chartStatsTime.Series[2].Points.AddXY(2, 0.8386591);
-            this.chartStatsTime.Series[2].Points.AddXY(1, 0);
+
+            this.chartStatsTime.Series.Add(new Series() { ChartType = SeriesChartType.StackedColumn });
+            this.chartStatsTime.Series[3].Points.AddXY(1, 0);
+            this.chartStatsTime.Series[3].Points.AddXY(2, 0);
 
             this.chartStatsTime.Series[0].Points.AddXY(3, 1.5502257);
             this.chartStatsTime.Series[1].Points.AddXY(3, 0.6354501);
             this.chartStatsTime.Series[2].Points.AddXY(3, 0.4801333);
-            this.chartStatsTime.Series.Add(new Series() { ChartType = SeriesChartType.StackedColumn });
             this.chartStatsTime.Series[3].Points.AddXY(3, 0.4382886);
-            this.chartStatsTime.Series[3].Points.AddXY(1, 0);
-            this.chartStatsTime.Series[3].Points.AddXY(2, 0);
+            
 
             //this.chartStatsTime.Series["Time"].Points.AddXY("2", 5);
             //this.chartStatsTime.Series["Time"].Points.AddXY("2", 10);
@@ -294,14 +296,27 @@ namespace MemoryNumbers
 
         private void OnButtonClick(object sender, Board.ButtonClickEventArgs e)
         {
-
-            if (_game.GetSequenceIndex > this.chartStatsTime.Series.Count - 1)
-                this.chartStatsTime.Series.Add(new Series()
+            if (_game.CurrentScore > this.chartStatsTime.Series.Count)
+            {
+                for (int i = this.chartStatsTime.Series.Count; i < _game.CurrentScore; i++)
                 {
-                    ChartType = SeriesChartType.StackedColumn,
-                    YValueType = ChartValueType.Double
-                });
-            this.chartStatsTime.Series[_game.GetSequenceIndex].Points.AddXY(_game.GetCurrentAttempt.ToString(), e.Seconds);
+                    this.chartStatsTime.Series.Add(new Series()
+                    {
+                        ChartType = SeriesChartType.StackedColumn,
+                        YValueType = ChartValueType.Double
+                    });
+                    for (int j = 1; j <= _game.GetCurrentAttempt; j++)
+                    {
+                        this.chartStatsTime.Series[i].Points.AddXY(j, 0);
+                    }
+
+                }
+            }
+
+            //this.chartStatsTime.Series[_game.GetSequenceIndex].Points.AddXY(_game.GetCurrentAttempt, e.Seconds);
+            this.chartStatsTime.Series[_game.GetSequenceIndex].Points.ElementAt(_game.GetCurrentAttempt-1).SetValueY(e.Seconds);
+            this.chartStatsTime.Refresh();
+
             System.Diagnostics.Debug.Write(_game.GetSequenceIndex + " — ");
             System.Diagnostics.Debug.Write(_game.GetCurrentAttempt + " — ");
             System.Diagnostics.Debug.WriteLine(e.Seconds.ToString());
