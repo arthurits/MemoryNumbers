@@ -302,27 +302,26 @@ namespace MemoryNumbers
                 {
                     this.chartStatsTime.Series.Add(new Series()
                     {
-                        ChartType = SeriesChartType.StackedColumn,
-                        YValueType = ChartValueType.Double
+                        ChartType = SeriesChartType.StackedColumn
                     });
-                    for (int j = 1; j <= _game.GetCurrentAttempt; j++)
-                    {
-                        this.chartStatsTime.Series[i].Points.AddXY(j, 0);
-                    }
+                }
+            }
 
+            for (int i = 0; i < this.chartStatsTime.Series.Count; i++)
+            {
+                for (int j = this.chartStatsTime.Series[i].Points.Count; j < _game.GetCurrentAttempt; j++)
+                {
+                    this.chartStatsTime.Series[i].Points.AddXY(j, 0);
                 }
             }
 
             //this.chartStatsTime.Series[_game.GetSequenceIndex].Points.AddXY(_game.GetCurrentAttempt, e.Seconds);
-            this.chartStatsTime.Series[_game.GetSequenceIndex].Points.ElementAt(_game.GetCurrentAttempt-1).SetValueY(e.Seconds);
-            this.chartStatsTime.Refresh();
+            this.chartStatsTime.Series[_game.GetSequenceIndex].Points.ElementAt(_game.GetCurrentAttempt - 1).SetValueXY(_game.GetCurrentAttempt, e.Seconds);
+            //this.chartStatsTime.Refresh();
+            //System.Diagnostics.Debug.WriteLine(_game.GetSequenceIndex + " — " + _game.GetCurrentAttempt + " — " + e.Seconds.ToString());
 
-            System.Diagnostics.Debug.Write(_game.GetSequenceIndex + " — ");
-            System.Diagnostics.Debug.Write(_game.GetCurrentAttempt + " — ");
-            System.Diagnostics.Debug.WriteLine(e.Seconds.ToString());
             if (_game.Check(e.ButtonValue)) board1.ButtonRight();
             
-            // hide button
         }
 
         private async void OnCorrectSequence(object sender, Game.CorrectEventArgs e)
@@ -382,6 +381,17 @@ namespace MemoryNumbers
             MessageBox.Show("You reached the\nend of the game", "Congratulations!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             board1.ClearBoard();
             this.toolStripMain_Start.Enabled = true;
+
+            this.chartStatsNumbers.Series["Right"].Points.Clear();
+            this.chartStatsNumbers.Series["Wrong"].Points.Clear();
+            _game._listStats.Sort((x, y) => x.Number.CompareTo(y.Number));
+
+            foreach (var num in _game._listStats)
+            {
+                this.chartStatsNumbers.Series["Right"].Points.AddXY(num.Number, 100 * num.Correct / num.Total);
+                this.chartStatsNumbers.Series["Wrong"].Points.AddXY(num.Number, 100 * (1 - num.Correct / num.Total));
+            }
+
         }
 
         #endregion Events subscription

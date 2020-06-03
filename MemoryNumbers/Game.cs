@@ -32,6 +32,7 @@ namespace MemoryNumbers
         private int _nTime;
         private int _nTimeIncrement;
         private int _nTotalTime;
+        public List<(int Number, int Total, int Correct)> _listStats;
 
         #endregion Private variables
 
@@ -261,6 +262,7 @@ namespace MemoryNumbers
             _nCurrAttempt = 0;
             _nSequence = null;
             _nTotalTime = _nTime;
+            _listStats = new List<(int, int, int)>();
         }
 
         /// <summary>
@@ -286,7 +288,10 @@ namespace MemoryNumbers
                     _nSequence[i] = _nMinDigit + i;
                 }
             }
-       
+
+            foreach (int i in _nSequence)
+                if (_listStats.FindIndex(x => x.Number == i) == -1) _listStats.Add((i, 0, 0));
+
             return true;
         }
 
@@ -350,6 +355,8 @@ namespace MemoryNumbers
         /// <param name="value">Number of the button clicked</param>
         public bool Check(int value)
         {
+            int index = _listStats.FindIndex(x => x.Number == _nSequence[_nSequenceIndex]);
+
             // First check if the value clicked is wrong
             if (_nSequence[_nSequenceIndex] != value)
             {
@@ -358,11 +365,14 @@ namespace MemoryNumbers
                     _nTotalTime -= _nTimeIncrement;
 
                 OnWrongSequence(new WrongEventArgs(_nSequenceLength - 2));
+                
+                if (index !=-1) _listStats[index] = (_listStats[index].Number, _listStats[index].Total+1, _listStats[index].Correct);
                 return false;
             }
             
             // Increase the counter whithin the _nSequence
             _nSequenceIndex++;
+            if (index != -1) _listStats[index] = (_listStats[index].Number, _listStats[index].Total + 1, _listStats[index].Correct + 1);
 
             // Check if this is the last button, i.e. the last available value in the _nSequence array
             if (_nSequenceIndex > _nSequence.Length-1)
@@ -373,12 +383,11 @@ namespace MemoryNumbers
 
                 //_nSequenceLength++;
                 OnCorrectSequence(new CorrectEventArgs(_nSequenceLength));
+
                 return false;
             }
 
             // The OnGameOver is checked at the Start function. It could be also implemented here
-
-            
 
             // If we get here, it means the player guessed correctly and that there are still numbers left in the sequence
             return true;
