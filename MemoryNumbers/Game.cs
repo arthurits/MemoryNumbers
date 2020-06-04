@@ -32,7 +32,7 @@ namespace MemoryNumbers
         private int _nTime;
         private int _nTimeIncrement;
         private int _nTotalTime;
-        public List<(int Number, int Total, int Correct)> _listStats;
+        private List<(int Number, int Total, int Correct)> _listStats;
 
         #endregion Private variables
 
@@ -162,6 +162,16 @@ namespace MemoryNumbers
         EditorBrowsable(EditorBrowsableState.Always),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int TimeTotal { get => _nTotalTime;}
+
+        /// <summary>
+        /// Gets the descriptive statistics (right, wrong percentages) regarding the buttons clicked by the player
+        /// </summary>
+        [Description("Gets the descriptive statistics (right, wrong percentages) regarding the buttons clicked by the player"),
+        Category("Game properties"),
+        Browsable(true),
+        EditorBrowsable(EditorBrowsableState.Always),
+        DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public List<(int Number, int Total, int Correct)> GetStats { get => _listStats; }
 
         #endregion Public properties
 
@@ -355,7 +365,8 @@ namespace MemoryNumbers
         /// <param name="value">Number of the button clicked</param>
         public bool Check(int value)
         {
-            int index = _listStats.FindIndex(x => x.Number == _nSequence[_nSequenceIndex]);
+            //int index = _listStats.FindIndex(x => x.Number == _nSequence[_nSequenceIndex]);
+            int index = _listStats.FindIndex(x => x.Number == value);
 
             // First check if the value clicked is wrong
             if (_nSequence[_nSequenceIndex] != value)
@@ -364,9 +375,11 @@ namespace MemoryNumbers
                 if ((_playMode & PlayMode.TimeIncremental) == PlayMode.TimeIncremental)
                     _nTotalTime -= _nTimeIncrement;
 
-                OnWrongSequence(new WrongEventArgs(_nSequenceLength - 2));
-                
+                //System.Diagnostics.Debug.WriteLine(index.ToString() + " — " + _nSequence[_nSequenceIndex].ToString() + " — " + value.ToString());
                 if (index !=-1) _listStats[index] = (_listStats[index].Number, _listStats[index].Total+1, _listStats[index].Correct);
+
+                OnWrongSequence(new WrongEventArgs(_nSequenceLength - 2));
+
                 return false;
             }
             

@@ -13,10 +13,14 @@ namespace MemoryNumbers
 {
     public partial class frmSettings : Form
     {
-        // The return value
-        public ProgramSettings<string, string> settings;
+        // Internal variables
+        private ProgramSettings<string, string> settings;
         private ProgramSettings<string, string> _defaultSettings;
 
+        // Public interface
+        public ProgramSettings<string, string> GetSettings => settings;
+
+        // Constructors
         public frmSettings()
         {
             InitializeComponent();
@@ -58,7 +62,8 @@ namespace MemoryNumbers
             }
             catch (KeyNotFoundException e)
             {
-                MessageBox.Show(this, "Unexpected error while applying settings.\nPlease report the error to the engineer.", "Settings error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                using (new CenterWinDialog(this))
+                    MessageBox.Show(this, "Unexpected error while applying settings.\nPlease report the error to the engineer.", "Settings error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             
             //ApplySettings(_settings);

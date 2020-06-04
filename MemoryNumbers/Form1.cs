@@ -137,14 +137,20 @@ namespace MemoryNumbers
             this.chartStatsTime.Legends["Legend1"].Enabled = false;
 
             // this.chartStatsNumbers.Series["Series1"].Points.Clear();
-            this.chartStatsNumbers.Series["Right"].Points.AddXY("#1", 60);
+            /*this.chartStatsNumbers.Series["Right"].Points.AddXY("#1", 60);
             this.chartStatsNumbers.Series["Wrong"].Points.AddXY("#1", 40);
             this.chartStatsNumbers.Series["Right"].Points.AddXY("#2", 68);
             this.chartStatsNumbers.Series["Wrong"].Points.AddXY("#2", 32);
             this.chartStatsNumbers.Series["Right"].Points.AddXY("#3", 82);
             this.chartStatsNumbers.Series["Wrong"].Points.AddXY("#3", 28);
-
+            */
             this.chartStatsTime.Series.Clear();
+            this.chartStatsTime.ChartAreas[0].AxisX.Crossing = 0;
+            this.chartStatsTime.ChartAreas[0].AxisX.Minimum = 0;
+            this.chartStatsNumbers.ChartAreas[0].AxisX.Crossing = 0;
+            this.chartStatsNumbers.ChartAreas[0].AxisX.Interval = 1;
+
+            /*
             this.chartStatsTime.Series.Add(new Series() { ChartType = SeriesChartType.StackedColumn });
             this.chartStatsTime.Series.Add(new Series() { ChartType = SeriesChartType.StackedColumn });
             
@@ -166,7 +172,7 @@ namespace MemoryNumbers
             this.chartStatsTime.Series[1].Points.AddXY(3, 0.6354501);
             this.chartStatsTime.Series[2].Points.AddXY(3, 0.4801333);
             this.chartStatsTime.Series[3].Points.AddXY(3, 0.4382886);
-            
+            */
 
             //this.chartStatsTime.Series["Time"].Points.AddXY("2", 5);
             //this.chartStatsTime.Series["Time"].Points.AddXY("2", 10);
@@ -296,6 +302,7 @@ namespace MemoryNumbers
 
         private void OnButtonClick(object sender, Board.ButtonClickEventArgs e)
         {
+            // Add series when needed
             if (_game.CurrentScore > this.chartStatsTime.Series.Count)
             {
                 for (int i = this.chartStatsTime.Series.Count; i < _game.CurrentScore; i++)
@@ -306,7 +313,7 @@ namespace MemoryNumbers
                     });
                 }
             }
-
+            // Check all series have the same number of points
             for (int i = 0; i < this.chartStatsTime.Series.Count; i++)
             {
                 for (int j = this.chartStatsTime.Series[i].Points.Count; j < _game.GetCurrentAttempt; j++)
@@ -314,11 +321,8 @@ namespace MemoryNumbers
                     this.chartStatsTime.Series[i].Points.AddXY(j, 0);
                 }
             }
-
-            //this.chartStatsTime.Series[_game.GetSequenceIndex].Points.AddXY(_game.GetCurrentAttempt, e.Seconds);
+            // Update the current data
             this.chartStatsTime.Series[_game.GetSequenceIndex].Points.ElementAt(_game.GetCurrentAttempt - 1).SetValueXY(_game.GetCurrentAttempt, e.Seconds);
-            //this.chartStatsTime.Refresh();
-            //System.Diagnostics.Debug.WriteLine(_game.GetSequenceIndex + " — " + _game.GetCurrentAttempt + " — " + e.Seconds.ToString());
 
             if (_game.Check(e.ButtonValue)) board1.ButtonRight();
             
@@ -343,7 +347,8 @@ namespace MemoryNumbers
                 if (await board1.Start(_game.GetSequence, _game.TimeTotal) == false)
                 {
                     toolStripMain_Stop_Click(null, null);
-                    MessageBox.Show("Could not place the buttons on the screen.\nPlease, try reducing the 'numbers ratio' paremeter in\nthe Settings (between 0.25 - 0.30).", "Error placing numbers", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    using (new CenterWinDialog(this))
+                        MessageBox.Show("Could not place the buttons on the screen.\nPlease, try reducing the 'numbers ratio' paremeter in\nthe Settings (between 0.25 - 0.30).", "Error placing numbers", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
@@ -357,7 +362,8 @@ namespace MemoryNumbers
             this.toolStripStatusLabel_Secuence.Text = e.Score.ToString();
             this.toolStripStatusLabel_Secuence.Invalidate();
 
-            MessageBox.Show("Wrong sequence", "Error");
+            using (new CenterWinDialog(this))
+                MessageBox.Show("Wrong sequence", "Error");
 
             // Wait before starting a new sequence
             //await Task.Delay(100);
@@ -369,7 +375,8 @@ namespace MemoryNumbers
                 if (await board1.Start(_game.GetSequence, _game.TimeTotal) == false)
                 {
                     toolStripMain_Stop_Click(null, null);
-                    MessageBox.Show("Could not place the buttons on the screen.\nPlease, try reducing the 'numbers ratio' paremeter in\nthe Settings (between 0.25 - 0.30).", "Error placing numbers", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    using (new CenterWinDialog(this))
+                        MessageBox.Show("Could not place the buttons on the screen.\nPlease, try reducing the 'numbers ratio' paremeter in\nthe Settings (between 0.25 - 0.30).", "Error placing numbers", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
@@ -378,20 +385,18 @@ namespace MemoryNumbers
         private void OnGameOver(object sender, Game.OverEventArgs e)
         {
             //System.Diagnostics.Debug.WriteLine("OnGameOver subscription event");
-            MessageBox.Show("You reached the\nend of the game", "Congratulations!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            using (new CenterWinDialog(this))
+                MessageBox.Show("You reached the\nend of the game", "Congratulations!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            // Update GUI
             board1.ClearBoard();
+            ChartStatsNumbers_Update();
+
+            // Commute the visibility of the strip buttons
             this.toolStripMain_Start.Enabled = true;
-
-            this.chartStatsNumbers.Series["Right"].Points.Clear();
-            this.chartStatsNumbers.Series["Wrong"].Points.Clear();
-            _game._listStats.Sort((x, y) => x.Number.CompareTo(y.Number));
-
-            foreach (var num in _game._listStats)
-            {
-                this.chartStatsNumbers.Series["Right"].Points.AddXY(num.Number, 100 * num.Correct / num.Total);
-                this.chartStatsNumbers.Series["Wrong"].Points.AddXY(num.Number, 100 * (1 - num.Correct / num.Total));
-            }
-
+            this.toolStripMain_Stats.Enabled = true;
+            this.toolStripMain_Settings.Enabled = true;
+            this.tabGame.SelectedIndex = 1;
         }
 
         #endregion Events subscription
@@ -405,8 +410,16 @@ namespace MemoryNumbers
 
         private async void toolStripMain_Start_Click(object sender, EventArgs e)
         {
+            // Commute visibility of the strip buttons
             this.toolStripMain_Start.Enabled = false;
-            this.chartStatsTime.Series.Clear();
+            this.toolStripMain_Settings.Enabled = false;
+            this.toolStripMain_Stats.Checked = false;
+            this.toolStripMain_Stats.Enabled = false;
+
+            // Show the board
+            this.tabGame.SelectedIndex = 0;
+
+            // Always reset before starting a new game
             _game.ReSet();
 
             // Show the score in the status bar
@@ -419,12 +432,14 @@ namespace MemoryNumbers
                 if (await board1.Start(_game.GetSequence, _game.TimeTotal) == false)
                 {
                     toolStripMain_Stop_Click(null, null);
-                    MessageBox.Show("Could not place the buttons on the screen.\nPlease, try reducing the 'numbers ratio' paremeter in\nthe Settings (between 0.25 - 0.30).", "Error placing numbers", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    using (new CenterWinDialog(this))
+                        MessageBox.Show("Could not place the buttons on the screen.\nPlease, try reducing the 'numbers ratio' paremeter in\nthe Settings (between 0.25 - 0.30).", "Error placing numbers", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
-                MessageBox.Show("Could not start the game.\nUnexpected error.", "Error StartClick", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                using (new CenterWinDialog(this))
+                    MessageBox.Show("Could not start the game.\nUnexpected error.", "Error StartClick", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             
         }
@@ -434,7 +449,14 @@ namespace MemoryNumbers
             board1.ClearBoard();
             this.toolStripStatusLabel_Secuence.Text = "";
             this.toolStripStatusLabel_Secuence.Invalidate();
+            
+            // Commute visibility of the strip buttons
             this.toolStripMain_Start.Enabled = true;
+            this.toolStripMain_Settings.Enabled = true;
+            this.toolStripMain_Stats.Enabled = true;
+
+            // Update the charts
+            ChartStatsNumbers_Update();
         }
 
         private void toolStripMain_Sound_CheckedChanged(object sender, EventArgs e)
@@ -453,7 +475,7 @@ namespace MemoryNumbers
             form.ShowDialog(this);
             if (form.DialogResult == DialogResult.OK)
             {
-                _programSettings = form.settings;
+                _programSettings = form.GetSettings;
                 ApplySettings(_programSettings, _defaultSettings, false);
             }
         }
@@ -462,7 +484,6 @@ namespace MemoryNumbers
         {
             frmAbout form = new frmAbout();
             form.ShowDialog(this);
-            
         }
 
         #endregion toolStripMain
@@ -517,6 +538,7 @@ namespace MemoryNumbers
 
             settings["Sound"] = this.toolStripMain_Sound.Checked == true ? "0" : "1";
             settings["Stats"] = this.toolStripMain_Stats.Checked == true ? "1" : "0";
+            settings["SplitterDistance"] = this.splitStats.SplitterDistance.ToString();
 
             // Save window settings.
             TextWriter textWriter = StreamWriter.Null;
@@ -562,6 +584,7 @@ namespace MemoryNumbers
                     this.ClientSize = new Size(Convert.ToInt32(programSettings.ContainsKey("WindowWidth") ? programSettings["WindowWidth"] : defaultSettings["WindowWidth"]),
                                         Convert.ToInt32(programSettings.ContainsKey("WindowHeight") ? programSettings["WindowHeight"] : defaultSettings["WindowHeight"]));
                     //this.StartPosition = startPos;
+                    this.splitStats.SplitterDistance = Convert.ToInt32(programSettings.ContainsKey("SplitterDistance") ? programSettings["SplitterDistance"] : defaultSettings["SplitterDistance"]);
                 }
             }
 
@@ -616,11 +639,31 @@ namespace MemoryNumbers
 
             settings["Sound"] = "1";        // Soundoff unchecked
             settings["Stats"] = "0";        // Stats unchecked
+
+            settings["SplitterDistance"] = "265";
         }
 
 
 
         #endregion Application settings
 
+        #region ChartUpdate routines
+        /// <summary>
+        /// Cleans and updates the chartStatsNumbers with the data returned from _game.GetStats
+        /// </summary>
+        private void ChartStatsNumbers_Update()
+        {
+            // Chart update
+            this.chartStatsNumbers.Series["Right"].Points.Clear();
+            this.chartStatsNumbers.Series["Wrong"].Points.Clear();
+            _game.GetStats.Sort((x, y) => x.Number.CompareTo(y.Number));
+
+            foreach (var num in _game.GetStats)
+            {
+                this.chartStatsNumbers.Series["Right"].Points.AddXY("#" + num.Number.ToString(), 100 * (float)num.Correct / num.Total);
+                this.chartStatsNumbers.Series["Wrong"].Points.AddXY("#" + num.Number.ToString(), 100 * (1.0 - (float)num.Correct / num.Total));
+            }
+        }
+        #endregion ChartUpdate routines
     }
 }
