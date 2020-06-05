@@ -394,8 +394,11 @@ namespace MemoryNumbers
 
             // Commute the visibility of the strip buttons
             this.toolStripMain_Start.Enabled = true;
-            this.toolStripMain_Stats.Enabled = true;
             this.toolStripMain_Settings.Enabled = true;
+            this.toolStripMain_Stats.Checked = true;
+            this.toolStripMain_Stats.Enabled = true;
+
+            // Show the stats
             this.tabGame.SelectedIndex = 1;
         }
 

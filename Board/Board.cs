@@ -325,16 +325,16 @@ namespace Controls
                 BackgroundImageLayout = ImageLayout.Stretch,
                 Dock = DockStyle.None,
                 Parent = this,
-                Visible = false
+                Visible = true
             };
             pctWrong = new System.Windows.Forms.PictureBox()
             {
                 Anchor = AnchorStyles.None,
                 BackColor = Color.Transparent,
-                BackgroundImageLayout = ImageLayout.Stretch,
+                BackgroundImageLayout = ImageLayout.Center,
                 Dock = DockStyle.None,
                 Parent = this,
-                Visible = false
+                Visible = true
             };
             this.Controls.Add(pctCorrect);
             this.Controls.Add(pctWrong);
@@ -412,7 +412,7 @@ namespace Controls
                 
                 this.pctCorrect.Size = new Size((int)(_nMinDimension * _fResultFactor), (int)(_nMinDimension * _fResultFactor));
                 this.pctCorrect.Location = new System.Drawing.Point((this.Size.Width - pctCorrect.Size.Width) / 2, (this.Size.Height - pctCorrect.Size.Height) / 2);
-                
+
                 this.pctWrong.Size = new Size((int)(_nMinDimension * _fResultFactor), (int)(_nMinDimension * _fResultFactor));
                 this.pctWrong.Location = new System.Drawing.Point((this.Size.Width - pctWrong.Size.Width) / 2, (this.Size.Height - pctWrong.Size.Height) / 2);
 
@@ -431,13 +431,14 @@ namespace Controls
                     System.Diagnostics.Debug.WriteLine("pctWrong size {0}x{1}", pctWrong.Width, pctWrong.Height);
                     System.Diagnostics.Debug.WriteLine("bmpWrong size {0}x{1}", bmpWrong.Width, bmpWrong.Height);
                     System.Diagnostics.Debug.WriteLine("Mark stamp #3");
-
+                    
                     this.pctCorrect.Image = bmpCorrect;
                     if (this.pctCorrect.InvokeRequired) this.pctCorrect.Invoke((Action)(() => this.pctCorrect.Region = rgCorrect));
                     else this.pctCorrect.Region = rgCorrect;
                     this.pctWrong.Image = bmpWrong;
                     if (this.pctWrong.InvokeRequired) this.pctWrong.Invoke((Action)(() => this.pctWrong.Region = rgWrong));
                     else this.pctWrong.Region = rgWrong;
+                    
                 });
                 System.Diagnostics.Debug.WriteLine("Mark stamp #4");
                 
@@ -806,7 +807,7 @@ namespace Controls
                     for (int i = 0; i < imageData.Width; i++)
                     {
                         // row[0] = Blue, row[1] = Green, row[2] = Red, row[3] = Alpha,
-                        if (row[i * bytesPerPixel + 3] > 0) region.AddRectangle(new Rectangle(i, j, 1, 1));
+                        if (row[i * bytesPerPixel + 3] > 0) regionPath.AddRectangle(new Rectangle(i, j, 1, 1));
                     }
                     row += imageData.Stride;
                 }
@@ -820,7 +821,7 @@ namespace Controls
             // https://www.pluralsight.com/guides/using-task-run-async-await
             //await Task.Run(() =>
             //{
-
+            
                 byte[] imageBytes = new byte[Math.Abs(imageData.Stride) * bitmap.Height];
                 IntPtr scan0 = imageData.Scan0;
                 System.Runtime.InteropServices.Marshal.Copy(scan0, imageBytes, 0, imageBytes.Length);
@@ -849,7 +850,7 @@ namespace Controls
             //});
 
             bitmap.UnlockBits(imageData);
-
+            
 
 
             /*
