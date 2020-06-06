@@ -286,6 +286,102 @@ namespace Controls
             //if (ButtonClick != null) OnButtonClick(new ButtonClickEventArgs(int.Parse(lblText.Text)));
         }
 
+        protected virtual void DrawText(Graphics g)
+        {
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            var point = Point.Empty;
+            var size = this.Size;
+
+            //point = AddPoint(point, InnerMargin);
+            //size = AddSize(size, -2 * InnerMargin);
+
+
+            if (Text == string.Empty)
+            {
+                return;
+            }
+
+            point.X += 0;
+            point.Y += 0;
+            size.Width -= 0;
+            size.Height -= 0;
+            var stringFormat =
+                new StringFormat(RightToLeft == RightToLeft.Yes ? StringFormatFlags.DirectionRightToLeft : 0)
+                {
+                    Alignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Near
+                };
+            var textSize = g.MeasureString(Text, Font);
+            var textPoint = new PointF(
+                point.X + (size.Width - textSize.Width) / 2,
+                point.Y + (size.Height - textSize.Height) / 2);
+
+            /*
+            if (SubscriptText != string.Empty || SuperscriptText != string.Empty)
+            {
+                float maxSWidth = 0;
+                var supSize = SizeF.Empty;
+                var subSize = SizeF.Empty;
+
+                if (SuperscriptText != string.Empty)
+                {
+                    supSize = g.MeasureString(SuperscriptText, SecondaryFont);
+                    maxSWidth = Math.Max(supSize.Width, maxSWidth);
+                    supSize.Width -= SuperscriptMargin.Right;
+                    supSize.Height -= SuperscriptMargin.Bottom;
+                }
+
+                if (SubscriptText != string.Empty)
+                {
+                    subSize = g.MeasureString(SubscriptText, SecondaryFont);
+                    maxSWidth = Math.Max(subSize.Width, maxSWidth);
+                    subSize.Width -= SubscriptMargin.Right;
+                    subSize.Height -= SubscriptMargin.Bottom;
+                }
+
+                textPoint.X -= maxSWidth / 4;
+
+                if (SuperscriptText != string.Empty)
+                {
+                    var supPoint = new PointF(
+                        textPoint.X + textSize.Width - supSize.Width / 2,
+                        textPoint.Y - supSize.Height * 0.85f);
+                    supPoint.X += SuperscriptMargin.Left;
+                    supPoint.Y += SuperscriptMargin.Top;
+                    g.DrawString(
+                        SuperscriptText,
+                        SecondaryFont,
+                        new SolidBrush(SuperscriptColor),
+                        new RectangleF(supPoint, supSize),
+                        stringFormat);
+                }
+
+                if (SubscriptText != string.Empty)
+                {
+                    var subPoint = new PointF(
+                        textPoint.X + textSize.Width - subSize.Width / 2,
+                        textPoint.Y + textSize.Height * 0.85f);
+                    subPoint.X += SubscriptMargin.Left;
+                    subPoint.Y += SubscriptMargin.Top;
+                    g.DrawString(
+                        SubscriptText,
+                        SecondaryFont,
+                        new SolidBrush(SubscriptColor),
+                        new RectangleF(subPoint, subSize),
+                        stringFormat);
+                }
+            }
+            */
+
+            g.DrawString(
+                Text,
+                Font,
+                new SolidBrush(ForeColor),
+                new RectangleF(textPoint, textSize),
+                stringFormat);
+        }
+
         /// <summary>
         /// Draw a rectangle in the indicated Rectangle (the container box) rounding the indicated corners.
         /// http://csharphelper.com/blog/2016/01/draw-rounded-rectangles-in-c/

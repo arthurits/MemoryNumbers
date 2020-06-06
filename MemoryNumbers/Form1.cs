@@ -541,7 +541,11 @@ namespace MemoryNumbers
 
             settings["Sound"] = this.toolStripMain_Sound.Checked == true ? "0" : "1";
             settings["Stats"] = this.toolStripMain_Stats.Checked == true ? "1" : "0";
-            settings["SplitterDistance"] = this.splitStats.SplitterDistance.ToString();
+
+            if (settings["SplitterDistance"] == "0.5")
+                settings["SplitterDistance"] = ((int)(this.splitStats.Size.Width / 2)).ToString();
+            else
+                settings["SplitterDistance"] = this.splitStats.SplitterDistance.ToString();
 
             // Save window settings.
             TextWriter textWriter = StreamWriter.Null;
