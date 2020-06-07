@@ -325,7 +325,7 @@ namespace Controls
                 BackgroundImageLayout = ImageLayout.Stretch,
                 Dock = DockStyle.None,
                 Parent = this,
-                Visible = true
+                Visible = false
             };
             pctWrong = new System.Windows.Forms.PictureBox()
             {
@@ -334,7 +334,7 @@ namespace Controls
                 BackgroundImageLayout = ImageLayout.Center,
                 Dock = DockStyle.None,
                 Parent = this,
-                Visible = true
+                Visible = false
             };
             this.Controls.Add(pctCorrect);
             this.Controls.Add(pctWrong);

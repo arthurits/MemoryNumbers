@@ -263,6 +263,9 @@ namespace Controls
 
             //this.Region = new Region(MakeRoundedRect(rectRegion, _xRadius + 0.5f, _yRadius + 0.5f));
             this.Region = new Region(MakeRoundedRect(rectRegion, _xRadius + _fRegionOffset / 2, _yRadius + _fRegionOffset / 2));
+
+            // Draw text
+            DrawText(dc);
             this.lblText.Padding = new Padding((int)(this.lblText.Font.SizeInPoints / 6), 0, 0, 0);
             //this.lblText.Region = this.Region;
 
