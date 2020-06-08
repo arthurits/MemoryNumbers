@@ -266,6 +266,7 @@ namespace Controls
 
             // Draw text
             DrawText(dc);
+
             this.lblText.Padding = new Padding((int)(this.lblText.Font.SizeInPoints / 6), 0, 0, 0);
             //this.lblText.Region = this.Region;
 
