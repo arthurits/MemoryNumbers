@@ -41,6 +41,7 @@
             this.lblText.Size = new System.Drawing.Size(150, 150);
             this.lblText.TabIndex = 0;
             this.lblText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblText.Visible = false;
             this.lblText.Click += new System.EventHandler(this.lblText_Click);
             // 
             // RoundButton

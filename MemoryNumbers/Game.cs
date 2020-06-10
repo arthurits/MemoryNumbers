@@ -33,6 +33,7 @@ namespace MemoryNumbers
         private int _nTimeIncrement;
         private int _nTotalTime;
         private List<(int Number, int Total, int Correct)> _listStats;
+        private List<int[]> _listTimes;
 
         #endregion Private variables
 
@@ -172,6 +173,16 @@ namespace MemoryNumbers
         EditorBrowsable(EditorBrowsableState.Always),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public List<(int Number, int Total, int Correct)> GetStats { get => _listStats; }
+
+        /// <summary>
+        /// Gets the times (miliseconds) used to click each button/number in each attempt
+        /// </summary>
+        [Description("Gets the times (miliseconds) used to click each button/number in each attempt"),
+        Category("Game properties"),
+        Browsable(true),
+        EditorBrowsable(EditorBrowsableState.Always),
+        DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public List<int[]> GetStatsTime { get => _listTimes; }
 
         #endregion Public properties
 

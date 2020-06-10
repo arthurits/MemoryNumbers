@@ -265,7 +265,7 @@ namespace Controls
             this.Region = new Region(MakeRoundedRect(rectRegion, _xRadius + _fRegionOffset / 2, _yRadius + _fRegionOffset / 2));
 
             // Draw text
-            DrawText(dc);
+            if (_showText) DrawText(dc);
 
             this.lblText.Padding = new Padding((int)(this.lblText.Font.SizeInPoints / 6), 0, 0, 0);
             //this.lblText.Region = this.Region;
@@ -292,34 +292,38 @@ namespace Controls
 
         protected virtual void DrawText(Graphics g)
         {
+            if (Text == string.Empty) return;
+
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             g.SmoothingMode = SmoothingMode.AntiAlias;
-            var point = Point.Empty;
-            var size = this.Size;
+            
+            // The upper left corner coordinates and the size of the rectangle where the text will be drawn
+            var point = PointF.Empty;
+            SizeF size = this.Size;
 
             //point = AddPoint(point, InnerMargin);
             //size = AddSize(size, -2 * InnerMargin);
 
+            point.X += _fRegionOffset + _fBorderWidth;
+            point.Y += _fRegionOffset + _fBorderWidth;
+            size.Width -= 2 * (_fRegionOffset + _fBorderWidth);
+            size.Height -= 2 * (_fRegionOffset + _fBorderWidth);
 
-            if (Text == string.Empty)
-            {
-                return;
-            }
+            System.Diagnostics.Debug.WriteLine(point.ToString() + " — " + size.ToString());
 
-            point.X += 0;
-            point.Y += 0;
-            size.Width -= 0;
-            size.Height -= 0;
             var stringFormat =
                 new StringFormat(RightToLeft == RightToLeft.Yes ? StringFormatFlags.DirectionRightToLeft : 0)
                 {
-                    Alignment = StringAlignment.Center,
-                    LineAlignment = StringAlignment.Near
+                    Alignment = StringAlignment.Center,     // Horizontal alignment
+                    LineAlignment = StringAlignment.Center  // Vertical alignment
                 };
             var textSize = g.MeasureString(Text, Font);
+            System.Diagnostics.Debug.WriteLine(textSize.ToString());
             var textPoint = new PointF(
                 point.X + (size.Width - textSize.Width) / 2,
                 point.Y + (size.Height - textSize.Height) / 2);
+            
+            System.Diagnostics.Debug.WriteLine(textPoint.ToString());
 
             /*
             if (SubscriptText != string.Empty || SuperscriptText != string.Empty)
@@ -384,6 +388,7 @@ namespace Controls
                 new SolidBrush(ForeColor),
                 new RectangleF(textPoint, textSize),
                 stringFormat);
+            //g.DrawRectangle(new Pen(Color.Red, 3), 0.0F, 0.0F, textSize.Width, textSize.Height);
         }
 
         /// <summary>
@@ -495,7 +500,7 @@ namespace Controls
             return path;
         }
 
-
     }
 }
 // https://stackoverflow.com/questions/33878184/c-sharp-how-to-make-smooth-arc-region-using-graphics-path
+
