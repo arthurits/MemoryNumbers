@@ -57,6 +57,7 @@
             this.Controls.Add(this.roundButton1);
             this.Name = "Form2";
             this.Text = "Form2";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form2_Paint);
             this.ResumeLayout(false);
 
         }

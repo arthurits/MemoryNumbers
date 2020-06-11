@@ -16,5 +16,32 @@ namespace MemoryNumbers
         {
             InitializeComponent();
         }
+
+        private void Form2_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+
+            // Set up string.
+            string measureString = "5";
+            Font stringFont = new Font("Arial", 40);
+
+            // Measure string.
+            SizeF stringSize = new SizeF();
+            stringSize = e.Graphics.MeasureString(measureString, stringFont);
+
+            // Draw rectangle representing size of string.
+            e.Graphics.DrawRectangle(new Pen(Color.Red, 1), 0.0F, 0.0F, stringSize.Width, stringSize.Height);
+
+            var stringFormat =
+                new StringFormat(RightToLeft == RightToLeft.Yes ? StringFormatFlags.DirectionRightToLeft : 0)
+                {
+                    Alignment = StringAlignment.Near,     // Horizontal alignment
+                    LineAlignment = StringAlignment.Near  // Vertical alignment
+                };
+
+            // Draw string to screen.
+            //e.Graphics.DrawString(measureString, stringFont, Brushes.Black, new PointF(0, 0 ), stringFormat);
+            e.Graphics.DrawString(measureString, stringFont, Brushes.Black, new RectangleF(new PointF(0,4),stringSize), stringFormat);
+        }
     }
 }

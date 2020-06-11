@@ -28,26 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblText = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
-            // lblText
-            // 
-            this.lblText.BackColor = System.Drawing.Color.Transparent;
-            this.lblText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblText.Location = new System.Drawing.Point(0, 0);
-            this.lblText.Margin = new System.Windows.Forms.Padding(0);
-            this.lblText.Name = "lblText";
-            this.lblText.Size = new System.Drawing.Size(150, 150);
-            this.lblText.TabIndex = 0;
-            this.lblText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblText.Visible = false;
-            this.lblText.Click += new System.EventHandler(this.lblText_Click);
             // 
             // RoundButton
             // 
             this.BackColor = System.Drawing.Color.Transparent;
-            this.Controls.Add(this.lblText);
             this.DoubleBuffered = true;
             this.Name = "RoundButton";
             this.Load += new System.EventHandler(this.RoundButton_Load);
@@ -56,7 +41,5 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label lblText;
     }
 }

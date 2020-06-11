@@ -162,7 +162,7 @@ namespace Controls
         public override string Text
         {
             get { return _sText; }
-            set { _sText = value.ToString(); lblText.Text = _sText; }
+            set { _sText = value.ToString(); Invalidate(); }
         }
 
         [Description("Show text"),
@@ -173,7 +173,7 @@ namespace Controls
         public bool VisibleText
         {
             get { return _showText; }
-            set { _showText = value; lblText.Visible = _showText; }
+            set { _showText = value; Invalidate(); }
         }
 
         [Description("Show border"),
@@ -233,8 +233,8 @@ namespace Controls
         private void RoundButton_Load(object sender, EventArgs e)
         {
             // Some default label properties
-            lblText.Text = Text;
-            lblText.Text = _sText;
+            //lblText.Text = Text;
+            //lblText.Text = _sText;
         }
 
         /// <summary>
@@ -267,7 +267,7 @@ namespace Controls
             // Draw text
             if (_showText) DrawText(dc);
 
-            this.lblText.Padding = new Padding((int)(this.lblText.Font.SizeInPoints / 6), 0, 0, 0);
+            //this.lblText.Padding = new Padding((int)(this.lblText.Font.SizeInPoints / 6), 0, 0, 0);
             //this.lblText.Region = this.Region;
 
             base.OnPaint(e);
@@ -278,7 +278,8 @@ namespace Controls
         {
             //_showBorder = !_showBorder;
             //Invalidate();
-            OnButtonClick(new ButtonClickEventArgs(int.Parse(lblText.Text)));
+            //OnButtonClick(new ButtonClickEventArgs(int.Parse(lblText.Text)));
+            OnButtonClick(new ButtonClickEventArgs(int.Parse(Text)));
 
             //base.OnClick(e);
         }
@@ -303,84 +304,27 @@ namespace Controls
 
             //point = AddPoint(point, InnerMargin);
             //size = AddSize(size, -2 * InnerMargin);
-
+            
             point.X += _fRegionOffset + _fBorderWidth;
-            point.Y += _fRegionOffset + _fBorderWidth;
+            point.Y += Font.Size*0.09f + _fRegionOffset + _fBorderWidth;
             size.Width -= 2 * (_fRegionOffset + _fBorderWidth);
             size.Height -= 2 * (_fRegionOffset + _fBorderWidth);
 
-            System.Diagnostics.Debug.WriteLine(point.ToString() + " — " + size.ToString());
+            //System.Diagnostics.Debug.WriteLine(point.ToString() + " — " + size.ToString());
 
             var stringFormat =
                 new StringFormat(RightToLeft == RightToLeft.Yes ? StringFormatFlags.DirectionRightToLeft : 0)
                 {
-                    Alignment = StringAlignment.Center,     // Horizontal alignment
-                    LineAlignment = StringAlignment.Center  // Vertical alignment
+                    Alignment = StringAlignment.Near,     // Horizontal alignment
+                    LineAlignment = StringAlignment.Near  // Vertical alignment
                 };
             var textSize = g.MeasureString(Text, Font);
-            System.Diagnostics.Debug.WriteLine(textSize.ToString());
+            //System.Diagnostics.Debug.WriteLine(textSize.ToString());
             var textPoint = new PointF(
                 point.X + (size.Width - textSize.Width) / 2,
                 point.Y + (size.Height - textSize.Height) / 2);
             
-            System.Diagnostics.Debug.WriteLine(textPoint.ToString());
-
-            /*
-            if (SubscriptText != string.Empty || SuperscriptText != string.Empty)
-            {
-                float maxSWidth = 0;
-                var supSize = SizeF.Empty;
-                var subSize = SizeF.Empty;
-
-                if (SuperscriptText != string.Empty)
-                {
-                    supSize = g.MeasureString(SuperscriptText, SecondaryFont);
-                    maxSWidth = Math.Max(supSize.Width, maxSWidth);
-                    supSize.Width -= SuperscriptMargin.Right;
-                    supSize.Height -= SuperscriptMargin.Bottom;
-                }
-
-                if (SubscriptText != string.Empty)
-                {
-                    subSize = g.MeasureString(SubscriptText, SecondaryFont);
-                    maxSWidth = Math.Max(subSize.Width, maxSWidth);
-                    subSize.Width -= SubscriptMargin.Right;
-                    subSize.Height -= SubscriptMargin.Bottom;
-                }
-
-                textPoint.X -= maxSWidth / 4;
-
-                if (SuperscriptText != string.Empty)
-                {
-                    var supPoint = new PointF(
-                        textPoint.X + textSize.Width - supSize.Width / 2,
-                        textPoint.Y - supSize.Height * 0.85f);
-                    supPoint.X += SuperscriptMargin.Left;
-                    supPoint.Y += SuperscriptMargin.Top;
-                    g.DrawString(
-                        SuperscriptText,
-                        SecondaryFont,
-                        new SolidBrush(SuperscriptColor),
-                        new RectangleF(supPoint, supSize),
-                        stringFormat);
-                }
-
-                if (SubscriptText != string.Empty)
-                {
-                    var subPoint = new PointF(
-                        textPoint.X + textSize.Width - subSize.Width / 2,
-                        textPoint.Y + textSize.Height * 0.85f);
-                    subPoint.X += SubscriptMargin.Left;
-                    subPoint.Y += SubscriptMargin.Top;
-                    g.DrawString(
-                        SubscriptText,
-                        SecondaryFont,
-                        new SolidBrush(SubscriptColor),
-                        new RectangleF(subPoint, subSize),
-                        stringFormat);
-                }
-            }
-            */
+            //System.Diagnostics.Debug.WriteLine(textPoint.ToString());
 
             g.DrawString(
                 Text,
@@ -388,7 +332,7 @@ namespace Controls
                 new SolidBrush(ForeColor),
                 new RectangleF(textPoint, textSize),
                 stringFormat);
-            //g.DrawRectangle(new Pen(Color.Red, 3), 0.0F, 0.0F, textSize.Width, textSize.Height);
+            //g.DrawRectangle(new Pen(Color.Red, 3), textPoint.X, textPoint.Y, textSize.Width, textSize.Height);
         }
 
         /// <summary>
