@@ -40,8 +40,8 @@ namespace MemoryNumbers
                 };
 
             // Draw string to screen.
-            //e.Graphics.DrawString(measureString, stringFont, Brushes.Black, new PointF(0, 0 ), stringFormat);
-            e.Graphics.DrawString(measureString, stringFont, Brushes.Black, new RectangleF(new PointF(0,4),stringSize), stringFormat);
+            //e.Graphics.DrawString(measureString, stringFont, Brushes.Black, new PointF(stringSize.Width/2, stringSize.Height/2), stringFormat);
+            e.Graphics.DrawString(measureString, stringFont, Brushes.Black, new RectangleF(new PointF(0, stringFont.SizeInPoints * 0.09f), stringSize), stringFormat);
         }
     }
 }

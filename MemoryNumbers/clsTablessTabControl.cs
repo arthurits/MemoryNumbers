@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Controles
+namespace System.Windows.Forms
 {
     /// <summary>
     /// Tabless TabControl: shows tabs at design time and hides them at runtime

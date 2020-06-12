@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="clsApplicationSettings.cs" />
+    <Compile Include="clsTablessTabControl.cs" />
     <Compile Include="clsUtilities.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
