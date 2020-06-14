@@ -33,7 +33,7 @@ namespace MemoryNumbers
         private int _nTimeIncrement;
         private int _nTotalTime;
         private List<(int Number, int Total, int Correct)> _listStats;
-        private List<int[]> _listTimes;
+        private List<List<double>> _listTimes;
 
         #endregion Private variables
 
@@ -175,14 +175,14 @@ namespace MemoryNumbers
         public List<(int Number, int Total, int Correct)> GetStats { get => _listStats; }
 
         /// <summary>
-        /// Gets the times (miliseconds) used to click each button/number in each attempt
+        /// Gets the elapsed time (miliseconds) used to click each button/number in each attempt
         /// </summary>
-        [Description("Gets the times (miliseconds) used to click each button/number in each attempt"),
+        [Description("Gets the elapsed time (miliseconds) used to click each button/number in each attempt"),
         Category("Game properties"),
         Browsable(true),
         EditorBrowsable(EditorBrowsableState.Always),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        public List<int[]> GetStatsTime { get => _listTimes; }
+        public List<List<double>> GetStatsTime { get => _listTimes; }
 
         #endregion Public properties
 
@@ -259,6 +259,7 @@ namespace MemoryNumbers
             _nSequenceLength += 1;
             // Increment the current attempts counter            
             _nCurrAttempt++;
+            _listTimes.Add(new List<double>());
 
             // The game is over if we are above the maximum number of attemps or
             // if the sequence is longer than the number of digits allowed
@@ -284,6 +285,7 @@ namespace MemoryNumbers
             _nSequence = null;
             _nTotalTime = _nTime;
             _listStats = new List<(int, int, int)>();
+            _listTimes = new List<List<double>>();
         }
 
         /// <summary>
@@ -374,10 +376,11 @@ namespace MemoryNumbers
         /// Checks the button value clicked by the user and fires the corresponding event if necessary
         /// </summary>
         /// <param name="value">Number of the button clicked</param>
-        public bool Check(int value)
+        public bool Check(int value, double seconds)
         {
             //int index = _listStats.FindIndex(x => x.Number == _nSequence[_nSequenceIndex]);
             int index = _listStats.FindIndex(x => x.Number == value);
+            _listTimes[_nCurrAttempt - 1].Add(seconds);
 
             // First check if the value clicked is wrong
             if (_nSequence[_nSequenceIndex] != value)

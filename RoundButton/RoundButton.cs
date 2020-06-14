@@ -52,6 +52,7 @@ namespace Controls
 
         #region Private variables
         private const float _fTextTopPaddingPercentage = 0.09f;
+        private const float _fTextLeftPaddingPercentage = 0.02f;
         private float _fBorderWidth = 1f;
         private float _xRadius = 0f;
         private float _yRadius = 0f;
@@ -305,7 +306,7 @@ namespace Controls
             //point = AddPoint(point, InnerMargin);
             //size = AddSize(size, -2 * InnerMargin);
             
-            point.X += _fRegionOffset + _fBorderWidth;
+            point.X += Font.Size * _fTextLeftPaddingPercentage + _fRegionOffset + _fBorderWidth;
             point.Y += Font.Size * _fTextTopPaddingPercentage + _fRegionOffset + _fBorderWidth;
             size.Width -= 2 * (_fRegionOffset + _fBorderWidth);
             size.Height -= 2 * (_fRegionOffset + _fBorderWidth);

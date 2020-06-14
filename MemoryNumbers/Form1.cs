@@ -324,7 +324,7 @@ namespace MemoryNumbers
             // Update the current data
             this.chartStatsTime.Series[_game.GetSequenceIndex].Points.ElementAt(_game.GetCurrentAttempt - 1).SetValueXY(_game.GetCurrentAttempt, e.Seconds);
 
-            if (_game.Check(e.ButtonValue)) board1.ButtonRight();
+            if (_game.Check(e.ButtonValue, e.Seconds)) board1.ButtonRight();
             
         }
 
@@ -348,7 +348,12 @@ namespace MemoryNumbers
                 {
                     toolStripMain_Stop_Click(null, null);
                     using (new CenterWinDialog(this))
-                        MessageBox.Show("Could not place the buttons on the screen.\nPlease, try reducing the 'numbers ratio' paremeter in\nthe Settings (between 0.25 - 0.30).", "Error placing numbers", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Could not place the buttons on the screen.\n" +
+                            "Please, try reducing the 'numbers ratio' paremeter in\n" +
+                            "the Settings (between 0.25 - 0.30).",
+                            "Error placing numbers",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
                 }
             }
 
@@ -391,6 +396,7 @@ namespace MemoryNumbers
             // Update GUI
             board1.ClearBoard();
             ChartStatsNumbers_Update();
+            ChartStatsTime_Update();
 
             // Commute the visibility of the strip buttons
             this.toolStripMain_Start.Enabled = true;
@@ -609,6 +615,7 @@ namespace MemoryNumbers
             this.board1.FontRatio = Convert.ToSingle(programSettings.ContainsKey("FontRatio") ? programSettings["FontRatio"] : defaultSettings["FontRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             this.board1.ResultRatio = Convert.ToSingle(programSettings.ContainsKey("ResultsRatio") ? programSettings["ResultsRatio"] : defaultSettings["ResultsRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             this.board1.BackColor = Color.FromArgb(Convert.ToInt32(programSettings.ContainsKey("BackColor") ? programSettings["BackColor"] : defaultSettings["BackColor"]));
+            this.board1.Font = new Font(programSettings.ContainsKey("FontFamilyName") ? programSettings["FontFamilyName"] : defaultSettings["FontFamilyName"], board1.Font.SizeInPoints);
 
             this.toolStripMain_Sound.Checked = Convert.ToInt32((programSettings.ContainsKey("Sound") ? programSettings["Sound"] : defaultSettings["Sound"])) == 0 ? true : false;
             this.toolStripMain_Stats.Checked = Convert.ToInt32((programSettings.ContainsKey("Stats") ? programSettings["Stats"] : defaultSettings["Stats"])) == 0 ? false : true;
@@ -639,6 +646,7 @@ namespace MemoryNumbers
             settings["BorderRatio"] = "0.12";
             settings["FontRatio"] = "0.55";
             settings["ResultsRatio"] = "0.56";
+            settings["FontFamilyName"] = "Microsoft Sans Serif";
             settings["BackColor"] = Color.White.ToArgb().ToString();
             settings["WindowPosition"] = "0";   // Remember windows position
 
@@ -670,6 +678,17 @@ namespace MemoryNumbers
                 this.chartStatsNumbers.Series["Right"].Points.AddXY("#" + num.Number.ToString(), 100 * (float)num.Correct / num.Total);
                 this.chartStatsNumbers.Series["Wrong"].Points.AddXY("#" + num.Number.ToString(), 100 * (1.0 - (float)num.Correct / num.Total));
             }
+        }
+
+        /// <summary>
+        /// Cleans and updates the chartStatsNumbers with the data returned from _game.GetStats
+        /// </summary>
+        private void ChartStatsTime_Update()
+        {
+            // Chart update
+            //this.chartStatsTime.Series.Clear();
+
+            int numSeries = _game.GetStatsTime.Aggregate(0, (max, next) => next.Count > max ? next.Count : max);
         }
         #endregion ChartUpdate routines
     }

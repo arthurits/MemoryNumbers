@@ -58,7 +58,8 @@ namespace MemoryNumbers
                 this.numResultsRatio.Value = Convert.ToDecimal(settings.ContainsKey("ResultsRatio") ? settings["ResultsRatio"] : defSets["ResultsRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 this.pctBackColor.BackColor = Color.FromArgb(Convert.ToInt32(settings.ContainsKey("BackColor") ? settings["BackColor"] : defSets["BackColor"]));
                 this.chkStartUp.Checked = Convert.ToInt32(settings.ContainsKey("WindowPosition") ? settings["WindowPosition"] : defSets["WindowPosition"]) == 1 ? true : false;
-
+                this.roundSample.Font = new Font(settings.ContainsKey("FontFamilyName") ? settings["FontFamilyName"] : defSets["FontFamilyName"], roundSample.Font.SizeInPoints);
+                this.lblFontFamily.Text = this.roundSample.Font.FontFamily.Name;
             }
             catch (KeyNotFoundException e)
             {
@@ -89,6 +90,7 @@ namespace MemoryNumbers
             _settings["ResultsRatio"] = this.numResultsRatio.Value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             _settings["BackColor"] = this.pctBackColor.BackColor.ToArgb().ToString();
             _settings["WindowPosition"] = (this.chkStartUp.Checked ? 1 : 0).ToString();
+            _settings["FontFamilyName"] = this.lblFontFamily.Text;
 
             _settings["PlayMode"] = (
                                     (this.radFixed.Checked ? 1 : 0) * 1 +
@@ -126,6 +128,8 @@ namespace MemoryNumbers
                 this.numResultsRatio.Value = Convert.ToDecimal(_settings["ResultsRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                 this.pctBackColor.BackColor = Color.FromArgb(Convert.ToInt32(this._settings["BackColor"]));
                 this.chkStartUp.Checked = Convert.ToInt32(_settings["WindowPosition"]) == 1 ? true : false;
+                this.roundSample.Font = new Font(_settings["FontFamilyName"], roundSample.Font.SizeInPoints);
+                this.lblFontFamily.Text = this.roundSample.Font.FontFamily.Name;
 
             }
             catch (KeyNotFoundException e)
@@ -217,6 +221,8 @@ namespace MemoryNumbers
         {
             int ratio = Convert.ToInt32(100 * numBorderRatio.Value);
             if (trackBorderRatio.Value != ratio) trackBorderRatio.Value = ratio;
+
+            roundSample.BorderWidth = ((roundSample.Width - roundSample.RegionOffset) / 2) * (float)numBorderRatio.Value;
         }
 
         private void trackFontRatio_ValueChanged(object sender, EventArgs e)
@@ -229,6 +235,9 @@ namespace MemoryNumbers
         {
             int ratio = Convert.ToInt32(100 * numFontRatio.Value);
             if (trackFontRatio.Value != ratio) trackFontRatio.Value = ratio;
+
+            //roundSample.Font = new Font(roundSample.Font.FontFamily, (float)numFontRatio.Value * (roundSample.Width - 2 * roundSample.BorderWidth));
+            roundSample.Font = new Font(roundSample.Font.FontFamily, (float)numFontRatio.Value * roundSample.Width);
         }
 
         private void trackResultsRatio_ValueChanged(object sender, EventArgs e)
@@ -274,6 +283,40 @@ namespace MemoryNumbers
                 if (ColorPicker.ShowDialog() == DialogResult.OK)
                     pctBackColor.BackColor = ColorPicker.Color;
             }
+        }
+
+        private void pctBackColor_BackColorChanged(object sender, EventArgs e)
+        {
+            pctSample.BackColor = pctBackColor.BackColor;
+            roundSample.BackColor = pctBackColor.BackColor;
+        }
+
+        private void numMaxDigit_ValueChanged(object sender, EventArgs e)
+        {
+            roundSample.Text = numMaxDigit.Value.ToString();
+        }
+
+        private void lblFontFamily_DoubleClick(object sender, EventArgs e)
+        {
+            FontDialog frmFont = new FontDialog()
+            {
+                FontMustExist = true,
+                Font = roundSample.Font,
+                ShowApply = false,
+                ShowColor = false,
+                ShowEffects = false,
+                ShowHelp = false
+            };
+
+            using (new CenterWinDialog(this))
+            {
+                if (frmFont.ShowDialog() == DialogResult.OK)
+                {
+                    this.roundSample.Font = new Font(frmFont.Font.FontFamily, this.roundSample.Font.SizeInPoints);
+                    this.lblFontFamily.Text = frmFont.Font.FontFamily.Name;
+                }
+            }
+            // https://stackoverflow.com/questions/2207709/convert-font-to-string-and-back-again
         }
 
 

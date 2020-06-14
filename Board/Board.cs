@@ -14,7 +14,7 @@ using System.Diagnostics;
 namespace Controls
 {
     //[Designer("System.Windows.Forms.Design.ParentControlDesigner, System.Design", typeof(System.ComponentModel.Design.IDesigner))]
-    public partial class Board: PictureBox
+    public partial class Board : PictureBox
     {
         #region Private variables
 
@@ -55,7 +55,7 @@ namespace Controls
         private Color _cBorderColor = Color.Black;
         private Color _cBackColor = Color.White;
         private bool _sound = true;
-        
+
         private enum AudioSoundType
         {
             NumberCorrect,
@@ -89,7 +89,7 @@ namespace Controls
             get { return _nDiameter; }
             set { _nDiameter = value < 0 ? 0 : value; Invalidate(); }
         }
- 
+
         /// <summary>
         /// The time interval (miliseconds) for flashing the sequence to the player
         /// </summary>
@@ -240,6 +240,13 @@ namespace Controls
             get { return _sound; }
             set { _sound = value; countDown.PlaySounds = value; }
         }
+
+        public override Font Font
+        {
+            get => base.Font;
+            set { base.Font = value; countDown.Font = new Font(value.FontFamily, countDown.Font.SizeInPoints); }
+        }
+
         #endregion Public properties
 
         #region Events
@@ -391,13 +398,16 @@ namespace Controls
         {
             if (countDown != null)
             {
-                this.countDown.BorderWidth = ((_nMinDimension * _fCountDownFactor - 1) / 2) * _fBorderWidth;
+                
                 this.countDown.Size = new Size((int)(_nMinDimension * _fCountDownFactor), (int)(_nMinDimension * _fCountDownFactor));
                 this.countDown.xRadius = (this.countDown.Size.Width - this.countDown.RegionOffset) / 2;
                 this.countDown.yRadius = (this.countDown.Size.Height - this.countDown.RegionOffset) / 2;
                 //this.countDown.yRadius = (_nMinDimension * _fCountDownFactor) / 2;
+                this.countDown.BorderWidth = ((this.countDown.Size.Width - this.countDown.RegionOffset) / 2) * _fBorderWidth;
+                
                 this.countDown.Location = new System.Drawing.Point((this.Size.Width - countDown.Size.Width) / 2, (this.Size.Height - countDown.Size.Height) / 2);
-                this.countDown.Font = new Font(countDown.Font.FontFamily, _fFontFactor * (countDown.Size.Height - 2 * countDown.BorderWidth));
+                this.countDown.Font = new Font(countDown.Font.FontFamily, _fFontFactor * countDown.Size.Height);
+                //this.countDown.Font = new Font(countDown.Font.FontFamily, _fFontFactor * (countDown.Size.Height - 2 * countDown.BorderWidth));
                 // countDown.Invalidate();
             }
         }
@@ -544,7 +554,7 @@ namespace Controls
                     Parent = this,
                     FillColor = _cBackColor,
                     BorderColor = _cBorderColor,
-                    BorderWidth = (_nDiameter - 1f) / 2f * _fBorderWidth, // The RoundButton.cs defines the rectangle as height-1 and width-1
+                    //BorderWidth = (_nDiameter - 1f) / 2f * _fBorderWidth, // The RoundButton.cs defines the rectangle as height-1 and width-1
                     Size = new Size(_nDiameter, _nDiameter),
                     //xRadius = _nDiameter / 2f,
                     //yRadius = _nDiameter / 2f,
@@ -553,8 +563,9 @@ namespace Controls
                     VisibleBorder = false,
                     Visible = false
                 };
-                _roundButton[i].xRadius = (_nDiameter - _roundButton[i].RegionOffset) / 2;
-                _roundButton[i].yRadius = (_nDiameter - _roundButton[i].RegionOffset) / 2;
+                _roundButton[i].BorderWidth = (_nDiameter - _roundButton[i].RegionOffset) / 2f * _fBorderWidth;
+                _roundButton[i].xRadius = (_nDiameter - _roundButton[i].RegionOffset) / 2f;
+                _roundButton[i].yRadius = (_nDiameter - _roundButton[i].RegionOffset) / 2f;
                 _roundButton[i].Font = new Font(_roundButton[i].Font.FontFamily, _fFontFactor * _nDiameter);
 
                 nPartialAttempts = 0;
