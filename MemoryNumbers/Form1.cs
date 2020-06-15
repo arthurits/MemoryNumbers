@@ -687,8 +687,30 @@ namespace MemoryNumbers
         {
             // Chart update
             //this.chartStatsTime.Series.Clear();
+            var data = _game.GetStatsTime;
 
-            int numSeries = _game.GetStatsTime.Aggregate(0, (max, next) => next.Count > max ? next.Count : max);
+            // Get the maximum number of columns
+            int numSeries = data.Aggregate(0, (max, next) => next.Count > max ? next.Count : max);
+
+            // Pad with 0 each row
+            data.ForEach(x => x.AddRange(Enumerable.Repeat(0.0, numSeries - x.Count())));
+
+            // Traspose to get the data ready to plot
+            var plotData = data
+                    .SelectMany(inner => inner.Select((item, index) => new { item, index }))
+                    .GroupBy(i => i.index, i => i.item)
+                    .Select(g => g.ToList())
+                    .ToList();
+
+            for (int i=0;i<numSeries; i++)
+            {
+                this.chartStatsTime.Series.Add(new Series()
+                {
+                    ChartType = SeriesChartType.StackedColumn
+                });
+                //this.chartStatsTime.Series[i].Points.AddXY
+            }
+
         }
         #endregion ChartUpdate routines
     }
