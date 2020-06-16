@@ -52,6 +52,8 @@
             this.trackTime = new System.Windows.Forms.TrackBar();
             this.lblTime = new System.Windows.Forms.Label();
             this.tabGUI = new System.Windows.Forms.TabPage();
+            this.lblFontFamily = new System.Windows.Forms.Label();
+            this.roundSample = new Controls.RoundButton();
             this.pctSample = new System.Windows.Forms.PictureBox();
             this.pctBackColor = new System.Windows.Forms.PictureBox();
             this.lblBackColor = new System.Windows.Forms.Label();
@@ -74,8 +76,7 @@
             this.btnAccept = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
-            this.lblFontFamily = new System.Windows.Forms.Label();
-            this.roundSample = new Controls.RoundButton();
+            this.btnFontFamily = new System.Windows.Forms.Button();
             this.tabSettings.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.grpTime.SuspendLayout();
@@ -372,6 +373,7 @@
             // tabGUI
             // 
             this.tabGUI.BackColor = System.Drawing.Color.White;
+            this.tabGUI.Controls.Add(this.btnFontFamily);
             this.tabGUI.Controls.Add(this.lblFontFamily);
             this.tabGUI.Controls.Add(this.roundSample);
             this.tabGUI.Controls.Add(this.pctSample);
@@ -400,6 +402,32 @@
             this.tabGUI.Size = new System.Drawing.Size(567, 313);
             this.tabGUI.TabIndex = 1;
             this.tabGUI.Text = "Interface";
+            // 
+            // lblFontFamily
+            // 
+            this.lblFontFamily.AutoSize = true;
+            this.lblFontFamily.Location = new System.Drawing.Point(52, 206);
+            this.lblFontFamily.Name = "lblFontFamily";
+            this.lblFontFamily.Size = new System.Drawing.Size(40, 17);
+            this.lblFontFamily.TabIndex = 23;
+            this.lblFontFamily.Text = "Font:";
+            // 
+            // roundSample
+            // 
+            this.roundSample.BackColor = System.Drawing.Color.Transparent;
+            this.roundSample.BorderColor = System.Drawing.Color.Black;
+            this.roundSample.BorderWidth = 1F;
+            this.roundSample.Enabled = false;
+            this.roundSample.FillColor = System.Drawing.Color.Transparent;
+            this.roundSample.Location = new System.Drawing.Point(384, 216);
+            this.roundSample.Name = "roundSample";
+            this.roundSample.RegionOffset = 1F;
+            this.roundSample.Size = new System.Drawing.Size(90, 90);
+            this.roundSample.TabIndex = 22;
+            this.roundSample.VisibleBorder = true;
+            this.roundSample.VisibleText = true;
+            this.roundSample.xRadius = 44.5F;
+            this.roundSample.yRadius = 44.5F;
             // 
             // pctSample
             // 
@@ -667,32 +695,16 @@
             this.btnReset.UseVisualStyleBackColor = true;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
-            // lblFontFamily
+            // btnFontFamily
             // 
-            this.lblFontFamily.AutoSize = true;
-            this.lblFontFamily.Location = new System.Drawing.Point(52, 206);
-            this.lblFontFamily.Name = "lblFontFamily";
-            this.lblFontFamily.Size = new System.Drawing.Size(46, 17);
-            this.lblFontFamily.TabIndex = 23;
-            this.lblFontFamily.Text = "label1";
-            this.lblFontFamily.DoubleClick += new System.EventHandler(this.lblFontFamily_DoubleClick);
-            // 
-            // roundSample
-            // 
-            this.roundSample.BackColor = System.Drawing.Color.Transparent;
-            this.roundSample.BorderColor = System.Drawing.Color.Black;
-            this.roundSample.BorderWidth = 1F;
-            this.roundSample.Enabled = false;
-            this.roundSample.FillColor = System.Drawing.Color.Transparent;
-            this.roundSample.Location = new System.Drawing.Point(384, 216);
-            this.roundSample.Name = "roundSample";
-            this.roundSample.RegionOffset = 1F;
-            this.roundSample.Size = new System.Drawing.Size(90, 90);
-            this.roundSample.TabIndex = 22;
-            this.roundSample.VisibleBorder = true;
-            this.roundSample.VisibleText = true;
-            this.roundSample.xRadius = 44.5F;
-            this.roundSample.yRadius = 44.5F;
+            this.btnFontFamily.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnFontFamily.Location = new System.Drawing.Point(226, 204);
+            this.btnFontFamily.Name = "btnFontFamily";
+            this.btnFontFamily.Size = new System.Drawing.Size(76, 21);
+            this.btnFontFamily.TabIndex = 24;
+            this.btnFontFamily.Text = "Select font...";
+            this.btnFontFamily.UseVisualStyleBackColor = true;
+            this.btnFontFamily.Click += new System.EventHandler(this.btnFontFamily_Click);
             // 
             // frmSettings
             // 
@@ -795,5 +807,6 @@
         private Controls.RoundButton roundSample;
         private System.Windows.Forms.PictureBox pctSample;
         private System.Windows.Forms.Label lblFontFamily;
+        private System.Windows.Forms.Button btnFontFamily;
     }
 }

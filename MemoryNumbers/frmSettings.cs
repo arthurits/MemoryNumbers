@@ -59,7 +59,7 @@ namespace MemoryNumbers
                 this.pctBackColor.BackColor = Color.FromArgb(Convert.ToInt32(settings.ContainsKey("BackColor") ? settings["BackColor"] : defSets["BackColor"]));
                 this.chkStartUp.Checked = Convert.ToInt32(settings.ContainsKey("WindowPosition") ? settings["WindowPosition"] : defSets["WindowPosition"]) == 1 ? true : false;
                 this.roundSample.Font = new Font(settings.ContainsKey("FontFamilyName") ? settings["FontFamilyName"] : defSets["FontFamilyName"], roundSample.Font.SizeInPoints);
-                this.lblFontFamily.Text = this.roundSample.Font.FontFamily.Name;
+                this.lblFontFamily.Text = "Font: " + this.roundSample.Font.FontFamily.Name;
             }
             catch (KeyNotFoundException e)
             {
@@ -90,7 +90,7 @@ namespace MemoryNumbers
             _settings["ResultsRatio"] = this.numResultsRatio.Value.ToString(System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
             _settings["BackColor"] = this.pctBackColor.BackColor.ToArgb().ToString();
             _settings["WindowPosition"] = (this.chkStartUp.Checked ? 1 : 0).ToString();
-            _settings["FontFamilyName"] = this.lblFontFamily.Text;
+            _settings["FontFamilyName"] = this.lblFontFamily.Text.Remove(0, 6); // Delete the leading "Font: " characters
 
             _settings["PlayMode"] = (
                                     (this.radFixed.Checked ? 1 : 0) * 1 +
@@ -129,7 +129,7 @@ namespace MemoryNumbers
                 this.pctBackColor.BackColor = Color.FromArgb(Convert.ToInt32(this._settings["BackColor"]));
                 this.chkStartUp.Checked = Convert.ToInt32(_settings["WindowPosition"]) == 1 ? true : false;
                 this.roundSample.Font = new Font(_settings["FontFamilyName"], roundSample.Font.SizeInPoints);
-                this.lblFontFamily.Text = this.roundSample.Font.FontFamily.Name;
+                this.lblFontFamily.Text = "Font: " +this.roundSample.Font.FontFamily.Name;
 
             }
             catch (KeyNotFoundException e)
@@ -296,7 +296,7 @@ namespace MemoryNumbers
             roundSample.Text = numMaxDigit.Value.ToString();
         }
 
-        private void lblFontFamily_DoubleClick(object sender, EventArgs e)
+        private void btnFontFamily_Click(object sender, EventArgs e)
         {
             FontDialog frmFont = new FontDialog()
             {
@@ -313,7 +313,7 @@ namespace MemoryNumbers
                 if (frmFont.ShowDialog() == DialogResult.OK)
                 {
                     this.roundSample.Font = new Font(frmFont.Font.FontFamily, this.roundSample.Font.SizeInPoints);
-                    this.lblFontFamily.Text = frmFont.Font.FontFamily.Name;
+                    this.lblFontFamily.Text = "Font: " + frmFont.Font.FontFamily.Name;
                 }
             }
             // https://stackoverflow.com/questions/2207709/convert-font-to-string-and-back-again

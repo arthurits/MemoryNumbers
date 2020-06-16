@@ -67,7 +67,7 @@ namespace MemoryNumbers
 
         }
 
-        #region Initialization ToolStrip
+        #region Initialization routines
         
         /// <summary>
         /// Initialize the ToolStripPanel component: add the child components to it
@@ -136,110 +136,14 @@ namespace MemoryNumbers
             this.chartStatsNumbers.Legends["Legend1"].Enabled = false;
             this.chartStatsTime.Legends["Legend1"].Enabled = false;
 
-            // this.chartStatsNumbers.Series["Series1"].Points.Clear();
-            /*this.chartStatsNumbers.Series["Right"].Points.AddXY("#1", 60);
-            this.chartStatsNumbers.Series["Wrong"].Points.AddXY("#1", 40);
-            this.chartStatsNumbers.Series["Right"].Points.AddXY("#2", 68);
-            this.chartStatsNumbers.Series["Wrong"].Points.AddXY("#2", 32);
-            this.chartStatsNumbers.Series["Right"].Points.AddXY("#3", 82);
-            this.chartStatsNumbers.Series["Wrong"].Points.AddXY("#3", 28);
-            */
             this.chartStatsTime.Series.Clear();
             this.chartStatsTime.ChartAreas[0].AxisX.Crossing = 0;
             this.chartStatsTime.ChartAreas[0].AxisX.Minimum = 0;
             this.chartStatsNumbers.ChartAreas[0].AxisX.Crossing = 0;
             this.chartStatsNumbers.ChartAreas[0].AxisX.Interval = 1;
-
-            /*
-            this.chartStatsTime.Series.Add(new Series() { ChartType = SeriesChartType.StackedColumn });
-            this.chartStatsTime.Series.Add(new Series() { ChartType = SeriesChartType.StackedColumn });
-            
-            this.chartStatsTime.Series[0].Points.AddXY(1, 0.3852591);
-            this.chartStatsTime.Series[1].Points.AddXY(1, 0.7029007);
-
-            this.chartStatsTime.Series.Add(new Series() { ChartType = SeriesChartType.StackedColumn });
-            this.chartStatsTime.Series[2].Points.AddXY(1, 0);
-
-            this.chartStatsTime.Series[0].Points.AddXY(2, 0.3323844);
-            this.chartStatsTime.Series[1].Points.AddXY(2, 0.3194352);
-            this.chartStatsTime.Series[2].Points.AddXY(2, 0.8386591);
-
-            this.chartStatsTime.Series.Add(new Series() { ChartType = SeriesChartType.StackedColumn });
-            this.chartStatsTime.Series[3].Points.AddXY(1, 0);
-            this.chartStatsTime.Series[3].Points.AddXY(2, 0);
-
-            this.chartStatsTime.Series[0].Points.AddXY(3, 1.5502257);
-            this.chartStatsTime.Series[1].Points.AddXY(3, 0.6354501);
-            this.chartStatsTime.Series[2].Points.AddXY(3, 0.4801333);
-            this.chartStatsTime.Series[3].Points.AddXY(3, 0.4382886);
-            */
-
-            //this.chartStatsTime.Series["Time"].Points.AddXY("2", 5);
-            //this.chartStatsTime.Series["Time"].Points.AddXY("2", 10);
-
-            /*
-            
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-
-            // 
-            // chartStatsNumbers
-            // 
-            chartArea1.AxisY.Title = "Percentage";
-            chartArea1.Name = "ChartArea1";
-            this.chartStatsNumbers.ChartAreas.Add(chartArea1);
-            this.chartStatsNumbers.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend1.Enabled = false;
-            legend1.Name = "Legend1";
-            this.chartStatsNumbers.Legends.Add(legend1);
-            this.chartStatsNumbers.Location = new System.Drawing.Point(0, 0);
-            this.chartStatsNumbers.Name = "chartStatsNumbers";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
-            series1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(200)))), ((int)(((byte)(0)))));
-            series1.Legend = "Legend1";
-            series1.Name = "Right";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn100;
-            series2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            series2.Legend = "Legend1";
-            series2.Name = "Wrong";
-            this.chartStatsNumbers.Series.Add(series1);
-            this.chartStatsNumbers.Series.Add(series2);
-            this.chartStatsNumbers.Size = new System.Drawing.Size(262, 256);
-            this.chartStatsNumbers.TabIndex = 0;
-            this.chartStatsNumbers.Text = "chartStatsNumber";
-            // 
-            // chartStatsTime
-            // 
-            chartArea2.AxisY.Title = "Time in seconds";
-            chartArea2.Name = "ChartArea1";
-            this.chartStatsTime.ChartAreas.Add(chartArea2);
-            this.chartStatsTime.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend2.Enabled = false;
-            legend2.Name = "Legend1";
-            this.chartStatsTime.Legends.Add(legend2);
-            this.chartStatsTime.Location = new System.Drawing.Point(0, 0);
-            this.chartStatsTime.Name = "chartStatsTime";
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn;
-            series3.Legend = "Legend1";
-            series3.Name = "Time";
-            this.chartStatsTime.Series.Add(series3);
-            this.chartStatsTime.Size = new System.Drawing.Size(260, 256);
-            this.chartStatsTime.TabIndex = 0;
-            this.chartStatsTime.Text = "chartStatsTime";
-             */
-
-
         }
 
-        #endregion Initialization ToolStrip
+        #endregion Initialization routines
 
         #region Form events
 
@@ -302,6 +206,7 @@ namespace MemoryNumbers
 
         private void OnButtonClick(object sender, Board.ButtonClickEventArgs e)
         {
+            /*
             // Add series when needed
             if (_game.CurrentScore > this.chartStatsTime.Series.Count)
             {
@@ -323,6 +228,7 @@ namespace MemoryNumbers
             }
             // Update the current data
             this.chartStatsTime.Series[_game.GetSequenceIndex].Points.ElementAt(_game.GetCurrentAttempt - 1).SetValueXY(_game.GetCurrentAttempt, e.Seconds);
+            */
 
             if (_game.Check(e.ButtonValue, e.Seconds)) board1.ButtonRight();
             
@@ -466,6 +372,7 @@ namespace MemoryNumbers
 
             // Update the charts
             ChartStatsNumbers_Update();
+            ChartStatsTime_Update();
         }
 
         private void toolStripMain_Sound_CheckedChanged(object sender, EventArgs e)
@@ -686,21 +593,24 @@ namespace MemoryNumbers
         private void ChartStatsTime_Update()
         {
             // Chart update
-            //this.chartStatsTime.Series.Clear();
-            var data = _game.GetStatsTime;
+            this.chartStatsTime.Series.Clear();
+            
+            var data = new List<List<double>>(_game.GetStatsTime);
 
+            // Get the number of rows
+            int numAttempts = data.Count;
             // Get the maximum number of columns
             int numSeries = data.Aggregate(0, (max, next) => next.Count > max ? next.Count : max);
 
-            // Pad with 0 each row
+            // Pad with 0 so that each row has the same number of elements
             data.ForEach(x => x.AddRange(Enumerable.Repeat(0.0, numSeries - x.Count())));
 
             // Traspose to get the data ready to plot
-            var plotData = data
-                    .SelectMany(inner => inner.Select((item, index) => new { item, index }))
-                    .GroupBy(i => i.index, i => i.item)
-                    .Select(g => g.ToList())
-                    .ToList();
+            //var plotData = data
+            //        .SelectMany(inner => inner.Select((item, index) => new { item, index }))
+            //        .GroupBy(i => i.index, i => i.item)
+            //        .Select(g => g.ToList())
+            //        .ToList();
 
             for (int i=0;i<numSeries; i++)
             {
@@ -708,7 +618,12 @@ namespace MemoryNumbers
                 {
                     ChartType = SeriesChartType.StackedColumn
                 });
-                //this.chartStatsTime.Series[i].Points.AddXY
+                
+                for (int j = 0; j < numAttempts; j++)
+                {
+                    this.chartStatsTime.Series[i].Points.AddXY(j + 1, data[j][i]);
+                }
+
             }
 
         }

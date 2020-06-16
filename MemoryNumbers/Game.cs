@@ -256,23 +256,21 @@ namespace MemoryNumbers
         public bool Start()
         {
             // Check we didn't reach the _nMaxAttempts limits and that the sequence length is whithin the allowed digits limits
-            _nSequenceLength += 1;
-            // Increment the current attempts counter            
-            _nCurrAttempt++;
-            _listTimes.Add(new List<double>());
-
             // The game is over if we are above the maximum number of attemps or
             // if the sequence is longer than the number of digits allowed
-            if ((_nCurrAttempt > _nMaxAttempts) || _nSequenceLength > (_nMaxDigit - _nMinDigit + 1))
+            if ((_nCurrAttempt >= _nMaxAttempts) || _nSequenceLength >= (_nMaxDigit - _nMinDigit + 1))
             {
                 _nSequence = null;
                 OnGameOver(new OverEventArgs(_nSequenceLength - 1));
                 return false;
             }
 
-            // Restart the index pointing to the first element of _nSequence
-            _nSequenceIndex = 0;
-            
+            // Update variables
+            _nSequenceLength++;     // Increment the length
+            _nCurrAttempt++;        // Increment the current attempts counter
+            _nSequenceIndex = 0;    // Restart the index pointing to the first element of _nSequence
+            _listTimes.Add(new List<double>()); // Add a new List for storing the times
+
             // Generate the numeric sequence
             return SetSequence();
         }
