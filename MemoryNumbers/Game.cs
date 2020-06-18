@@ -246,7 +246,6 @@ namespace MemoryNumbers
 
         #endregion Events
 
-        //if (GameOver != null) OnGameOver(new OverEventArgs(_nScore));
 
         public Game()
         {

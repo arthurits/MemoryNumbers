@@ -46,8 +46,13 @@ namespace MemoryNumbers
 
                 this.numTime.Value = Convert.ToInt32(settings.ContainsKey("Time") ? settings["Time"] : defSets["Time"]);
                 this.numTimeIncrement.Value = Convert.ToInt32(settings.ContainsKey("TimeIncrement") ? settings["TimeIncrement"] : defSets["TimeIncrement"]);
-                this.numMaxDigit.Value = Convert.ToInt32(settings.ContainsKey("MaximumDigit") ? settings["MaximumDigit"] : defSets["MaximumDigit"]);
-                this.numMinDigit.Value = Convert.ToInt32(settings.ContainsKey("MinimumDigit") ? settings["MinimumDigit"] : defSets["MinimumDigit"]);
+
+                int value = Convert.ToInt32(settings.ContainsKey("MaximumDigit") ? settings["MaximumDigit"] : defSets["MaximumDigit"]);
+                this.numMaxDigit.Value = value > numMaxDigit.Maximum ? numMaxDigit.Maximum : (value < numMaxDigit.Minimum ? numMaxDigit.Minimum : value);
+                this.numMinDigit.Maximum = this.numMaxDigit.Value;
+                value = Convert.ToInt32(settings.ContainsKey("MinimumDigit") ? settings["MinimumDigit"] : defSets["MinimumDigit"]);
+                this.numMinDigit.Value = value > numMinDigit.Maximum ? numMinDigit.Maximum : (value < numMinDigit.Minimum ? numMinDigit.Minimum : value);
+
                 this.numMaxAttempts.Value = Convert.ToInt32(settings.ContainsKey("MaximumAttempts") ? settings["MaximumAttempts"] : defSets["MaximumAttempts"]);
                 this.numMinLength.Value = Convert.ToInt32(settings.ContainsKey("MinimumLength") ? settings["MinimumLength"] : defSets["MinimumLength"]);
 
@@ -70,7 +75,6 @@ namespace MemoryNumbers
             //ApplySettings(_settings);
             _settings = settings;
             _defaultSettings = defSets;
-            //_programSettings.ContainsKey("Sound") ?
 
         }
 
@@ -294,6 +298,7 @@ namespace MemoryNumbers
         private void numMaxDigit_ValueChanged(object sender, EventArgs e)
         {
             roundSample.Text = numMaxDigit.Value.ToString();
+            numMinDigit.Maximum = numMaxDigit.Value;
         }
 
         private void btnFontFamily_Click(object sender, EventArgs e)

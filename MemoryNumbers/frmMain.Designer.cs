@@ -1,6 +1,6 @@
 ﻿namespace MemoryNumbers
 {
-    partial class Form1
+    partial class frmMain
     {
         /// <summary>
         /// Variable del diseñador necesaria.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
@@ -65,15 +65,16 @@
             this.toolStripMain_About = new System.Windows.Forms.ToolStripButton();
             this.tabGame = new System.Windows.Forms.TabControl();
             this.tabBoard = new System.Windows.Forms.TabPage();
+            this.board1 = new Controls.Board();
             this.tabStats = new System.Windows.Forms.TabPage();
             this.splitStats = new System.Windows.Forms.SplitContainer();
             this.chartStatsNumbers = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartStatsTime = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.board1 = new Controls.Board();
             this.statusStrip.SuspendLayout();
             this.toolStripMain.SuspendLayout();
             this.tabGame.SuspendLayout();
             this.tabBoard.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.board1)).BeginInit();
             this.tabStats.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitStats)).BeginInit();
             this.splitStats.Panel1.SuspendLayout();
@@ -81,7 +82,6 @@
             this.splitStats.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartStatsNumbers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartStatsTime)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.board1)).BeginInit();
             this.SuspendLayout();
             // 
             // tspTop
@@ -112,7 +112,7 @@
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.statusStrip.Size = new System.Drawing.Size(538, 25);
-            this.statusStrip.TabIndex = 4;
+            this.statusStrip.TabIndex = 2;
             // 
             // toolStripStatusLabel_Secuence
             // 
@@ -141,7 +141,7 @@
             this.toolStripMain.Name = "toolStripMain";
             this.toolStripMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.toolStripMain.Size = new System.Drawing.Size(538, 70);
-            this.toolStripMain.TabIndex = 3;
+            this.toolStripMain.TabIndex = 0;
             // 
             // toolStripMain_Exit
             // 
@@ -257,7 +257,7 @@
             this.tabGame.SelectedIndex = 0;
             this.tabGame.Size = new System.Drawing.Size(538, 271);
             this.tabGame.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.tabGame.TabIndex = 7;
+            this.tabGame.TabIndex = 1;
             // 
             // tabBoard
             // 
@@ -269,6 +269,27 @@
             this.tabBoard.TabIndex = 0;
             this.tabBoard.Text = "Board";
             this.tabBoard.UseVisualStyleBackColor = true;
+            // 
+            // board1
+            // 
+            this.board1.BackColor = System.Drawing.Color.White;
+            this.board1.BorderColor = System.Drawing.Color.Black;
+            this.board1.BorderRatio = 0.12F;
+            this.board1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.board1.CountDownRatio = 0.37F;
+            this.board1.Diameter = 65;
+            this.board1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.board1.FillColor = System.Drawing.Color.White;
+            this.board1.FontRatio = 0.6F;
+            this.board1.Location = new System.Drawing.Point(0, 0);
+            this.board1.Name = "board1";
+            this.board1.NumbersRatio = 0.25F;
+            this.board1.PlaySounds = true;
+            this.board1.ResultRatio = 0.56F;
+            this.board1.Size = new System.Drawing.Size(530, 262);
+            this.board1.TabIndex = 11;
+            this.board1.TabStop = false;
+            this.board1.Time = 700;
             // 
             // tabStats
             // 
@@ -407,27 +428,6 @@
             this.chartStatsTime.TabIndex = 0;
             this.chartStatsTime.Text = "chartStatsTime";
             // 
-            // board1
-            // 
-            this.board1.BackColor = System.Drawing.Color.White;
-            this.board1.BorderColor = System.Drawing.Color.Black;
-            this.board1.BorderRatio = 0.12F;
-            this.board1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.board1.CountDownRatio = 0.37F;
-            this.board1.Diameter = 65;
-            this.board1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.board1.FillColor = System.Drawing.Color.White;
-            this.board1.FontRatio = 0.6F;
-            this.board1.Location = new System.Drawing.Point(0, 0);
-            this.board1.Name = "board1";
-            this.board1.NumbersRatio = 0.25F;
-            this.board1.PlaySounds = true;
-            this.board1.ResultRatio = 0.56F;
-            this.board1.Size = new System.Drawing.Size(530, 262);
-            this.board1.TabIndex = 11;
-            this.board1.TabStop = false;
-            this.board1.Time = 700;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -455,6 +455,7 @@
             this.toolStripMain.PerformLayout();
             this.tabGame.ResumeLayout(false);
             this.tabBoard.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.board1)).EndInit();
             this.tabStats.ResumeLayout(false);
             this.splitStats.Panel1.ResumeLayout(false);
             this.splitStats.Panel2.ResumeLayout(false);
@@ -462,7 +463,6 @@
             this.splitStats.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chartStatsNumbers)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartStatsTime)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.board1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

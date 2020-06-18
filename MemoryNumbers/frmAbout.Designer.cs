@@ -71,7 +71,8 @@
             // 
             // logoPictureBox
             // 
-            this.logoPictureBox.Location = new System.Drawing.Point(4, 4);
+            this.logoPictureBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.logoPictureBox.Location = new System.Drawing.Point(5, 35);
             this.logoPictureBox.Margin = new System.Windows.Forms.Padding(4);
             this.logoPictureBox.Name = "logoPictureBox";
             this.tableLayoutPanel.SetRowSpan(this.logoPictureBox, 6);
@@ -101,7 +102,7 @@
             this.labelVersion.Name = "labelVersion";
             this.labelVersion.Size = new System.Drawing.Size(278, 21);
             this.labelVersion.TabIndex = 0;
-            this.labelVersion.Text = "Versión";
+            this.labelVersion.Text = "Version";
             this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // labelCopyright

@@ -15,7 +15,7 @@ using Utils;
 
 namespace MemoryNumbers
 {
-    public partial class Form1 : Form
+    public partial class frmMain : Form
     {
         //RoundButton.RoundButton btn = new RoundButton.RoundButton();
         Game _game = new Game();
@@ -25,7 +25,7 @@ namespace MemoryNumbers
         private ProgramSettings<string, string> _defaultSettings;
         private static readonly string _programSettingsFileName = @"Configuration.xml";
 
-        public Form1()
+        public frmMain()
         {
             // Set form icon
             _path = Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
@@ -39,32 +39,27 @@ namespace MemoryNumbers
             InitializeStatusStrip();
             InitializeChartStats();
 
+            // Initialization extras
             splitStats.SplitterWidth = 1;   // This is a known bug
 
-            //board1.Parent = this;
-
             // Subscribe to events
-            //countDown1.TimerEnding += new EventHandler<Controls.TimerEndingEventArgs>(OnTimerEnding);
             board1.ButtonClick += new EventHandler<Board.ButtonClickEventArgs>(OnButtonClick);
-            //board1.RightSequence += new EventHandler<Board.SequenceEventArgs>(OnCorrectSequence);
-            //board1.WrongSequence += new EventHandler<Board.SequenceEventArgs>(OnWrongSequence);
+
             _game.CorrectSequence += new EventHandler<Game.CorrectEventArgs>(OnCorrectSequence);
             _game.WrongSequence += new EventHandler<Game.WrongEventArgs>(OnWrongSequence);
             _game.GameOver += new EventHandler<Game.OverEventArgs>(OnGameOver);
-            //_game.CorrectSequence += async (object s, Game.CorrectEventArgs e) => await OnCorrectSequence(s, e);
-            //_game.WrongSequence += async (object s, Game.WrongEventArgs e) => await OnWrongSequence(s, e);
             //_game.GameOver += async (object s, Game.OverEventArgs e) => await OnGameOver(s, e);
 
-            // Read the program settings file and apply them
+            // Read the program settings file
             LoadProgramSettings(ref _programSettings);
             
+            // Load defalut settings
             _defaultSettings = new ProgramSettings<string, string>();
             LoadDefaultSettings(_defaultSettings);
 
+            // Apply settings
             if (_programSettings == null) _programSettings = _defaultSettings;
-
             ApplySettings(_programSettings, _defaultSettings, true);
-
         }
 
         #region Initialization routines

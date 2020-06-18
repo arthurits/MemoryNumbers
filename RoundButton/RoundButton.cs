@@ -303,16 +303,12 @@ namespace Controls
             var point = PointF.Empty;
             SizeF size = this.Size;
 
-            //point = AddPoint(point, InnerMargin);
-            //size = AddSize(size, -2 * InnerMargin);
-            
             point.X += Font.Size * _fTextLeftPaddingPercentage + _fRegionOffset + _fBorderWidth;
             point.Y += Font.Size * _fTextTopPaddingPercentage + _fRegionOffset + _fBorderWidth;
             size.Width -= 2 * (_fRegionOffset + _fBorderWidth);
             size.Height -= 2 * (_fRegionOffset + _fBorderWidth);
 
-            //System.Diagnostics.Debug.WriteLine(point.ToString() + " — " + size.ToString());
-
+            // Compute the dimensions based on the text size
             var stringFormat =
                 new StringFormat(RightToLeft == RightToLeft.Yes ? StringFormatFlags.DirectionRightToLeft : 0)
                 {
@@ -320,13 +316,11 @@ namespace Controls
                     LineAlignment = StringAlignment.Near  // Vertical alignment
                 };
             var textSize = g.MeasureString(Text, Font);
-            //System.Diagnostics.Debug.WriteLine(textSize.ToString());
             var textPoint = new PointF(
                 point.X + (size.Width - textSize.Width) / 2,
                 point.Y + (size.Height - textSize.Height) / 2);
-            
-            //System.Diagnostics.Debug.WriteLine(textPoint.ToString());
 
+            // Draw the text
             g.DrawString(
                 Text,
                 Font,

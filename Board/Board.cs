@@ -371,8 +371,7 @@ namespace Controls
             _nDiameter = (int)(_nMinDimension * _fNumbersFactor);
 
             var form = FindForm();
-            if (form == null) return;
-            if (form.WindowState == FormWindowState.Minimized) return;
+            if (form == null || form.WindowState == FormWindowState.Minimized) return;
 
             // Update the controls if the board is not shrunk
             if (_nMinDimension != 0)
@@ -433,15 +432,10 @@ namespace Controls
                 //bmpCorrect = DrawSVG(_svgCorrect, this.pctCorrect.Width, this.pctCorrect.Height);
                 //bmpWrong = DrawSVG(_svgWrong, this.pctWrong.Width, this.pctWrong.Height);
 
-                System.Diagnostics.Debug.WriteLine("Mark stamp #1");
                 await Task.Run(() =>
                 {
-                    System.Diagnostics.Debug.WriteLine("Mark stamp #2");
                     rgCorrect = new Region(GetRegionFromTransparentBitmap(bmpCorrect));
                     rgWrong = new Region(GetRegionFromTransparentBitmap(bmpWrong));
-                    System.Diagnostics.Debug.WriteLine("pctWrong size {0}x{1}", pctWrong.Width, pctWrong.Height);
-                    System.Diagnostics.Debug.WriteLine("bmpWrong size {0}x{1}", bmpWrong.Width, bmpWrong.Height);
-                    System.Diagnostics.Debug.WriteLine("Mark stamp #3");
                     
                     this.pctCorrect.Image = bmpCorrect;
                     if (this.pctCorrect.InvokeRequired) this.pctCorrect.Invoke((Action)(() => this.pctCorrect.Region = rgCorrect));
@@ -449,11 +443,8 @@ namespace Controls
                     this.pctWrong.Image = bmpWrong;
                     if (this.pctWrong.InvokeRequired) this.pctWrong.Invoke((Action)(() => this.pctWrong.Region = rgWrong));
                     else this.pctWrong.Region = rgWrong;
-                    
                 });
-                System.Diagnostics.Debug.WriteLine("Mark stamp #4");
                 
-
             }
 
         }
