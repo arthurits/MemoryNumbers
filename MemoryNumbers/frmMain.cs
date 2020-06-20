@@ -19,7 +19,7 @@ namespace MemoryNumbers
     {
         //RoundButton.RoundButton btn = new RoundButton.RoundButton();
         Game _game = new Game();
-        string _path;
+        private string _path;
         // Program settings
         private ProgramSettings<string, string> _programSettings;
         private ProgramSettings<string, string> _defaultSettings;
