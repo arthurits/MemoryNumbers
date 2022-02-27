@@ -73,7 +73,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="clsApplicationSettings.cs" />
-    <Compile Include="clsTablessTabControl.cs" />
+    <Compile Include="clsTablessTabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="clsUtilities.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
