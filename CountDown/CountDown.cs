@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Timers;
 
 namespace Controls
@@ -93,9 +86,6 @@ namespace Controls
 
             string _path = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
             _soundPlayer = System.IO.File.Exists(_path + @"\audio\Count down.wav") ? new System.Media.SoundPlayer(_path + @"\audio\Count down.wav") : null;
-
-            // Anchor the rounded rectangle for resizing purposes
-            //roundButton1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
         }
 
         private void onTimeEvent(object sender, ElapsedEventArgs e)

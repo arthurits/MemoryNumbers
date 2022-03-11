@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Svg;
-using System.Runtime.CompilerServices;
-using System.Diagnostics;
 
 namespace Controls
 {
@@ -279,7 +273,7 @@ namespace Controls
             InitializeComponent();
             // this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
             this.DoubleBuffered = true;
-            this.ResizeRedraw = true;
+            //this.ResizeRedraw = true;
             this.BorderStyle = BorderStyle.FixedSingle;
             
             // Load the sounds
@@ -312,16 +306,15 @@ namespace Controls
                 Size = new System.Drawing.Size(100, 100),
                 StartingTime = 3F,
                 TabIndex = 0,
-                //Text = "3",
+                Text = "3",
                 TimeInterval = 1000D,
                 Visible = false,
-                VisibleBorder = true,
-                VisibleText = true
+                ShowBorder = true,
+                ShowText = true
             };
             this.countDown.xRadius = (this.countDown.Size.Width - this.countDown.RegionOffset) / 2;
             this.countDown.yRadius = (this.countDown.Size.Height - this.countDown.RegionOffset) / 2;
             this.countDown.TimerEnding += new EventHandler<TimerEndingEventArgs>(this.OnCountDownEnding);
-            this.Controls.Add(countDown);
 
             // Set the PictureBoxes
             // https://stackoverflow.com/questions/53832933/fade-ws-ex-layered-form
@@ -345,6 +338,8 @@ namespace Controls
             };
             this.Controls.Add(pctCorrect);
             this.Controls.Add(pctWrong);
+            this.Controls.Add(countDown);
+            countDown.Render();
 
             // Read the SVG files. This is done here because it takes some 0.2 - 0.3 seconds each to read
             // This way we avoid any possible bottle neck when overriding OnResize
@@ -408,6 +403,8 @@ namespace Controls
                 this.countDown.Font = new Font(countDown.Font.FontFamily, _fFontFactor * countDown.Size.Height);
                 //this.countDown.Font = new Font(countDown.Font.FontFamily, _fFontFactor * (countDown.Size.Height - 2 * countDown.BorderWidth));
                 // countDown.Invalidate();
+                countDown.Visible = true;
+                countDown.Render();
             }
         }
 
@@ -419,7 +416,7 @@ namespace Controls
                 Region rgCorrect = null;
                 Bitmap bmpWrong = null;
                 Region rgWrong = null;
-                
+
                 this.pctCorrect.Size = new Size((int)(_nMinDimension * _fResultFactor), (int)(_nMinDimension * _fResultFactor));
                 this.pctCorrect.Location = new System.Drawing.Point((this.Size.Width - pctCorrect.Size.Width) / 2, (this.Size.Height - pctCorrect.Size.Height) / 2);
 
@@ -436,7 +433,7 @@ namespace Controls
                 {
                     rgCorrect = new Region(GetRegionFromTransparentBitmap(bmpCorrect));
                     rgWrong = new Region(GetRegionFromTransparentBitmap(bmpWrong));
-                    
+
                     this.pctCorrect.Image = bmpCorrect;
                     if (this.pctCorrect.InvokeRequired) this.pctCorrect.Invoke((Action)(() => this.pctCorrect.Region = rgCorrect));
                     else this.pctCorrect.Region = rgCorrect;
@@ -444,7 +441,7 @@ namespace Controls
                     if (this.pctWrong.InvokeRequired) this.pctWrong.Invoke((Action)(() => this.pctWrong.Region = rgWrong));
                     else this.pctWrong.Region = rgWrong;
                 });
-                
+
             }
 
         }
@@ -471,6 +468,7 @@ namespace Controls
 
             countDown.StartingTime = 3;
             countDown.Visible = true;
+            countDown.Render();
             countDown.Start();
             //countDown.Visible = false;
             
@@ -490,9 +488,7 @@ namespace Controls
                 this.Invoke(new Action(() => ShowButtons(sender)));
             }
             else
-            {
                 ShowButtons(sender);
-            }
             
         }
         
@@ -506,12 +502,14 @@ namespace Controls
             foreach (RoundButton btn in _roundButton)
             {
                 btn.Visible = true;
+                btn.Render();
             }
             await Task.Delay(_nTime);
             foreach (RoundButton btn in _roundButton)
             {
-                btn.VisibleText = false;
-                btn.VisibleBorder = true;
+                btn.ShowText = false;
+                btn.ShowBorder = true;
+                btn.Render();
             }
             _nowStart = DateTime.Now;
         }
@@ -551,7 +549,7 @@ namespace Controls
                     //yRadius = _nDiameter / 2f,
                     RegionOffset = 1f,
                     Text = numbers[i].ToString(),
-                    VisibleBorder = false,
+                    ShowBorder = false,
                     Visible = false
                 };
                 _roundButton[i].BorderWidth = (_nDiameter - _roundButton[i].RegionOffset) / 2f * _fBorderWidth;
@@ -665,8 +663,8 @@ namespace Controls
             //Application.DoEvents();
             // Change the state of the clicked button
             var roundButton = (RoundButton)sender;
-            roundButton.VisibleBorder = false;
-            roundButton.VisibleText = true;
+            roundButton.ShowBorder = false;
+            roundButton.ShowText = true;
             roundButton.Update();
             //_roundButton[_nSequenceCounter].VisibleBorder = false;
 
@@ -682,8 +680,8 @@ namespace Controls
             this.SuspendLayout();
             while (sequenceError < _roundButton.Length)
             {
-                _roundButton[sequenceError].VisibleText = true;
-                _roundButton[sequenceError].VisibleBorder = false;
+                _roundButton[sequenceError].ShowText = true;
+                _roundButton[sequenceError].ShowBorder = false;
                 sequenceError++;
             }
             this.ResumeLayout();

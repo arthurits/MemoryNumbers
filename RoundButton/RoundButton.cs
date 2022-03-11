@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Drawing.Drawing2D;
@@ -56,14 +51,8 @@ namespace Controls
         private float _fBorderWidth = 1f;
         private float _xRadius = 0f;
         private float _yRadius = 0f;
-        private float _fRegionOffset = 0f;
-        private Color _cBorderColor = Color.Black;
-        private Color _cFillColor = Color.Transparent;
         private int _nWidth;
         private int _nHeight;
-        private string _sText ="";
-        private bool _showText = true;
-        private bool _showBorder = true;
 
         #endregion Private variables
 
@@ -77,7 +66,7 @@ namespace Controls
         public float BorderWidth
         {
             get { return _fBorderWidth; }
-            set { _fBorderWidth = value < 0 ? 0f : value; Invalidate(); }
+            set { _fBorderWidth = value < 0 ? 0f : value; }
         }
 
         [Description("Border radius (0 means no rounded corner)"),
@@ -88,7 +77,7 @@ namespace Controls
         public float xRadius
         {
             get { return _xRadius; }
-            set { _xRadius = value < 0 ? 0f : value; Invalidate(); }
+            set { _xRadius = value < 0 ? 0f : value; }
         }
 
         [Description("Border radius (0 means no rounded corner)"),
@@ -99,7 +88,7 @@ namespace Controls
         public float yRadius
         {
             get { return _yRadius; }
-            set { _yRadius = value < 0 ? 0f : value; Invalidate(); }
+            set { _yRadius = value < 0 ? 0f : value; }
         }
 
         [Description("Region offset of the control (typically 1 px)"),
@@ -107,86 +96,57 @@ namespace Controls
         Browsable(true),
         EditorBrowsable(EditorBrowsableState.Always),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        public float RegionOffset
-        {
-            get { return _fRegionOffset; }
-            set { _fRegionOffset = value; Invalidate(); }
-        }
+        public float RegionOffset { get; set; } = 0f;
 
         [Description("Border color"),
         Category("Rounded properties"),
         Browsable(true),
         EditorBrowsable(EditorBrowsableState.Always),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        public Color BorderColor
-        {
-            get { return _cBorderColor; }
-            set { _cBorderColor = value; Invalidate(); }
-        }
+        public Color BorderColor { get; set; } = Color.Black;
 
         [Description("Fill color"),
         Category("Rounded properties"),
         Browsable(true),
         EditorBrowsable(EditorBrowsableState.Always),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        public Color FillColor
-        {
-            get { return _cFillColor; }
-            set { _cFillColor = value; Invalidate(); }
-        }
+        public Color FillColor { get; set; } = Color.Transparent;
 
         [Description("Inner width inside stroke"),
         Category("Rounded properties"),
         Browsable(true),
         EditorBrowsable(EditorBrowsableState.Always),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        public int InnerWidth
-        {
-            get { return (int)(this.ClientRectangle.Width - 1 - 2 * _fBorderWidth); }
-        }
+        public int InnerWidth => (int)(this.ClientRectangle.Width - 1 - 2 * _fBorderWidth);
+
 
         [Description("Inner height inside stroke"),
         Category("Rounded properties"),
         Browsable(true),
         EditorBrowsable(EditorBrowsableState.Always),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        public int InnerHeight
-        {
-            get { return (int)(this.ClientRectangle.Height - 1 - 2 * _fBorderWidth); }
-        }
+        public int InnerHeight => (int)(this.ClientRectangle.Height - 1 - 2 * _fBorderWidth);
 
         [Description("Text to display"),
         Category("Rounded properties"),
         Browsable(true),
         EditorBrowsable(EditorBrowsableState.Always),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        public override string Text
-        {
-            get { return _sText; }
-            set { _sText = value.ToString(); Invalidate(); }
-        }
+        public override string Text { get; set; } = String.Empty;
 
         [Description("Show text"),
         Category("Rounded properties"),
         Browsable(true),
         EditorBrowsable(EditorBrowsableState.Always),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        public bool VisibleText
-        {
-            get { return _showText; }
-            set { _showText = value; Invalidate(); }
-        }
+        public bool ShowText { get; set; } = true;
 
         [Description("Show border"),
         Category("Rounded properties"),
         Browsable(true),
         EditorBrowsable(EditorBrowsableState.Always),
         DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-        public bool VisibleBorder
-        {
-            get { return _showBorder; }
-            set { _showBorder = value; Invalidate(); }
-        }
+        public bool ShowBorder { get; set; } = true;
 
         #endregion Public interface
 
@@ -194,7 +154,7 @@ namespace Controls
         public event EventHandler<ButtonClickEventArgs> ButtonClick;
         protected virtual void OnButtonClick(ButtonClickEventArgs e)
         {
-            if (ButtonClick != null) ButtonClick(this, e);
+            ButtonClick?.Invoke(this, e);
         }
         public class ButtonClickEventArgs : EventArgs
         {
@@ -218,62 +178,87 @@ namespace Controls
 
             this.DoubleBuffered = true;
 
-            // Set default size
-            //this.ClientSize = new System.Drawing.Size(100, 100);
-
-            //this.AutoSize = false;
-            //this.BackColor= Color.Transparent;
-            //this.TextAlign = ContentAlignment.MiddleCenter;
-            //this.BorderStyle = BorderStyle.None;
-
-            //this.OnMouseClick += new System.Windows.Forms.MouseEventHandler(this.RoundButton_MouseClick);
-            //this.Click += new EventHandler(OnMouseClick);
-
         }
 
         private void RoundButton_Load(object sender, EventArgs e)
         {
-            // Some default label properties
-            //lblText.Text = Text;
-            //lblText.Text = _sText;
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            Render();
+        }
+
+        public void Render()
+        {
+            Render(CreateGraphics());
+        }
+
+        public void Render(System.Drawing.Graphics gfx)
+        {
+            gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+            RectangleF rectOut = new RectangleF(RegionOffset / 2, RegionOffset / 2, this.ClientRectangle.Width - RegionOffset, this.ClientRectangle.Height - RegionOffset);
+            RectangleF rectIn = RectangleF.Inflate(rectOut, -_fBorderWidth, -_fBorderWidth);                // Mantains the rectangle's geometric center.
+            RectangleF rectRegion = RectangleF.Inflate(rectOut, RegionOffset / 2, RegionOffset / 2);    // Inflates in both + and - directions, hence _fRegionOffset / 2 for a total of _fRegionOffset
+
+            GraphicsPath path = MakeRoundedRect(rectOut, _xRadius, _yRadius);
+            gfx.FillPath(new SolidBrush(FillColor), path);
+
+            if (ShowBorder)
+            {
+                path.AddPath(MakeRoundedRect(rectIn, _xRadius - _fBorderWidth, _yRadius - _fBorderWidth), false);
+                gfx.FillPath(new SolidBrush(BorderColor), path);
+            }
+
+            this.Region = new Region(MakeRoundedRect(rectRegion, _xRadius + RegionOffset / 2, _yRadius + RegionOffset / 2));
+
+            // Draw text
+            if (ShowText) DrawText(gfx);
+
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            Render();
         }
 
         /// <summary>
         /// Overrides the paint event. Comprises 3 parts: the fill, the border, and the definition of the control's region
         /// </summary>
         /// <param name="e">Paint event argument</param>
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            Graphics dc = e.Graphics;
-            dc.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+        //protected override void OnPaint(PaintEventArgs e)
+        //{
+        //    Graphics dc = e.Graphics;
+        //    dc.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-            //RectangleF rectOut = new RectangleF(0.5f, 0.5f, this.ClientRectangle.Width - 1, this.ClientRectangle.Height - 1);
-            RectangleF rectOut = new RectangleF(_fRegionOffset / 2, _fRegionOffset / 2, this.ClientRectangle.Width - _fRegionOffset, this.ClientRectangle.Height - _fRegionOffset);
-            RectangleF rectIn = RectangleF.Inflate(rectOut, -_fBorderWidth, -_fBorderWidth);                // Mantains the rectangle's geometric center.
-            //RectangleF rectRegion = RectangleF.Inflate(rectOut, 0.5f, 0.5f);
-            RectangleF rectRegion = RectangleF.Inflate(rectOut, _fRegionOffset / 2, _fRegionOffset / 2);    // Inflates in both + and - directions, hence _fRegionOffset / 2 for a total of _fRegionOffset
+        //    //RectangleF rectOut = new RectangleF(0.5f, 0.5f, this.ClientRectangle.Width - 1, this.ClientRectangle.Height - 1);
+        //    RectangleF rectOut = new RectangleF(_fRegionOffset / 2, _fRegionOffset / 2, this.ClientRectangle.Width - _fRegionOffset, this.ClientRectangle.Height - _fRegionOffset);
+        //    RectangleF rectIn = RectangleF.Inflate(rectOut, -_fBorderWidth, -_fBorderWidth);                // Mantains the rectangle's geometric center.
+        //    //RectangleF rectRegion = RectangleF.Inflate(rectOut, 0.5f, 0.5f);
+        //    RectangleF rectRegion = RectangleF.Inflate(rectOut, _fRegionOffset / 2, _fRegionOffset / 2);    // Inflates in both + and - directions, hence _fRegionOffset / 2 for a total of _fRegionOffset
 
-            GraphicsPath path = MakeRoundedRect(rectOut, _xRadius, _yRadius);
-            dc.FillPath(new SolidBrush(_cFillColor), path);
+        //    GraphicsPath path = MakeRoundedRect(rectOut, _xRadius, _yRadius);
+        //    dc.FillPath(new SolidBrush(_cFillColor), path);
 
-            if (_showBorder)
-            {
-                path.AddPath(MakeRoundedRect(rectIn, _xRadius - _fBorderWidth, _yRadius - _fBorderWidth), false);
-                dc.FillPath(new SolidBrush(_cBorderColor), path);
-            }
+        //    if (_showBorder)
+        //    {
+        //        path.AddPath(MakeRoundedRect(rectIn, _xRadius - _fBorderWidth, _yRadius - _fBorderWidth), false);
+        //        dc.FillPath(new SolidBrush(_cBorderColor), path);
+        //    }
 
-            //this.Region = new Region(MakeRoundedRect(rectRegion, _xRadius + 0.5f, _yRadius + 0.5f));
-            this.Region = new Region(MakeRoundedRect(rectRegion, _xRadius + _fRegionOffset / 2, _yRadius + _fRegionOffset / 2));
+        //    //this.Region = new Region(MakeRoundedRect(rectRegion, _xRadius + 0.5f, _yRadius + 0.5f));
+        //    this.Region = new Region(MakeRoundedRect(rectRegion, _xRadius + _fRegionOffset / 2, _yRadius + _fRegionOffset / 2));
 
-            // Draw text
-            if (_showText) DrawText(dc);
+        //    // Draw text
+        //    if (_showText) DrawText(dc);
 
-            //this.lblText.Padding = new Padding((int)(this.lblText.Font.SizeInPoints / 6), 0, 0, 0);
-            //this.lblText.Region = this.Region;
+        //    //this.lblText.Padding = new Padding((int)(this.lblText.Font.SizeInPoints / 6), 0, 0, 0);
+        //    //this.lblText.Region = this.Region;
 
-            base.OnPaint(e);
+        //    base.OnPaint(e);
 
-        }
+        //}
 
         protected override void OnClick(EventArgs e)
         {
@@ -292,21 +277,21 @@ namespace Controls
             //if (ButtonClick != null) OnButtonClick(new ButtonClickEventArgs(int.Parse(lblText.Text)));
         }
 
-        protected virtual void DrawText(Graphics g)
+        protected virtual void DrawText(Graphics gfx)
         {
-            if (Text == string.Empty) return;
+            if (Text == String.Empty) return;
 
-            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-            g.SmoothingMode = SmoothingMode.AntiAlias;
+            gfx.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+            gfx.SmoothingMode = SmoothingMode.AntiAlias;
             
             // The upper left corner coordinates and the size of the rectangle where the text will be drawn
             var point = PointF.Empty;
             SizeF size = this.Size;
 
-            point.X += Font.Size * _fTextLeftPaddingPercentage + _fRegionOffset + _fBorderWidth;
-            point.Y += Font.Size * _fTextTopPaddingPercentage + _fRegionOffset + _fBorderWidth;
-            size.Width -= 2 * (_fRegionOffset + _fBorderWidth);
-            size.Height -= 2 * (_fRegionOffset + _fBorderWidth);
+            point.X += Font.Size * _fTextLeftPaddingPercentage + RegionOffset + _fBorderWidth;
+            point.Y += Font.Size * _fTextTopPaddingPercentage + RegionOffset + _fBorderWidth;
+            size.Width -= 2 * (RegionOffset + _fBorderWidth);
+            size.Height -= 2 * (RegionOffset + _fBorderWidth);
 
             // Compute the dimensions based on the text size
             var stringFormat =
@@ -315,13 +300,13 @@ namespace Controls
                     Alignment = StringAlignment.Near,     // Horizontal alignment
                     LineAlignment = StringAlignment.Near  // Vertical alignment
                 };
-            var textSize = g.MeasureString(Text, Font);
+            var textSize = gfx.MeasureString(Text, Font);
             var textPoint = new PointF(
                 point.X + (size.Width - textSize.Width) / 2,
                 point.Y + (size.Height - textSize.Height) / 2);
 
             // Draw the text
-            g.DrawString(
+            gfx.DrawString(
                 Text,
                 Font,
                 new SolidBrush(ForeColor),
@@ -442,4 +427,3 @@ namespace Controls
     }
 }
 // https://stackoverflow.com/questions/33878184/c-sharp-how-to-make-smooth-arc-region-using-graphics-path
-

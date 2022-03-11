@@ -445,8 +445,8 @@
             this.roundSample.RegionOffset = 1F;
             this.roundSample.Size = new System.Drawing.Size(90, 90);
             this.roundSample.TabIndex = 22;
-            this.roundSample.VisibleBorder = true;
-            this.roundSample.VisibleText = true;
+            this.roundSample.ShowBorder = true;
+            this.roundSample.ShowText = true;
             this.roundSample.xRadius = 44.5F;
             this.roundSample.yRadius = 44.5F;
             // 
