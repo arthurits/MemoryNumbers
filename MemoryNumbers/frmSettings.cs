@@ -78,7 +78,7 @@ namespace MemoryNumbers
 
         }
 
-        private void btnAccept_Click(object sender, EventArgs e)
+        private void Accept_Click(object sender, EventArgs e)
         {
             _settings["Time"] = this.numTime.Value.ToString();
             _settings["TimeIncrement"] = this.numTimeIncrement.Value.ToString();
@@ -149,7 +149,7 @@ namespace MemoryNumbers
             }
         }
 
-        private void btnReset_Click(object sender, EventArgs e)
+        private void Reset_Click(object sender, EventArgs e)
         {
             // Ask for overriding confirmation
             DialogResult result;
@@ -227,6 +227,7 @@ namespace MemoryNumbers
             if (trackBorderRatio.Value != ratio) trackBorderRatio.Value = ratio;
 
             roundSample.BorderWidth = ((roundSample.Width - roundSample.RegionOffset) / 2) * (float)numBorderRatio.Value;
+            roundSample.Invalidate();
         }
 
         private void trackFontRatio_ValueChanged(object sender, EventArgs e)
@@ -242,6 +243,7 @@ namespace MemoryNumbers
 
             //roundSample.Font = new Font(roundSample.Font.FontFamily, (float)numFontRatio.Value * (roundSample.Width - 2 * roundSample.BorderWidth));
             roundSample.Font = new Font(roundSample.Font.FontFamily, (float)numFontRatio.Value * roundSample.Width);
+            roundSample.Invalidate();
         }
 
         private void trackResultsRatio_ValueChanged(object sender, EventArgs e)
@@ -293,11 +295,13 @@ namespace MemoryNumbers
         {
             pctSample.BackColor = pctBackColor.BackColor;
             roundSample.BackColor = pctBackColor.BackColor;
+            roundSample.Invalidate();
         }
 
         private void numMaxDigit_ValueChanged(object sender, EventArgs e)
         {
             roundSample.Text = numMaxDigit.Value.ToString();
+            roundSample.Invalidate();
             numMinDigit.Maximum = numMaxDigit.Value;
         }
 
@@ -317,8 +321,9 @@ namespace MemoryNumbers
             {
                 if (frmFont.ShowDialog() == DialogResult.OK)
                 {
-                    this.roundSample.Font = new Font(frmFont.Font.FontFamily, this.roundSample.Font.SizeInPoints);
-                    this.lblFontFamily.Text = "Font: " + frmFont.Font.FontFamily.Name;
+                    roundSample.Font = new Font(frmFont.Font.FontFamily, this.roundSample.Font.SizeInPoints);
+                    roundSample.Invalidate();
+                    lblFontFamily.Text = "Font: " + frmFont.Font.FontFamily.Name;
                 }
             }
             // https://stackoverflow.com/questions/2207709/convert-font-to-string-and-back-again

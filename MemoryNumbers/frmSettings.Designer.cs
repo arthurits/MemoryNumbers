@@ -694,7 +694,7 @@
             this.btnAccept.TabIndex = 1;
             this.btnAccept.Text = "&Accept";
             this.btnAccept.UseVisualStyleBackColor = true;
-            this.btnAccept.Click += new System.EventHandler(this.btnAccept_Click);
+            this.btnAccept.Click += new System.EventHandler(this.Accept_Click);
             // 
             // btnCancel
             // 
@@ -714,7 +714,7 @@
             this.btnReset.TabIndex = 3;
             this.btnReset.Text = "&Reset";
             this.btnReset.UseVisualStyleBackColor = true;
-            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            this.btnReset.Click += new System.EventHandler(this.Reset_Click);
             // 
             // frmSettings
             // 

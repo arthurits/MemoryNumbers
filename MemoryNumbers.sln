@@ -1,15 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryNumbers", "MemoryNumbers\MemoryNumbers.csproj", "{D9865257-E17F-4395-9BEE-9547F85ED68D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoundButton", "RoundButton\RoundButton.csproj", "{4095AD9A-DFB2-41EE-B0D9-98BBA437BABE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CountDown", "CountDown\CountDown.csproj", "{E88B9497-5184-40F5-87D8-7427D0D55218}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Board", "Board\Board.csproj", "{647AA549-3315-4332-B88B-04630ADAE7D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,30 +21,6 @@ Global
 		{D9865257-E17F-4395-9BEE-9547F85ED68D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D9865257-E17F-4395-9BEE-9547F85ED68D}.Release|x64.ActiveCfg = Release|Any CPU
 		{D9865257-E17F-4395-9BEE-9547F85ED68D}.Release|x64.Build.0 = Release|Any CPU
-		{4095AD9A-DFB2-41EE-B0D9-98BBA437BABE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4095AD9A-DFB2-41EE-B0D9-98BBA437BABE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4095AD9A-DFB2-41EE-B0D9-98BBA437BABE}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{4095AD9A-DFB2-41EE-B0D9-98BBA437BABE}.Debug|x64.Build.0 = Debug|Any CPU
-		{4095AD9A-DFB2-41EE-B0D9-98BBA437BABE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4095AD9A-DFB2-41EE-B0D9-98BBA437BABE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4095AD9A-DFB2-41EE-B0D9-98BBA437BABE}.Release|x64.ActiveCfg = Release|Any CPU
-		{4095AD9A-DFB2-41EE-B0D9-98BBA437BABE}.Release|x64.Build.0 = Release|Any CPU
-		{E88B9497-5184-40F5-87D8-7427D0D55218}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E88B9497-5184-40F5-87D8-7427D0D55218}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E88B9497-5184-40F5-87D8-7427D0D55218}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{E88B9497-5184-40F5-87D8-7427D0D55218}.Debug|x64.Build.0 = Debug|Any CPU
-		{E88B9497-5184-40F5-87D8-7427D0D55218}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E88B9497-5184-40F5-87D8-7427D0D55218}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E88B9497-5184-40F5-87D8-7427D0D55218}.Release|x64.ActiveCfg = Release|Any CPU
-		{E88B9497-5184-40F5-87D8-7427D0D55218}.Release|x64.Build.0 = Release|Any CPU
-		{647AA549-3315-4332-B88B-04630ADAE7D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{647AA549-3315-4332-B88B-04630ADAE7D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{647AA549-3315-4332-B88B-04630ADAE7D5}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{647AA549-3315-4332-B88B-04630ADAE7D5}.Debug|x64.Build.0 = Debug|Any CPU
-		{647AA549-3315-4332-B88B-04630ADAE7D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{647AA549-3315-4332-B88B-04630ADAE7D5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{647AA549-3315-4332-B88B-04630ADAE7D5}.Release|x64.ActiveCfg = Release|Any CPU
-		{647AA549-3315-4332-B88B-04630ADAE7D5}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

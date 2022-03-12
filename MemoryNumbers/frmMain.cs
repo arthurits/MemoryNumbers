@@ -201,32 +201,8 @@ namespace MemoryNumbers
 
         private void OnButtonClick(object sender, Board.ButtonClickEventArgs e)
         {
-            /*
-            // Add series when needed
-            if (_game.CurrentScore > this.chartStatsTime.Series.Count)
-            {
-                for (int i = this.chartStatsTime.Series.Count; i < _game.CurrentScore; i++)
-                {
-                    this.chartStatsTime.Series.Add(new Series()
-                    {
-                        ChartType = SeriesChartType.StackedColumn
-                    });
-                }
-            }
-            // Check all series have the same number of points
-            for (int i = 0; i < this.chartStatsTime.Series.Count; i++)
-            {
-                for (int j = this.chartStatsTime.Series[i].Points.Count; j < _game.GetCurrentAttempt; j++)
-                {
-                    this.chartStatsTime.Series[i].Points.AddXY(j, 0);
-                }
-            }
-            // Update the current data
-            this.chartStatsTime.Series[_game.GetSequenceIndex].Points.ElementAt(_game.GetCurrentAttempt - 1).SetValueXY(_game.GetCurrentAttempt, e.Seconds);
-            */
-
-            if (_game.Check(e.ButtonValue, e.Seconds)) board1.ButtonRight();
-            
+            if (_game.Check(e.ButtonValue, e.Seconds))
+                board1.ButtonRight();
         }
 
         private async void OnCorrectSequence(object sender, Game.CorrectEventArgs e)
