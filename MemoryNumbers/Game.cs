@@ -199,19 +199,19 @@ namespace MemoryNumbers
 
         protected virtual void OnTick(TickEventArgs e)
         {
-            if (Tick != null) Tick(this, e);
+            if (Tick is not null) Tick(this, e);
         }
         protected virtual void OnWrongSequence(WrongEventArgs e)
         {
-            if (WrongSequence != null) WrongSequence(this, e);
+            if (WrongSequence is not null) WrongSequence(this, e);
         }
         protected virtual void OnCorrectSequence(CorrectEventArgs e)
         {
-            if (CorrectSequence != null) CorrectSequence(this, e);
+            if (CorrectSequence is not null) CorrectSequence(this, e);
         }
         protected virtual void OnGameOver(OverEventArgs e)
         {
-            if (GameOver != null) GameOver(this, e);
+            if (GameOver is not null) GameOver(this, e);
         }
         #endregion Events encapsulation
 

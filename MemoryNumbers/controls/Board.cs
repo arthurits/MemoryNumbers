@@ -247,7 +247,7 @@ namespace Controls
         public event EventHandler<Board.ButtonClickEventArgs> ButtonClick;
         protected virtual void OnButtonClick(Board.ButtonClickEventArgs e)
         {
-            //if (ButtonClick != null) ButtonClick(this, e);
+            //if (ButtonClick is not null) ButtonClick(this, e);
             ButtonClick?.Invoke(this, e);
         }
         public class ButtonClickEventArgs : EventArgs
@@ -277,14 +277,14 @@ namespace Controls
             this.BorderStyle = BorderStyle.FixedSingle;
             
             // Load the sounds
-            _path = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
+            _path = System.IO.Path.GetDirectoryName(Environment.ProcessPath);
             _soundPlayer = new System.Media.SoundPlayer[Enum.GetNames(typeof(AudioSoundType)).Length];  // https://stackoverflow.com/questions/856154/total-number-of-items-defined-in-an-enum
-            _soundPlayer[0] = System.IO.File.Exists(_path + @"\audio\Correct number.wav") ? new System.Media.SoundPlayer(_path + @"\audio\Correct number.wav") : null;
-            _soundPlayer[1] = System.IO.File.Exists(_path + @"\audio\Wrong number.wav") ? new System.Media.SoundPlayer(_path + @"\audio\Wrong number.wav") : null;
-            _soundPlayer[2] = System.IO.File.Exists(_path + @"\audio\Correct sequence.wav") ? new System.Media.SoundPlayer(_path + @"\audio\Correct sequence.wav") : null;
-            _soundPlayer[3] = System.IO.File.Exists(_path + @"\audio\Wrong sequence.wav") ? new System.Media.SoundPlayer(_path + @"\audio\Wrong sequence.wav") : null;
-            _soundPlayer[4] = System.IO.File.Exists(_path + @"\audio\Count down.wav") ? new System.Media.SoundPlayer(_path + @"\audio\Count down.wav") : null;
-            _soundPlayer[5] = System.IO.File.Exists(_path + @"\audio\End game.wav") ? new System.Media.SoundPlayer(_path + @"\audio\End game.wav") : null;
+            _soundPlayer[0] = System.IO.File.Exists(_path + @"\audio\Correct number.wav") ? new(_path + @"\audio\Correct number.wav") : null;
+            _soundPlayer[1] = System.IO.File.Exists(_path + @"\audio\Wrong number.wav") ? new(_path + @"\audio\Wrong number.wav") : null;
+            _soundPlayer[2] = System.IO.File.Exists(_path + @"\audio\Correct sequence.wav") ? new(_path + @"\audio\Correct sequence.wav") : null;
+            _soundPlayer[3] = System.IO.File.Exists(_path + @"\audio\Wrong sequence.wav") ? new(_path + @"\audio\Wrong sequence.wav") : null;
+            _soundPlayer[4] = System.IO.File.Exists(_path + @"\audio\Count down.wav") ? new(_path + @"\audio\Count down.wav") : null;
+            _soundPlayer[5] = System.IO.File.Exists(_path + @"\audio\End game.wav") ? new(_path + @"\audio\End game.wav") : null;
 
             // Set the array of buttons to 0 elements
             _roundButton = Array.Empty<Controls.RoundButton>();
@@ -298,17 +298,17 @@ namespace Controls
                 BorderWidth = 4F,
                 EndingTime = 0F,
                 FillColor = System.Drawing.Color.Transparent,
-                Location = new System.Drawing.Point(0, 0),
+                Location = new(0, 0),
                 Name = "CountDown",
                 Parent = this,
                 PlaySounds = false,
                 RegionOffset = 1f,
-                Size = new System.Drawing.Size(100, 100),
+                Size = new(100, 100),
                 StartingTime = 3F,
                 TabIndex = 0,
                 Text = "3",
                 TimeInterval = 1000D,
-                Visible = false,
+                Visible = true,
                 ShowBorder = true,
                 ShowText = true
             };
@@ -368,7 +368,7 @@ namespace Controls
             if (form is null || form.WindowState == FormWindowState.Minimized) return;
 
             // Update the controls if the board is not shrunk
-            if (_nMinDimension != 0 && countDown != null && pctCorrect != null)
+            if (_nMinDimension != 0 && countDown is not null && pctCorrect is not null)
                 ResizeChildControls();
         }
 
@@ -380,38 +380,36 @@ namespace Controls
 
         private void CountDownUpdate()
         {
-            if (countDown != null)
+            if (countDown is not null)
             {
-                
-                this.countDown.Size = new Size((int)(_nMinDimension * _fCountDownFactor), (int)(_nMinDimension * _fCountDownFactor));
-                this.countDown.xRadius = (this.countDown.Size.Width - this.countDown.RegionOffset) / 2;
-                this.countDown.yRadius = (this.countDown.Size.Height - this.countDown.RegionOffset) / 2;
+                int diameter = (int)(_nMinDimension * _fCountDownFactor);
+                this.countDown.Size = new(diameter, diameter);
+                this.countDown.xRadius = (diameter - this.countDown.RegionOffset) / 2;
+                this.countDown.yRadius = this.countDown.xRadius;
                 //this.countDown.yRadius = (_nMinDimension * _fCountDownFactor) / 2;
                 this.countDown.BorderWidth = ((this.countDown.Size.Width - this.countDown.RegionOffset) / 2) * _fBorderWidth;
                 
-                this.countDown.Location = new System.Drawing.Point((this.Size.Width - countDown.Size.Width) / 2, (this.Size.Height - countDown.Size.Height) / 2);
-                this.countDown.Font = new Font(countDown.Font.FontFamily, _fFontFactor * countDown.Size.Height);
+                this.countDown.Location = new((this.Size.Width - countDown.Size.Width) / 2, (this.Size.Height - countDown.Size.Height) / 2);
+                this.countDown.Font = new(countDown.Font.FontFamily, _fFontFactor * countDown.Size.Height);
                 //this.countDown.Font = new Font(countDown.Font.FontFamily, _fFontFactor * (countDown.Size.Height - 2 * countDown.BorderWidth));
-                // countDown.Invalidate();
-                //countDown.Visible = true;
                 countDown.Invalidate();
             }
         }
 
         private async Task PictureBoxResultUpdate()
         {
-            if (pctCorrect != null && pctWrong != null)
+            if (pctCorrect is not null && pctWrong is not null)
             {
                 Bitmap bmpCorrect = null;
                 Region rgCorrect = null;
                 Bitmap bmpWrong = null;
                 Region rgWrong = null;
 
-                this.pctCorrect.Size = new Size((int)(_nMinDimension * _fResultFactor), (int)(_nMinDimension * _fResultFactor));
-                this.pctCorrect.Location = new System.Drawing.Point((this.Size.Width - pctCorrect.Size.Width) / 2, (this.Size.Height - pctCorrect.Size.Height) / 2);
+                this.pctCorrect.Size = new((int)(_nMinDimension * _fResultFactor), (int)(_nMinDimension * _fResultFactor));
+                this.pctCorrect.Location = new((this.Size.Width - pctCorrect.Size.Width) / 2, (this.Size.Height - pctCorrect.Size.Height) / 2);
 
-                this.pctWrong.Size = new Size((int)(_nMinDimension * _fResultFactor), (int)(_nMinDimension * _fResultFactor));
-                this.pctWrong.Location = new System.Drawing.Point((this.Size.Width - pctWrong.Size.Width) / 2, (this.Size.Height - pctWrong.Size.Height) / 2);
+                this.pctWrong.Size = new((int)(_nMinDimension * _fResultFactor), (int)(_nMinDimension * _fResultFactor));
+                this.pctWrong.Location = new((this.Size.Width - pctWrong.Size.Width) / 2, (this.Size.Height - pctWrong.Size.Height) / 2);
 
                 bmpCorrect = _svgCorrect.Draw(this.pctCorrect.Width, this.pctCorrect.Height);
                 bmpWrong = _svgWrong.Draw(this.pctWrong.Width, this.pctWrong.Height);
@@ -421,8 +419,8 @@ namespace Controls
 
                 await Task.Run(() =>
                 {
-                    rgCorrect = new Region(GetRegionFromTransparentBitmap(bmpCorrect));
-                    rgWrong = new Region(GetRegionFromTransparentBitmap(bmpWrong));
+                    rgCorrect = new(GetRegionFromTransparentBitmap(bmpCorrect));
+                    rgWrong = new(GetRegionFromTransparentBitmap(bmpWrong));
 
                     this.pctCorrect.Image = bmpCorrect;
                     if (this.pctCorrect.InvokeRequired) this.pctCorrect.Invoke((Action)(() => this.pctCorrect.Region = rgCorrect));
@@ -502,14 +500,14 @@ namespace Controls
 
         public async Task<bool> CreateButtons (int[] numbers)
         {
+            _nSequenceLength = numbers.Length;
             bool bIntersection = false;
             bool result = true;
-            Random rnd = new Random();
-            Region regTotal = new Region();
-            Region regIntersec = new Region();
-            Graphics g = this.CreateGraphics();
-            _nSequenceLength = numbers.Length;
-
+            Random rnd = new();
+            using Region regTotal = new();
+            Region regIntersec;
+            using Graphics gfx = this.CreateGraphics();
+           
             int nPartialAttempts = 0;
             int nTotalAttempts = 0;
             
@@ -546,7 +544,7 @@ namespace Controls
                     regIntersec = regTotal.Clone();
                     _roundButton[i].Location = new Point(rnd.Next(0, this.Width - _nDiameter), rnd.Next(0, this.Height - _nDiameter));
                     regIntersec.Intersect(_roundButton[i].Bounds);
-                    bIntersection = regIntersec.IsEmpty(g);
+                    bIntersection = regIntersec.IsEmpty(gfx);
                     nPartialAttempts++;
                     nTotalAttempts++;
 
@@ -581,11 +579,6 @@ namespace Controls
 
             // Set index pointer to the array's beginning
             _nSequenceCounter = 0;
-
-            // Clean up
-            regTotal.Dispose();
-            regIntersec.Dispose();
-            g.Dispose();
 
             return result;
         }
@@ -756,14 +749,6 @@ namespace Controls
             return svgBitmap;
         }
 
-        private System.Drawing.Bitmap DrawSVG(Svg.SvgDocument document, int width, int height)
-        {
-            using (var bitmap = document.Draw(width, height))
-            {
-                return bitmap;
-            }
-        }
-
         /// <summary>
         /// Gets a region pixel by pixel from the non-transparent pixels of the bitmap
         /// More information here: https://www.codeproject.com/Articles/617613/Fast-pixel-operations-in-NET-with-and-without-unsa
@@ -774,7 +759,7 @@ namespace Controls
         /// <returns>Path</returns>
         private System.Drawing.Drawing2D.GraphicsPath GetRegionFromTransparentBitmap (System.Drawing.Bitmap bitmap)
         {
-            System.Drawing.Drawing2D.GraphicsPath regionPath = new System.Drawing.Drawing2D.GraphicsPath();
+            System.Drawing.Drawing2D.GraphicsPath regionPath = new();
 
             // Check that we have a bitmap
             if (bitmap == null) return null;

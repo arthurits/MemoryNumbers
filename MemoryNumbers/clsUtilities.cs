@@ -402,7 +402,7 @@ namespace System.Windows.Forms
             base.OnMouseDoubleClick(e);
 
             // raise the event
-            if (this.MouseDoubleClick != null)
+            if (this.MouseDoubleClick is not null)
                 this.MouseDoubleClick(this, e);
         }
 
@@ -461,7 +461,7 @@ namespace System.Windows.Forms
         // Raise the ValueChanged event.
         public void OnValueChanged(object sender, EventArgs e)
         {
-            if (ValueChanged != null)
+            if (ValueChanged is not null)
             {
                 ValueChanged(this, e);
             }
