@@ -94,15 +94,6 @@ public partial class frmMain : Form
         if (File.Exists(_path + @"\images\settings.ico")) this.toolStripMain_Settings.Image = new Icon(_path + @"\images\settings.ico", 48, 48).ToBitmap();
         if (File.Exists(_path + @"\images\about.ico")) this.toolStripMain_About.Image = new Icon(_path + @"\images\about.ico", 48, 48).ToBitmap();
 
-        /*
-        using (Graphics g = Graphics.FromImage(this.toolStripMain_Skeleton.Image))
-        {
-            g.Clear(Color.PowderBlue);
-        }
-        */
-
-        // Exit the method
-        return;
     }
 
     /// <summary>
@@ -143,7 +134,7 @@ public partial class frmMain : Form
         // https://stackoverflow.com/questions/21632642/label-without-padding-and-margin
         
         // Creates the fade in animation of the form
-        Win32.Win32API.AnimateWindow(this.Handle, 200, Win32.Win32API.AnimateWindowFlags.AW_BLEND | Win32.Win32API.AnimateWindowFlags.AW_CENTER);
+        //Win32.Win32API.AnimateWindow(this.Handle, 200, Win32.Win32API.AnimateWindowFlags.AW_BLEND | Win32.Win32API.AnimateWindowFlags.AW_CENTER);
     }
 
     private void Form1_Shown(object sender, EventArgs e)

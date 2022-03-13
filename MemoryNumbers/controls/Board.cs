@@ -292,7 +292,7 @@ namespace Controls
             // Set the CountDown control
             countDown = new Controls.CountDown()
             {
-                //Anchor = AnchorStyles.None,
+                AutoScaleMode = AutoScaleMode.None,
                 BorderColor = System.Drawing.Color.Black,
                 BackColor = Color.Transparent,
                 BorderWidth = 4F,
@@ -308,13 +308,14 @@ namespace Controls
                 TabIndex = 0,
                 Text = "3",
                 TimeInterval = 1000D,
-                Visible = true,
+                Visible = false,
                 ShowBorder = true,
                 ShowText = true
             };
             this.countDown.xRadius = (this.countDown.Size.Width - this.countDown.RegionOffset) / 2;
             this.countDown.yRadius = (this.countDown.Size.Height - this.countDown.RegionOffset) / 2;
             this.countDown.TimerEnding += new EventHandler<TimerEndingEventArgs>(this.OnCountDownEnding);
+            this.Controls.Add(countDown);
 
             // Set the PictureBoxes
             // https://stackoverflow.com/questions/53832933/fade-ws-ex-layered-form
@@ -338,7 +339,6 @@ namespace Controls
             };
             this.Controls.Add(pctCorrect);
             this.Controls.Add(pctWrong);
-            this.Controls.Add(countDown);
 
             // Read the SVG files. This is done here because it takes some 0.2 - 0.3 seconds each to read
             // This way we avoid any possible bottle neck when overriding OnResize
@@ -357,9 +357,9 @@ namespace Controls
 
         // https://docs.microsoft.com/en-us/dotnet/framework/winforms/automatic-scaling-in-windows-forms
         protected override void OnResize(EventArgs e)
-        {            
+        {
             base.OnResize(e);
-            
+
             //this.SuspendLayout();
             _nMinDimension = Math.Min(this.Width, this.Height);
             _nDiameter = (int)(_nMinDimension * _fNumbersFactor);
@@ -385,14 +385,14 @@ namespace Controls
                 int diameter = (int)(_nMinDimension * _fCountDownFactor);
                 this.countDown.Size = new(diameter, diameter);
                 this.countDown.xRadius = (diameter - this.countDown.RegionOffset) / 2;
-                this.countDown.yRadius = this.countDown.xRadius;
+                this.countDown.yRadius = (diameter - this.countDown.RegionOffset) / 2;
                 //this.countDown.yRadius = (_nMinDimension * _fCountDownFactor) / 2;
                 this.countDown.BorderWidth = ((this.countDown.Size.Width - this.countDown.RegionOffset) / 2) * _fBorderWidth;
                 
                 this.countDown.Location = new((this.Size.Width - countDown.Size.Width) / 2, (this.Size.Height - countDown.Size.Height) / 2);
                 this.countDown.Font = new(countDown.Font.FontFamily, _fFontFactor * countDown.Size.Height);
                 //this.countDown.Font = new Font(countDown.Font.FontFamily, _fFontFactor * (countDown.Size.Height - 2 * countDown.BorderWidth));
-                countDown.Invalidate();
+                //countDown.Invalidate();
             }
         }
 
@@ -524,6 +524,7 @@ namespace Controls
             {
                 _roundButton[i] = new Controls.RoundButton
                 {
+                    AutoScaleMode = AutoScaleMode.None,
                     Parent = this,
                     FillColor = _cBackColor,
                     BorderColor = _cBorderColor,
@@ -660,6 +661,7 @@ namespace Controls
             {
                 _roundButton[sequenceError].ShowText = true;
                 _roundButton[sequenceError].ShowBorder = false;
+                _roundButton[sequenceError].Invalidate();
                 sequenceError++;
             }
             this.ResumeLayout();
@@ -716,14 +718,12 @@ namespace Controls
                         await Task.Delay(724);
                         break;
                 }
-                return;
             }           
             else    // Else, play the selected sound in the selected mode
             {
                 if (mode == AudioSoundMode.Sync) _soundPlayer[(int)type].PlaySync();
                 else if (mode == AudioSoundMode.Async) _soundPlayer[(int)type].Play();
             }
-
         }
 
 

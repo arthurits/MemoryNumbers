@@ -32,12 +32,9 @@
             // 
             // CountDown
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "CountDown";
             this.Size = new System.Drawing.Size(50, 50);
             this.ResumeLayout(false);
-
         }
 
         #endregion

@@ -182,6 +182,11 @@ public partial class RoundButton : UserControl
     {
     }
 
+    public void Render()
+    {
+        //using var gfx = CreateGraphics();
+        //Render(gfx);
+    }
 
     private void Render(System.Drawing.Graphics gfx)
     {
@@ -204,7 +209,6 @@ public partial class RoundButton : UserControl
 
         // Draw text
         if (ShowText) DrawText(gfx);
-
     }
 
     /// <summary>

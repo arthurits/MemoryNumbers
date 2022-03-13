@@ -71,27 +71,28 @@
             this.tspTop.Name = "tspTop";
             this.tspTop.Orientation = System.Windows.Forms.Orientation.Horizontal;
             this.tspTop.RowMargin = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.tspTop.Size = new System.Drawing.Size(538, 0);
+            this.tspTop.Size = new System.Drawing.Size(628, 0);
             // 
             // tspBottom
             // 
             this.tspBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tspBottom.Location = new System.Drawing.Point(0, 366);
+            this.tspBottom.Location = new System.Drawing.Point(0, 422);
             this.tspBottom.Name = "tspBottom";
             this.tspBottom.Orientation = System.Windows.Forms.Orientation.Horizontal;
             this.tspBottom.RowMargin = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.tspBottom.Size = new System.Drawing.Size(538, 0);
+            this.tspBottom.Size = new System.Drawing.Size(628, 0);
             // 
             // statusStrip
             // 
             this.statusStrip.AutoSize = false;
-            this.statusStrip.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.statusStrip.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel_Secuence});
-            this.statusStrip.Location = new System.Drawing.Point(0, 341);
+            this.statusStrip.Location = new System.Drawing.Point(0, 393);
             this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
             this.statusStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.statusStrip.Size = new System.Drawing.Size(538, 25);
+            this.statusStrip.Size = new System.Drawing.Size(628, 29);
             this.statusStrip.TabIndex = 2;
             // 
             // toolStripStatusLabel_Secuence
@@ -99,7 +100,7 @@
             this.toolStripStatusLabel_Secuence.AutoSize = false;
             this.toolStripStatusLabel_Secuence.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
             this.toolStripStatusLabel_Secuence.Name = "toolStripStatusLabel_Secuence";
-            this.toolStripStatusLabel_Secuence.Size = new System.Drawing.Size(50, 20);
+            this.toolStripStatusLabel_Secuence.Size = new System.Drawing.Size(50, 24);
             // 
             // toolStripMain
             // 
@@ -120,7 +121,7 @@
             this.toolStripMain.Location = new System.Drawing.Point(0, 0);
             this.toolStripMain.Name = "toolStripMain";
             this.toolStripMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStripMain.Size = new System.Drawing.Size(538, 70);
+            this.toolStripMain.Size = new System.Drawing.Size(628, 70);
             this.toolStripMain.TabIndex = 0;
             // 
             // toolStripMain_Exit
@@ -235,7 +236,7 @@
             this.tabGame.Name = "tabGame";
             this.tabGame.Padding = new System.Drawing.Point(0, 0);
             this.tabGame.SelectedIndex = 0;
-            this.tabGame.Size = new System.Drawing.Size(538, 271);
+            this.tabGame.Size = new System.Drawing.Size(628, 323);
             this.tabGame.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabGame.TabIndex = 1;
             // 
@@ -245,7 +246,7 @@
             this.tabBoard.Location = new System.Drawing.Point(4, 5);
             this.tabBoard.Margin = new System.Windows.Forms.Padding(0);
             this.tabBoard.Name = "tabBoard";
-            this.tabBoard.Size = new System.Drawing.Size(530, 262);
+            this.tabBoard.Size = new System.Drawing.Size(620, 314);
             this.tabBoard.TabIndex = 0;
             this.tabBoard.Text = "Board";
             this.tabBoard.UseVisualStyleBackColor = true;
@@ -262,11 +263,12 @@
             this.board1.FillColor = System.Drawing.Color.White;
             this.board1.FontRatio = 0.6F;
             this.board1.Location = new System.Drawing.Point(0, 0);
+            this.board1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.board1.Name = "board1";
             this.board1.NumbersRatio = 0.25F;
             this.board1.PlaySounds = true;
             this.board1.ResultRatio = 0.56F;
-            this.board1.Size = new System.Drawing.Size(530, 262);
+            this.board1.Size = new System.Drawing.Size(620, 314);
             this.board1.TabIndex = 11;
             this.board1.TabStop = false;
             this.board1.Time = 700;
@@ -277,7 +279,7 @@
             this.tabStats.Location = new System.Drawing.Point(4, 5);
             this.tabStats.Margin = new System.Windows.Forms.Padding(0);
             this.tabStats.Name = "tabStats";
-            this.tabStats.Size = new System.Drawing.Size(530, 262);
+            this.tabStats.Size = new System.Drawing.Size(620, 304);
             this.tabStats.TabIndex = 1;
             this.tabStats.Text = "Stats";
             this.tabStats.UseVisualStyleBackColor = true;
@@ -297,8 +299,8 @@
             // splitStats.Panel2
             // 
             this.splitStats.Panel2.Controls.Add(this.StatsTime);
-            this.splitStats.Size = new System.Drawing.Size(530, 262);
-            this.splitStats.SplitterDistance = 265;
+            this.splitStats.Size = new System.Drawing.Size(620, 304);
+            this.splitStats.SplitterDistance = 310;
             this.splitStats.SplitterWidth = 1;
             this.splitStats.TabIndex = 0;
             // 
@@ -309,7 +311,7 @@
             this.StatsNumbers.Location = new System.Drawing.Point(0, 0);
             this.StatsNumbers.Margin = new System.Windows.Forms.Padding(0);
             this.StatsNumbers.Name = "StatsNumbers";
-            this.StatsNumbers.Size = new System.Drawing.Size(265, 262);
+            this.StatsNumbers.Size = new System.Drawing.Size(310, 304);
             this.StatsNumbers.TabIndex = 1;
             // 
             // StatsTime
@@ -319,23 +321,24 @@
             this.StatsTime.Location = new System.Drawing.Point(0, 0);
             this.StatsTime.Margin = new System.Windows.Forms.Padding(0);
             this.StatsTime.Name = "StatsTime";
-            this.StatsTime.Size = new System.Drawing.Size(265, 262);
+            this.StatsTime.Size = new System.Drawing.Size(309, 304);
             this.StatsTime.TabIndex = 2;
             // 
-            // Form1
+            // frmMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(538, 366);
+            this.ClientSize = new System.Drawing.Size(628, 422);
             this.Controls.Add(this.tabGame);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.toolStripMain);
             this.Controls.Add(this.tspBottom);
             this.Controls.Add(this.tspTop);
             this.DoubleBuffered = true;
-            this.MinimumSize = new System.Drawing.Size(550, 400);
-            this.Name = "Form1";
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.MinimumSize = new System.Drawing.Size(639, 456);
+            this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Memory numbers";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
