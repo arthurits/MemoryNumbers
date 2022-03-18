@@ -533,26 +533,26 @@ public partial class frmMain : Form
     /// </summary>
     private void ChartStatsNumbers_Update()
     {
-        // Chart update
-        //this.StatsNumbers.Series["Right"].Points.Clear();
-        //this.StatsNumbers.Series["Wrong"].Points.Clear();
-        //_game.GetStats.Sort((x, y) => x.Number.CompareTo(y.Number));
+        _game.GetStats.Sort((x, y) => x.Number.CompareTo(y.Number));
 
-        //foreach (var num in _game.GetStats)
-        //{
-        //    this.StatsNumbers.Series["Right"].Points.AddXY("#" + num.Number.ToString(), 100 * (float)num.Correct / num.Total);
-        //    this.StatsNumbers.Series["Wrong"].Points.AddXY("#" + num.Number.ToString(), 100 * (1.0 - (float)num.Correct / num.Total));
-        //}
+        var correct = _game.GetStats.Select(x => x.Total == 0 ? 0.0 : 100 * (double)x.Correct / x.Total).ToArray();
+        var incorrect = _game.GetStats.Select(x => x.Total == 0 ? 0.0 : (double)100).ToArray();
+
+        StatsNumbers.Plot.AddBar(incorrect, Color.Red);
+        StatsNumbers.Plot.AddBar(correct, Color.Green);
+        StatsNumbers.Plot.XTicks(_game.GetStats.Select(x => (double)x.Number).ToArray(), _game.GetStats.Select(x=> x.Number.ToString()).ToArray());
+
+        // adjust axis limits so there is no padding below the bar graph
+        StatsNumbers.Plot.SetAxisLimits(yMin: 0);
+        StatsNumbers.Refresh();
+
     }
 
     /// <summary>
     /// Cleans and updates the chartStatsNumbers with the data returned from _game.GetStats
     /// </summary>
     private void ChartStatsTime_Update()
-    {
-        // Chart update
-        //this.StatsTime.Series.Clear();
-        
+    {        
         var data = new List<List<double>>(_game.GetStatsTime);
 
         // Get the number of rows
@@ -563,26 +563,27 @@ public partial class frmMain : Form
         // Pad with 0 so that each row has the same number of elements
         data.ForEach(x => x.AddRange(Enumerable.Repeat(0.0, numSeries - x.Count)));
 
+        // Add the partial incremental sum
+        var times = new List<List<double>>();
+        foreach (var row in data)
+        {
+            times.Add(new List<double>());
+            row.ForEach(i => times.Last().Add(i + times.Last().LastOrDefault()));
+        }
+
         // Traspose to get the data ready to plot
-        //var plotData = data
-        //        .SelectMany(inner => inner.Select((item, index) => new { item, index }))
-        //        .GroupBy(i => i.index, i => i.item)
-        //        .Select(g => g.ToList())
-        //        .ToList();
+        var plotData = data
+                .SelectMany(inner => inner.Select((item, index) => new { item, index }))
+                .GroupBy(i => i.index, i => i.item)
+                .Select(g => g.ToList())
+                .ToList();
 
-        //for (int i=0;i<numSeries; i++)
-        //{
-        //    this.StatsTime.Series.Add(new Series()
-        //    {
-        //        ChartType = SeriesChartType.StackedColumn
-        //    });
-            
-        //    for (int j = 0; j < numAttempts; j++)
-        //    {
-        //        this.StatsTime.Series[i].Points.AddXY(j + 1, data[j][i]);
-        //    }
+        // Plot data
+        plotData.Reverse();
+        foreach (var row in plotData)
+            StatsTime.Plot.AddBar(row.ToArray());
 
-        //}
+        StatsTime.Refresh();
 
     }
     #endregion ChartUpdate routines
