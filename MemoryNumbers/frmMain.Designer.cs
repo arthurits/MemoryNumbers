@@ -258,7 +258,7 @@
             this.board1.BorderRatio = 0.12F;
             this.board1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.board1.CountDownRatio = 0.37F;
-            this.board1.Diameter = 65;
+            this.board1.Diameter = 78;
             this.board1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.board1.FillColor = System.Drawing.Color.White;
             this.board1.FontRatio = 0.6F;
@@ -275,14 +275,14 @@
             // 
             // tabStats
             // 
+            this.tabStats.BackColor = System.Drawing.SystemColors.Control;
             this.tabStats.Controls.Add(this.splitStats);
             this.tabStats.Location = new System.Drawing.Point(4, 5);
             this.tabStats.Margin = new System.Windows.Forms.Padding(0);
             this.tabStats.Name = "tabStats";
-            this.tabStats.Size = new System.Drawing.Size(620, 304);
+            this.tabStats.Size = new System.Drawing.Size(620, 314);
             this.tabStats.TabIndex = 1;
             this.tabStats.Text = "Stats";
-            this.tabStats.UseVisualStyleBackColor = true;
             // 
             // splitStats
             // 
@@ -299,29 +299,31 @@
             // splitStats.Panel2
             // 
             this.splitStats.Panel2.Controls.Add(this.StatsTime);
-            this.splitStats.Size = new System.Drawing.Size(620, 304);
+            this.splitStats.Size = new System.Drawing.Size(620, 314);
             this.splitStats.SplitterDistance = 310;
             this.splitStats.SplitterWidth = 1;
             this.splitStats.TabIndex = 0;
             // 
             // StatsNumbers
             // 
-            this.StatsNumbers.BackColor = System.Drawing.Color.Transparent;
+            this.StatsNumbers.BackColor = System.Drawing.Color.White;
+            this.StatsNumbers.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.StatsNumbers.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StatsNumbers.Location = new System.Drawing.Point(0, 0);
             this.StatsNumbers.Margin = new System.Windows.Forms.Padding(0);
             this.StatsNumbers.Name = "StatsNumbers";
-            this.StatsNumbers.Size = new System.Drawing.Size(310, 304);
+            this.StatsNumbers.Size = new System.Drawing.Size(310, 314);
             this.StatsNumbers.TabIndex = 1;
             // 
             // StatsTime
             // 
-            this.StatsTime.BackColor = System.Drawing.Color.Transparent;
+            this.StatsTime.BackColor = System.Drawing.Color.White;
+            this.StatsTime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.StatsTime.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StatsTime.Location = new System.Drawing.Point(0, 0);
             this.StatsTime.Margin = new System.Windows.Forms.Padding(0);
             this.StatsTime.Name = "StatsTime";
-            this.StatsTime.Size = new System.Drawing.Size(309, 304);
+            this.StatsTime.Size = new System.Drawing.Size(309, 314);
             this.StatsTime.TabIndex = 2;
             // 
             // frmMain

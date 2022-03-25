@@ -33,7 +33,6 @@ public partial class frmMain : Form
         InitializeToolStrip();
         InitializeMenuStrip();
         InitializeStatusStrip();
-        InitializeChartStats();
 
         // Initialization extras
         splitStats.SplitterWidth = 1;   // This is a known bug
@@ -110,19 +109,6 @@ public partial class frmMain : Form
     private void InitializeStatusStrip()
     {
         return;
-    }
-
-    private void InitializeChartStats ()
-    {
-        // Chart1.Series[0].IsVisibleInLegend = false; 
-        //this.StatsNumbers.Legends["Legend1"].Enabled = false;
-        //this.StatsTime.Legends["Legend1"].Enabled = false;
-
-        //this.StatsTime.Series.Clear();
-        //this.StatsTime.ChartAreas[0].AxisX.Crossing = 0;
-        //this.StatsTime.ChartAreas[0].AxisX.Minimum = 0;
-        //this.StatsNumbers.ChartAreas[0].AxisX.Crossing = 0;
-        //this.StatsNumbers.ChartAreas[0].AxisX.Interval = 1;
     }
 
     #endregion Initialization routines
@@ -527,64 +513,4 @@ public partial class frmMain : Form
 
     #endregion Application settings
 
-    #region ChartUpdate routines
-    /// <summary>
-    /// Cleans and updates the chartStatsNumbers with the data returned from _game.GetStats
-    /// </summary>
-    private void ChartStatsNumbers_Update()
-    {
-        _game.GetStats.Sort((x, y) => x.Number.CompareTo(y.Number));
-
-        var correct = _game.GetStats.Select(x => x.Total == 0 ? 0.0 : 100 * (double)x.Correct / x.Total).ToArray();
-        var incorrect = _game.GetStats.Select(x => x.Total == 0 ? 0.0 : (double)100).ToArray();
-
-        StatsNumbers.Plot.AddBar(incorrect, Color.Red);
-        StatsNumbers.Plot.AddBar(correct, Color.Green);
-        StatsNumbers.Plot.XTicks(_game.GetStats.Select(x => (double)x.Number).ToArray(), _game.GetStats.Select(x=> x.Number.ToString()).ToArray());
-
-        // adjust axis limits so there is no padding below the bar graph
-        StatsNumbers.Plot.SetAxisLimits(yMin: 0);
-        StatsNumbers.Refresh();
-
-    }
-
-    /// <summary>
-    /// Cleans and updates the chartStatsNumbers with the data returned from _game.GetStats
-    /// </summary>
-    private void ChartStatsTime_Update()
-    {        
-        var data = new List<List<double>>(_game.GetStatsTime);
-
-        // Get the number of rows
-        int numAttempts = data.Count;
-        // Get the maximum number of columns
-        int numSeries = data.Aggregate(0, (max, next) => next.Count > max ? next.Count : max);
-
-        // Pad with 0 so that each row has the same number of elements
-        data.ForEach(x => x.AddRange(Enumerable.Repeat(0.0, numSeries - x.Count)));
-
-        // Add the partial incremental sum
-        var times = new List<List<double>>();
-        foreach (var row in data)
-        {
-            times.Add(new List<double>());
-            row.ForEach(i => times.Last().Add(i + times.Last().LastOrDefault()));
-        }
-
-        // Traspose to get the data ready to plot
-        var plotData = data
-                .SelectMany(inner => inner.Select((item, index) => new { item, index }))
-                .GroupBy(i => i.index, i => i.item)
-                .Select(g => g.ToList())
-                .ToList();
-
-        // Plot data
-        plotData.Reverse();
-        foreach (var row in plotData)
-            StatsTime.Plot.AddBar(row.ToArray());
-
-        StatsTime.Refresh();
-
-    }
-    #endregion ChartUpdate routines
 }
