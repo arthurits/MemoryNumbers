@@ -132,7 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="ScottPlot.WinForms" Version="4.1.36" />
+    <PackageReference Include="ScottPlot.WinForms" Version="4.1.37" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
@@ -149,5 +149,8 @@
     <Compile Remove="Form2.Designer.cs" />
     <EmbeddedResource Remove="controls\clsPictureBoxTransparent.resx" />
     <EmbeddedResource Remove="Form2.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="localization\" />
   </ItemGroup>
 </Project>

@@ -13,19 +13,15 @@ namespace MemoryNumbers;
 
 public partial class frmMain : Form
 {
-    //RoundButton.RoundButton btn = new RoundButton.RoundButton();
-    Game _game = new();
-    private string _path;
-    // Program settings
-    private ProgramSettings<string, string> _programSettings;
-    private ProgramSettings<string, string> _defaultSettings;
-    private static readonly string _programSettingsFileName = @"Configuration.xml";
+    private readonly Game _game = new();
+    private ClassSettings _settings = new();
+
+    private readonly System.Resources.ResourceManager StringsRM = new("MemoryNumbers.localization.strings", typeof(frmMain).Assembly);
 
     public frmMain()
     {
         // Set form icon
-        _path = Path.GetDirectoryName(Environment.ProcessPath);
-        if (File.Exists(_path + @"\images\logo.ico")) this.Icon = new Icon(_path + @"\images\logo.ico");
+        if (File.Exists(_settings.AppPath + @"\images\logo.ico")) this.Icon = new Icon(_settings.AppPath + @"\images\logo.ico");
 
         // Initialize components
         InitializeComponent();
@@ -44,17 +40,10 @@ public partial class frmMain : Form
         _game.WrongSequence += new EventHandler<Game.WrongEventArgs>(OnWrongSequence);
         _game.GameOver += new EventHandler<Game.OverEventArgs>(OnGameOver);
         //_game.GameOver += async (object s, Game.OverEventArgs e) => await OnGameOver(s, e);
-
-        // Read the program settings file
-        LoadProgramSettings(ref _programSettings);
         
-        // Load defalut settings
-        _defaultSettings = new ProgramSettings<string, string>();
-        LoadDefaultSettings(_defaultSettings);
-
-        // Apply settings
-        if (_programSettings == null) _programSettings = _defaultSettings;
-        ApplySettings(_programSettings, _defaultSettings, true);
+        // Load and apply the program settings
+        LoadProgramSettingsJSON();
+        ApplySettingsJSON();
     }
 
     #region Initialization routines
@@ -85,13 +74,13 @@ public partial class frmMain : Form
 
         toolStripMain.Renderer = new customRenderer(Brushes.SteelBlue, Brushes.LightSkyBlue);
 
-        if (File.Exists(_path + @"\images\exit.ico")) this.toolStripMain_Exit.Image = new Icon(_path + @"\images\exit.ico", 48, 48).ToBitmap();
-        if (File.Exists(_path + @"\images\start.ico")) this.toolStripMain_Start.Image = new Icon(_path + @"\images\start.ico", 48, 48).ToBitmap();
-        if (File.Exists(_path + @"\images\stop.ico")) this.toolStripMain_Stop.Image = new Icon(_path + @"\images\stop.ico", 48, 48).ToBitmap();
-        if (File.Exists(_path + @"\images\soundoff.ico")) this.toolStripMain_Sound.Image = new Icon(_path + @"\images\soundoff.ico", 48, 48).ToBitmap();
-        if (File.Exists(_path + @"\images\graph.ico")) this.toolStripMain_Stats.Image = new Icon(_path + @"\images\graph.ico", 48, 48).ToBitmap();
-        if (File.Exists(_path + @"\images\settings.ico")) this.toolStripMain_Settings.Image = new Icon(_path + @"\images\settings.ico", 48, 48).ToBitmap();
-        if (File.Exists(_path + @"\images\about.ico")) this.toolStripMain_About.Image = new Icon(_path + @"\images\about.ico", 48, 48).ToBitmap();
+        if (File.Exists(_settings.AppPath + @"\images\exit.ico")) this.toolStripMain_Exit.Image = new Icon(_settings.AppPath + @"\images\exit.ico", 48, 48).ToBitmap();
+        if (File.Exists(_settings.AppPath + @"\images\start.ico")) this.toolStripMain_Start.Image = new Icon(_settings.AppPath + @"\images\start.ico", 48, 48).ToBitmap();
+        if (File.Exists(_settings.AppPath + @"\images\stop.ico")) this.toolStripMain_Stop.Image = new Icon(_settings.AppPath + @"\images\stop.ico", 48, 48).ToBitmap();
+        if (File.Exists(_settings.AppPath + @"\images\soundoff.ico")) this.toolStripMain_Sound.Image = new Icon(_settings.AppPath + @"\images\soundoff.ico", 48, 48).ToBitmap();
+        if (File.Exists(_settings.AppPath + @"\images\graph.ico")) this.toolStripMain_Stats.Image = new Icon(_settings.AppPath + @"\images\graph.ico", 48, 48).ToBitmap();
+        if (File.Exists(_settings.AppPath + @"\images\settings.ico")) this.toolStripMain_Settings.Image = new Icon(_settings.AppPath + @"\images\settings.ico", 48, 48).ToBitmap();
+        if (File.Exists(_settings.AppPath + @"\images\about.ico")) this.toolStripMain_About.Image = new Icon(_settings.AppPath + @"\images\about.ico", 48, 48).ToBitmap();
 
     }
 
@@ -126,10 +115,8 @@ public partial class frmMain : Form
     private void Form1_Shown(object sender, EventArgs e)
     {
         // Send Close event
-        using (var closeSplashEvent = new System.Threading.EventWaitHandle(false, System.Threading.EventResetMode.ManualReset, "CloseSplashScreenEvent"))
-        {
-            closeSplashEvent.Set();
-        }
+        using var closeSplashEvent = new System.Threading.EventWaitHandle(false, System.Threading.EventResetMode.ManualReset, "CloseSplashScreenEvent");
+        closeSplashEvent.Set();
     }
 
     private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -150,8 +137,8 @@ public partial class frmMain : Form
                 Win32.Win32API.AnimateWindow(this.Handle, 200, Win32.Win32API.AnimateWindowFlags.AW_BLEND | Win32.Win32API.AnimateWindowFlags.AW_HIDE);
         }
 
-        // Guardar los datos de configuración
-        SaveProgramSettings(_programSettings);
+        // Save settings data
+        SaveProgramSettingsJSON();
     }
 
     private void Form1_Resize(object sender, EventArgs e)
@@ -331,12 +318,12 @@ public partial class frmMain : Form
 
     private void toolStripMain_Settings_Click(object sender, EventArgs e)
     {
-        frmSettings form = new(_programSettings, _defaultSettings);
+        FrmSettings form = new(_settings);
         form.ShowDialog(this);
         if (form.DialogResult == DialogResult.OK)
         {
-            _programSettings = form.GetSettings;
-            ApplySettings(_programSettings, _defaultSettings, false);
+            _settings = form.Settings;
+            ApplySettingsJSON();
         }
     }
 
@@ -351,164 +338,49 @@ public partial class frmMain : Form
     #region Application settings
 
     /// <summary>
-    /// Loads any saved program settings.
-    /// </summary>
-    private void LoadProgramSettings(ref ProgramSettings<string, string> settings)
-    {
-        // Load the saved window settings and resize the window.
-        TextReader textReader = StreamReader.Null;
-        try
-        {
-            textReader = new StreamReader(_programSettingsFileName);
-            System.Xml.Serialization.XmlSerializer serializer = new(typeof(ProgramSettings<string, string>));
-            settings = (ProgramSettings<string, string>)serializer.Deserialize(textReader);
-            textReader.Close();
-        }
-        catch (Exception ex)
-        {
-
-            if (ex is not FileNotFoundException)
-            {
-                using (new CenterWinDialog(this))
-                {
-                    MessageBox.Show(this,
-                                    "Unexpected error while\nloading settings data.",
-                                    "Error",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error);
-                }
-            }
-            //LoadDefaultSettings();
-        }
-        finally
-        {
-            if (textReader is not null) textReader.Close();
-        }
-    }
-
-    /// <summary>
-    /// Saves the current program settings.
-    /// </summary>
-    private void SaveProgramSettings(ProgramSettings<string, string> settings)
-    {
-        settings["WindowLeft"] = this.DesktopLocation.X.ToString();
-        settings["WindowTop"] = this.DesktopLocation.Y.ToString();
-        settings["WindowWidth"] = this.ClientSize.Width.ToString();
-        settings["WindowHeight"] = this.ClientSize.Height.ToString();
-
-        settings["Sound"] = this.toolStripMain_Sound.Checked == true ? "0" : "1";
-        settings["Stats"] = this.toolStripMain_Stats.Checked == true ? "1" : "0";
-
-        if (settings["SplitterDistance"] == "0.5")
-            settings["SplitterDistance"] = ((int)(this.splitStats.Size.Width / 2)).ToString();
-        else
-            settings["SplitterDistance"] = this.splitStats.SplitterDistance.ToString();
-
-        // Save window settings.
-        TextWriter textWriter = StreamWriter.Null;
-        try
-        {
-            textWriter = new StreamWriter(_programSettingsFileName, false);
-            System.Xml.Serialization.XmlSerializer serializer = new(typeof(ProgramSettings<string, string>));
-            serializer.Serialize(textWriter, settings);
-            textWriter.Close();
-        }
-        catch (Exception)
-        {
-            using (new CenterWinDialog(this))
-            {
-                MessageBox.Show(this,
-                                "Unexpected error while\nsaving settings data",
-                                "Error",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
-            }
-        }
-        finally
-        {
-            if (textWriter is not null) textWriter.Close();
-        }
-
-    }
-
-    /// <summary>
     /// Update UI with settings
     /// </summary>
     /// <param name="WindowSettings">True if the window position and size should be applied. False if omitted</param>
-    private void ApplySettings(ProgramSettings<string, string> programSettings, ProgramSettings<string, string> defaultSettings, bool WindowSettings = false)
+    private void ApplySettingsJSON()
     {
-        if (WindowSettings)
-        {
-            if (Convert.ToInt32(programSettings.ContainsKey("WindowPosition") ? programSettings["WindowPosition"] : defaultSettings["WindowPosition"]) == 1)
-            {
-                //var startPos = this.StartPosition;
-                this.StartPosition = FormStartPosition.Manual;
-                this.DesktopLocation = new Point(Convert.ToInt32(programSettings.ContainsKey("WindowLeft") ? programSettings["WindowLeft"] : defaultSettings["WindowLeft"]),
-                                    Convert.ToInt32(programSettings.ContainsKey("WindowTop") ? programSettings["WindowTop"] : defaultSettings["WindowTop"]));
-                this.ClientSize = new Size(Convert.ToInt32(programSettings.ContainsKey("WindowWidth") ? programSettings["WindowWidth"] : defaultSettings["WindowWidth"]),
-                                    Convert.ToInt32(programSettings.ContainsKey("WindowHeight") ? programSettings["WindowHeight"] : defaultSettings["WindowHeight"]));
-                //this.StartPosition = startPos;
-                this.splitStats.SplitterDistance = Convert.ToInt32(programSettings.ContainsKey("SplitterDistance") ? programSettings["SplitterDistance"] : defaultSettings["SplitterDistance"]);
-            }
-        }
+        //if (_settings.WindowPosition)
+        //{
+        //    //var startPos = this.StartPosition;
+        //    this.StartPosition = FormStartPosition.Manual;
+        //    this.DesktopLocation = new Point(_settings.WindowLeft, _settings.WindowTop);
+        //    this.ClientSize = new Size(_settings.WindowWidth, _settings.WindowHeight);
+        //    //this.StartPosition = startPos;
+        //    this.splitStats.SplitterDistance = _settings.SplitterDistance;
+        //}
 
-        this._game.MinimumLength = Convert.ToInt32(programSettings.ContainsKey("MinimumLength") ? programSettings["MinimumLength"] : defaultSettings["MinimumLength"]);
-        this._game.MaximumAttempts = Convert.ToInt32(programSettings.ContainsKey("MaximumAttempts") ? programSettings["MaximumAttempts"] : defaultSettings["MaximumAttempts"]);
-        this._game.MaximumDigit = Convert.ToInt32(programSettings.ContainsKey("MaximumDigit") ? programSettings["MaximumDigit"] : defaultSettings["MaximumDigit"]);
-        this._game.MinimumDigit = Convert.ToInt32(programSettings.ContainsKey("MinimumDigit") ? programSettings["MinimumDigit"] : defaultSettings["MinimumDigit"]);
-        this._game.PlayMode = (PlayMode)Enum.Parse(typeof(PlayMode), programSettings.ContainsKey("PlayMode") ? programSettings["PlayMode"] : defaultSettings["PlayMode"]);
-        this._game.Time = Convert.ToInt32(programSettings.ContainsKey("Time") ? programSettings["Time"] : defaultSettings["Time"]);
-        this._game.TimeIncrement = Convert.ToInt32(programSettings.ContainsKey("TimeIncrement") ? programSettings["TimeIncrement"] : defaultSettings["TimeIncrement"]);
-        //this.board1.Time = Convert.ToInt32(programSettings.ContainsKey("Time") ? programSettings["Time"] : defaultSettings["Time"]);
-        this.board1.BorderRatio = Convert.ToSingle(programSettings.ContainsKey("BorderRatio") ? programSettings["BorderRatio"] : defaultSettings["BorderRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-        this.board1.CountDownRatio = Convert.ToSingle(programSettings.ContainsKey("CountDownRatio") ? programSettings["CountDownRatio"] : defaultSettings["CountDownRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-        this.board1.NumbersRatio = Convert.ToSingle(programSettings.ContainsKey("NumbersRatio") ? programSettings["NumbersRatio"] : defaultSettings["NumbersRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-        this.board1.FontRatio = Convert.ToSingle(programSettings.ContainsKey("FontRatio") ? programSettings["FontRatio"] : defaultSettings["FontRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-        this.board1.ResultRatio = Convert.ToSingle(programSettings.ContainsKey("ResultsRatio") ? programSettings["ResultsRatio"] : defaultSettings["ResultsRatio"], System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
-        this.board1.BackColor = Color.FromArgb(Convert.ToInt32(programSettings.ContainsKey("BackColor") ? programSettings["BackColor"] : defaultSettings["BackColor"]));
-        this.board1.Font = new Font(programSettings.ContainsKey("FontFamilyName") ? programSettings["FontFamilyName"] : defaultSettings["FontFamilyName"], board1.Font.SizeInPoints);
+        this._game.MinimumLength = _settings.MinimumLength;
+        this._game.MaximumAttempts = _settings.MaximumAttempts;
+        this._game.MaximumDigit = _settings.MaximumDigit;
+        this._game.MinimumDigit = _settings.MinimumDigit;
+        this._game.PlayMode = (PlayMode)Enum.Parse(typeof(PlayMode), _settings.PlayMode.ToString());
+        this._game.Time = _settings.Time;
+        this._game.TimeIncrement = _settings.TimeIncrement;
 
-        this.toolStripMain_Sound.Checked = Convert.ToInt32((programSettings.ContainsKey("Sound") ? programSettings["Sound"] : defaultSettings["Sound"])) == 0;
-        this.toolStripMain_Stats.Checked = Convert.ToInt32((programSettings.ContainsKey("Stats") ? programSettings["Stats"] : defaultSettings["Stats"])) != 0;
-        //this.toolStripMain_Sound.Checked = programSettings.ContainsKey("Sound") ? (Convert.ToInt32(programSettings["Sound"]) == 0 ? true : false) : false;
+        this.board1.BorderRatio = _settings.BorderRatio;
+        this.board1.CountDownRatio = _settings.CountDownRatio;
+        this.board1.NumbersRatio = _settings.NumbersRatio;
+        this.board1.FontRatio = _settings.FontRatio;
+        this.board1.ResultRatio = _settings.ResultsRatio;
+        this.board1.BackColor = Color.FromArgb(_settings.BackColor);
+        this.board1.Font = new Font(_settings.FontFamilyName, board1.Font.SizeInPoints);
+
+        this.toolStripMain_Sound.Checked = _settings.Sound;
+        this.toolStripMain_Stats.Checked = _settings.Stats;
         this.board1.PlaySounds = !this.toolStripMain_Sound.Checked;
     }
 
     /// <summary>
-    /// Set default settings. This is called when no settings file has been found
+    /// Updates the UI language of all controls
     /// </summary>
-    private void LoadDefaultSettings(ProgramSettings<string, string> settings)
+    private void UpdateUI_Language()
     {
-        // Set default settings
-        settings["WindowLeft"] = this.DesktopLocation.X.ToString();    // Get current form coordinates
-        settings["WindowTop"] = this.DesktopLocation.Y.ToString();
-        settings["WindowWidth"] = this.ClientSize.Width.ToString();    // Get current form size
-        settings["WindowHeight"] = this.ClientSize.Height.ToString();
 
-        settings["Time"] = "700";
-        settings["TimeIncrement"] = "0";
-        settings["MaximumDigit"] = "9";
-        settings["MinimumDigit"] = "0";
-        settings["MaximumAttempts"] = "10";
-        settings["MinimumLength"] = "2";
-
-        settings["CountDownRatio"] = "0.37";
-        settings["NumbersRatio"] = "0.25";
-        settings["BorderRatio"] = "0.12";
-        settings["FontRatio"] = "0.55";
-        settings["ResultsRatio"] = "0.56";
-        settings["FontFamilyName"] = "Microsoft Sans Serif";
-        settings["BackColor"] = Color.White.ToArgb().ToString();
-        settings["WindowPosition"] = "0";   // Remember windows position
-
-        settings["PlayMode"] = "9";     //Fixed time (1) & random sequence (8)
-
-        settings["Sound"] = "1";        // Soundoff unchecked
-        settings["Stats"] = "0";        // Stats unchecked
-
-        settings["SplitterDistance"] = "265";
     }
-
 
 
     #endregion Application settings

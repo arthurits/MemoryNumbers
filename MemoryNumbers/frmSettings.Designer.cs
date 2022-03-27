@@ -1,6 +1,6 @@
 ﻿namespace MemoryNumbers
 {
-    partial class frmSettings
+    partial class FrmSettings
     {
         /// <summary>
         /// Required designer variable.
