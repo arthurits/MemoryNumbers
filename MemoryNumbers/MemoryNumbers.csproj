@@ -153,4 +153,12 @@
   <ItemGroup>
     <Folder Include="localization\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="MemoryNumbers launcher.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="settings.splash">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
