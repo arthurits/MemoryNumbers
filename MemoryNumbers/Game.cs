@@ -323,7 +323,7 @@ namespace MemoryNumbers
 
             int nLength = _nSequence == null ? 0 : _nSequence.Length;
             int nNewLength = length + 1;
-            Random rnd = new Random();
+            Random rnd = new();
 
             // Clear the array if it's not empty
             if (nLength > 0) Array.Clear(_nSequence, 0, nLength);
@@ -347,17 +347,17 @@ namespace MemoryNumbers
         /// <returns>A random number</returns>
         private int GetRandomNumber()
         {
-            Random rnd = new Random();
+            Random rnd = new();
             int nNumber;
 
-            Func<int, bool> Contains = (value) =>
+            bool Contains(int value)
             {
                 for (int i = 0; i < _nSequence.Length; i++)
                 {
                     if (_nSequence[i] == value) return true;
                 }
                 return false;
-            };
+            }
 
             while (true)
             {

@@ -183,7 +183,7 @@ public partial class frmMain : Form
         {
             if (await board1.Start(_game.GetSequence, _game.TimeTotal) == false)
             {
-                toolStripMain_Stop_Click(null, null);
+                Stop_Click(null, null);
                 using (new CenterWinDialog(this))
                     MessageBox.Show("Could not place the buttons on the screen.\n" +
                         "Please, try reducing the 'numbers ratio' paremeter in\n" +
@@ -216,7 +216,7 @@ public partial class frmMain : Form
         {
             if (await board1.Start(_game.GetSequence, _game.TimeTotal) == false)
             {
-                toolStripMain_Stop_Click(null, null);
+                Stop_Click(null, null);
                 using (new CenterWinDialog(this))
                     MessageBox.Show("Could not place the buttons on the screen.\nPlease, try reducing the 'numbers ratio' paremeter in\nthe Settings (between 0.25 - 0.30).", "Error placing numbers", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -249,12 +249,12 @@ public partial class frmMain : Form
 
     #region toolStripMain
 
-    private void toolStripMain_Exit_Click(object sender, EventArgs e)
+    private void Exit_Click(object sender, EventArgs e)
     {
         Close();
     }
 
-    private async void toolStripMain_Start_Click(object sender, EventArgs e)
+    private async void Start_Click(object sender, EventArgs e)
     {
         // Commute visibility of the strip buttons
         this.toolStripMain_Start.Enabled = false;
@@ -277,7 +277,7 @@ public partial class frmMain : Form
             board1.Visible = true;
             if (await board1.Start(_game.GetSequence, _game.TimeTotal) == false)
             {
-                toolStripMain_Stop_Click(null, null);
+                Stop_Click(null, null);
                 using (new CenterWinDialog(this))
                     MessageBox.Show("Could not place the buttons on the screen.\nPlease, try reducing the 'numbers ratio' paremeter in\nthe Settings (between 0.25 - 0.30).", "Error placing numbers", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -290,7 +290,7 @@ public partial class frmMain : Form
         
     }
 
-    private void toolStripMain_Stop_Click(object sender, EventArgs e)
+    private void Stop_Click(object sender, EventArgs e)
     {
         board1.ClearBoard();
         this.toolStripStatusLabel_Secuence.Text = "";
@@ -306,17 +306,17 @@ public partial class frmMain : Form
         ChartStatsTime_Update();
     }
 
-    private void toolStripMain_Sound_CheckedChanged(object sender, EventArgs e)
+    private void Sound_CheckedChanged(object sender, EventArgs e)
     {
         this.board1.PlaySounds = !toolStripMain_Sound.Checked;
     }
 
-    private void toolStripMain_Stats_CheckedChanged(object sender, EventArgs e)
+    private void Stats_CheckedChanged(object sender, EventArgs e)
     {
         this.tabGame.SelectedIndex = toolStripMain_Stats.Checked ? 1 : 0;
     }
 
-    private void toolStripMain_Settings_Click(object sender, EventArgs e)
+    private void Settings_Click(object sender, EventArgs e)
     {
         FrmSettings form = new(_settings);
         form.ShowDialog(this);
@@ -327,7 +327,7 @@ public partial class frmMain : Form
         }
     }
 
-    private void toolStripMain_About_Click(object sender, EventArgs e)
+    private void About_Click(object sender, EventArgs e)
     {
         frmAbout form = new();
         form.ShowDialog(this);

@@ -13,7 +13,7 @@ public partial class CountDown: Controls.RoundButton
     private double _dInterval = 1000; // 1 s
     private double _dCounter;
     private bool _sound;
-    private System.Media.SoundPlayer _soundPlayer;
+    private readonly System.Media.SoundPlayer _soundPlayer;
 
     public event EventHandler<TimerEndingEventArgs> TimerEnding;
 
@@ -82,13 +82,13 @@ public partial class CountDown: Controls.RoundButton
 
         // Timer initialization
         t = new System.Timers.Timer();
-        t.Elapsed += onTimeEvent;
+        t.Elapsed += OnTimeEvent;
 
         string _path = System.IO.Path.GetDirectoryName(Environment.ProcessPath);
         _soundPlayer = System.IO.File.Exists(_path + @"\audio\Count down.wav") ? new(_path + @"\audio\Count down.wav") : null;
     }
 
-    private void onTimeEvent(object sender, ElapsedEventArgs e)
+    private void OnTimeEvent(object sender, ElapsedEventArgs e)
     {
         _dCounter -= _dInterval / 1000;
 

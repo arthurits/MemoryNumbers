@@ -133,7 +133,7 @@
             this.toolStripMain_Exit.Text = "Exit";
             this.toolStripMain_Exit.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripMain_Exit.ToolTipText = "Exit application";
-            this.toolStripMain_Exit.Click += new System.EventHandler(this.toolStripMain_Exit_Click);
+            this.toolStripMain_Exit.Click += new System.EventHandler(this.Exit_Click);
             // 
             // toolStripSeparator1
             // 
@@ -149,7 +149,7 @@
             this.toolStripMain_Start.Text = "Start";
             this.toolStripMain_Start.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripMain_Start.ToolTipText = "Start the game";
-            this.toolStripMain_Start.Click += new System.EventHandler(this.toolStripMain_Start_Click);
+            this.toolStripMain_Start.Click += new System.EventHandler(this.Start_Click);
             // 
             // toolStripMain_Stop
             // 
@@ -160,7 +160,7 @@
             this.toolStripMain_Stop.Text = "Stop";
             this.toolStripMain_Stop.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripMain_Stop.ToolTipText = "Stop the game and reset";
-            this.toolStripMain_Stop.Click += new System.EventHandler(this.toolStripMain_Stop_Click);
+            this.toolStripMain_Stop.Click += new System.EventHandler(this.Stop_Click);
             // 
             // toolStripSeparator2
             // 
@@ -179,7 +179,7 @@
             this.toolStripMain_Sound.Text = "Sound";
             this.toolStripMain_Sound.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripMain_Sound.ToolTipText = "Game sounds off";
-            this.toolStripMain_Sound.CheckedChanged += new System.EventHandler(this.toolStripMain_Sound_CheckedChanged);
+            this.toolStripMain_Sound.CheckedChanged += new System.EventHandler(this.Sound_CheckedChanged);
             // 
             // toolStripMain_Stats
             // 
@@ -191,7 +191,7 @@
             this.toolStripMain_Stats.Text = "Stats";
             this.toolStripMain_Stats.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripMain_Stats.ToolTipText = "Show stats plot";
-            this.toolStripMain_Stats.CheckedChanged += new System.EventHandler(this.toolStripMain_Stats_CheckedChanged);
+            this.toolStripMain_Stats.CheckedChanged += new System.EventHandler(this.Stats_CheckedChanged);
             // 
             // toolStripSeparator3
             // 
@@ -206,7 +206,7 @@
             this.toolStripMain_Settings.Size = new System.Drawing.Size(53, 67);
             this.toolStripMain_Settings.Text = "Settings";
             this.toolStripMain_Settings.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.toolStripMain_Settings.Click += new System.EventHandler(this.toolStripMain_Settings_Click);
+            this.toolStripMain_Settings.Click += new System.EventHandler(this.Settings_Click);
             // 
             // toolStripSeparator4
             // 
@@ -222,7 +222,7 @@
             this.toolStripMain_About.Text = "About";
             this.toolStripMain_About.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripMain_About.ToolTipText = "About this software";
-            this.toolStripMain_About.Click += new System.EventHandler(this.toolStripMain_About_Click);
+            this.toolStripMain_About.Click += new System.EventHandler(this.About_Click);
             // 
             // tabGame
             // 
