@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Linq;
 
 namespace MemoryNumbers;
-partial class frmMain
+partial class FrmMain
 {
     /// <summary>
     /// Cleans and updates the chartStatsNumbers with the data returned from _game.GetStats

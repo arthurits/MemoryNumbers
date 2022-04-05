@@ -14,6 +14,11 @@ public class ClassSettings
     public string FileName { get; set; } = "configuration.json";
 
     /// <summary>
+    /// Remember window position on start up
+    /// </summary>
+    [JsonPropertyName("Window position")]
+    public bool WindowPosition { get; set; } = true;    // Remember window position
+    /// <summary>
     /// Window top-left x coordinate
     /// </summary>
     [JsonPropertyName("Window left")]
@@ -109,11 +114,6 @@ public class ClassSettings
     /// </summary>
     [JsonPropertyName("Playing mode")]
     public int PlayMode { get; set; } = 9;     //Fixed time (1) & random sequence (8)
-    /// <summary>
-    /// Remember window position on start up
-    /// </summary>
-    [JsonPropertyName("Window position")]
-    public bool WindowPosition { get; set; } = true;   // Remember windows position
     /// <summary>
     /// Sound ToolStrip button cheched?
     /// </summary>

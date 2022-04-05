@@ -1,6 +1,6 @@
 ﻿namespace MemoryNumbers
 {
-    partial class frmMain
+    partial class FrmMain
     {
         /// <summary>
         /// Variable del diseñador necesaria.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.tspTop = new System.Windows.Forms.ToolStripPanel();
             this.tspBottom = new System.Windows.Forms.ToolStripPanel();
             this.statusStrip = new System.Windows.Forms.StatusStrip();

@@ -11,14 +11,14 @@ using Utils;
 
 namespace MemoryNumbers;
 
-public partial class frmMain : Form
+public partial class FrmMain : Form
 {
     private readonly Game _game = new();
     private ClassSettings _settings = new();
 
-    private readonly System.Resources.ResourceManager StringsRM = new("MemoryNumbers.localization.strings", typeof(frmMain).Assembly);
+    private readonly System.Resources.ResourceManager StringsRM = new("MemoryNumbers.localization.strings", typeof(FrmMain).Assembly);
 
-    public frmMain()
+    public FrmMain()
     {
         // Set form icon
         if (File.Exists(_settings.AppPath + @"\images\logo.ico")) this.Icon = new Icon(_settings.AppPath + @"\images\logo.ico");
@@ -35,7 +35,6 @@ public partial class frmMain : Form
 
         // Subscribe to events
         board1.ButtonClick += new EventHandler<Board.ButtonClickEventArgs>(OnButtonClick);
-
         _game.CorrectSequence += new EventHandler<Game.CorrectEventArgs>(OnCorrectSequence);
         _game.WrongSequence += new EventHandler<Game.WrongEventArgs>(OnWrongSequence);
         _game.GameOver += new EventHandler<Game.OverEventArgs>(OnGameOver);
@@ -43,7 +42,11 @@ public partial class frmMain : Form
         
         // Load and apply the program settings
         LoadProgramSettingsJSON();
-        ApplySettingsJSON();
+        bool result = LoadProgramSettingsJSON();
+        if (result)
+            ApplySettingsJSON(_settings.WindowPosition);
+        else
+            ApplySettingsJSON();
     }
 
     #region Initialization routines
@@ -247,142 +250,5 @@ public partial class frmMain : Form
 
     #endregion Events subscription
 
-    #region toolStripMain
-
-    private void Exit_Click(object sender, EventArgs e)
-    {
-        Close();
-    }
-
-    private async void Start_Click(object sender, EventArgs e)
-    {
-        // Commute visibility of the strip buttons
-        this.toolStripMain_Start.Enabled = false;
-        this.toolStripMain_Settings.Enabled = false;
-        this.toolStripMain_Stats.Checked = false;
-        this.toolStripMain_Stats.Enabled = false;
-
-        // Show the board
-        this.tabGame.SelectedIndex = 0;
-
-        // Always reset before starting a new game
-        _game.ReSet();
-
-        // Show the score in the status bar
-        this.toolStripStatusLabel_Secuence.Text = _game.CurrentScore.ToString();
-        this.toolStripStatusLabel_Secuence.Invalidate();
-
-        if (_game.Start())
-        {
-            board1.Visible = true;
-            if (await board1.Start(_game.GetSequence, _game.TimeTotal) == false)
-            {
-                Stop_Click(null, null);
-                using (new CenterWinDialog(this))
-                    MessageBox.Show("Could not place the buttons on the screen.\nPlease, try reducing the 'numbers ratio' paremeter in\nthe Settings (between 0.25 - 0.30).", "Error placing numbers", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-        else
-        {
-            using (new CenterWinDialog(this))
-                MessageBox.Show("Could not start the game.\nUnexpected error.", "Error StartClick", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-        
-    }
-
-    private void Stop_Click(object sender, EventArgs e)
-    {
-        board1.ClearBoard();
-        this.toolStripStatusLabel_Secuence.Text = "";
-        this.toolStripStatusLabel_Secuence.Invalidate();
-        
-        // Commute visibility of the strip buttons
-        this.toolStripMain_Start.Enabled = true;
-        this.toolStripMain_Settings.Enabled = true;
-        this.toolStripMain_Stats.Enabled = true;
-
-        // Update the charts
-        ChartStatsNumbers_Update();
-        ChartStatsTime_Update();
-    }
-
-    private void Sound_CheckedChanged(object sender, EventArgs e)
-    {
-        this.board1.PlaySounds = !toolStripMain_Sound.Checked;
-    }
-
-    private void Stats_CheckedChanged(object sender, EventArgs e)
-    {
-        this.tabGame.SelectedIndex = toolStripMain_Stats.Checked ? 1 : 0;
-    }
-
-    private void Settings_Click(object sender, EventArgs e)
-    {
-        FrmSettings form = new(_settings);
-        form.ShowDialog(this);
-        if (form.DialogResult == DialogResult.OK)
-        {
-            _settings = form.Settings;
-            ApplySettingsJSON();
-        }
-    }
-
-    private void About_Click(object sender, EventArgs e)
-    {
-        frmAbout form = new();
-        form.ShowDialog(this);
-    }
-
-    #endregion toolStripMain
-
-    #region Application settings
-
-    /// <summary>
-    /// Update UI with settings
-    /// </summary>
-    /// <param name="WindowSettings">True if the window position and size should be applied. False if omitted</param>
-    private void ApplySettingsJSON()
-    {
-        //if (_settings.WindowPosition)
-        //{
-        //    //var startPos = this.StartPosition;
-        //    this.StartPosition = FormStartPosition.Manual;
-        //    this.DesktopLocation = new Point(_settings.WindowLeft, _settings.WindowTop);
-        //    this.ClientSize = new Size(_settings.WindowWidth, _settings.WindowHeight);
-        //    //this.StartPosition = startPos;
-        //    this.splitStats.SplitterDistance = _settings.SplitterDistance;
-        //}
-
-        this._game.MinimumLength = _settings.MinimumLength;
-        this._game.MaximumAttempts = _settings.MaximumAttempts;
-        this._game.MaximumDigit = _settings.MaximumDigit;
-        this._game.MinimumDigit = _settings.MinimumDigit;
-        this._game.PlayMode = (PlayMode)Enum.Parse(typeof(PlayMode), _settings.PlayMode.ToString());
-        this._game.Time = _settings.Time;
-        this._game.TimeIncrement = _settings.TimeIncrement;
-
-        this.board1.BorderRatio = _settings.BorderRatio;
-        this.board1.CountDownRatio = _settings.CountDownRatio;
-        this.board1.NumbersRatio = _settings.NumbersRatio;
-        this.board1.FontRatio = _settings.FontRatio;
-        this.board1.ResultRatio = _settings.ResultsRatio;
-        this.board1.BackColor = Color.FromArgb(_settings.BackColor);
-        this.board1.Font = new Font(_settings.FontFamilyName, board1.Font.SizeInPoints);
-
-        this.toolStripMain_Sound.Checked = _settings.Sound;
-        this.toolStripMain_Stats.Checked = _settings.Stats;
-        this.board1.PlaySounds = !this.toolStripMain_Sound.Checked;
-    }
-
-    /// <summary>
-    /// Updates the UI language of all controls
-    /// </summary>
-    private void UpdateUI_Language()
-    {
-
-    }
-
-
-    #endregion Application settings
-
+    
 }

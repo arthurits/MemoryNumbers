@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace MemoryNumbers;
 
-partial class frmAbout : Form
+partial class FrmAbout : Form
 {
 
     #region Descriptores de acceso de atributos de ensamblado
@@ -23,7 +23,7 @@ partial class frmAbout : Form
                     return titleAttribute.Title;
                 }
             }
-            return System.IO.Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
+            return System.IO.Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().Location);
         }
     }
 
@@ -89,7 +89,7 @@ partial class frmAbout : Form
     
     #endregion
 
-    public frmAbout()
+    public FrmAbout()
     {
         InitializeComponent();
         // this.Text = String.Format("About {0}", AssemblyTitle);
@@ -107,7 +107,7 @@ partial class frmAbout : Form
         if (System.IO.File.Exists(path + @"\images\logo@256.png")) this.logoPictureBox.Image = new Bitmap(path + @"\images\logo@256.png");
     }
 
-    [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
+    //[System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
     protected override void WndProc(ref Message m)
     {
         const int WM_PARENTNOTIFY = 0x210;
