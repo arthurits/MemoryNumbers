@@ -6,12 +6,12 @@ namespace MemoryNumbers;
 
 partial class FrmMain
 {
-    private void Exit_Click(object sender, EventArgs e)
+    private void Exit_Click(object? sender, EventArgs e)
     {
         Close();
     }
 
-    private async void Start_Click(object sender, EventArgs e)
+    private async void Start_Click(object? sender, EventArgs e)
     {
         // Commute visibility of the strip buttons
         this.toolStripMain_Start.Enabled = false;
@@ -47,7 +47,7 @@ partial class FrmMain
 
     }
 
-    private void Stop_Click(object sender, EventArgs e)
+    private void Stop_Click(object? sender, EventArgs e)
     {
         board1.ClearBoard();
         this.toolStripStatusLabel_Secuence.Text = "";
@@ -63,17 +63,17 @@ partial class FrmMain
         ChartStatsTime_Update();
     }
 
-    private void Sound_CheckedChanged(object sender, EventArgs e)
+    private void Sound_CheckedChanged(object? sender, EventArgs e)
     {
         this.board1.PlaySounds = !toolStripMain_Sound.Checked;
     }
 
-    private void Stats_CheckedChanged(object sender, EventArgs e)
+    private void Stats_CheckedChanged(object? sender, EventArgs e)
     {
         this.tabGame.SelectedIndex = toolStripMain_Stats.Checked ? 1 : 0;
     }
 
-    private void Settings_Click(object sender, EventArgs e)
+    private void Settings_Click(object? sender, EventArgs e)
     {
         FrmSettings form = new(_settings);
         form.ShowDialog(this);
@@ -84,7 +84,7 @@ partial class FrmMain
         }
     }
 
-    private void About_Click(object sender, EventArgs e)
+    private void About_Click(object? sender, EventArgs e)
     {
         FrmAbout form = new();
         form.ShowDialog(this);

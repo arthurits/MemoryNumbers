@@ -14,6 +14,23 @@ public class ClassSettings
     public string FileName { get; set; } = "configuration.json";
 
     /// <summary>
+    /// Culture used throughout the app
+    /// </summary>
+    [JsonIgnore]
+    public System.Globalization.CultureInfo AppCulture { get; set; } = System.Globalization.CultureInfo.CurrentCulture;
+    /// <summary>
+    /// Define the culture used throughout the app by asigning a culture string name
+    /// </summary>
+    [JsonPropertyName("Culture name")]
+    public string AppCultureName
+    {
+        get { return AppCulture.Name; }
+        set { AppCulture = new System.Globalization.CultureInfo(value); }
+    }
+    [JsonIgnore]
+    public string? AppPath { get; set; } = Path.GetDirectoryName(Environment.ProcessPath);
+
+    /// <summary>
     /// Remember window position on start up
     /// </summary>
     [JsonPropertyName("Window position")]
@@ -124,24 +141,6 @@ public class ClassSettings
     /// </summary>
     [JsonPropertyName("Stats checked")]
     public bool Stats { get; set; } = false;        // Stats unchecked
-    
-
-    /// <summary>
-    /// Culture used throughout the app
-    /// </summary>
-    [JsonIgnore]
-    public System.Globalization.CultureInfo AppCulture { get; set; } = System.Globalization.CultureInfo.CurrentCulture;
-    /// <summary>
-    /// Define the culture used throughout the app by asigning a culture string name
-    /// </summary>
-    [JsonPropertyName("Culture name")]
-    public string AppCultureName
-    {
-        get { return AppCulture.Name; }
-        set { AppCulture = new System.Globalization.CultureInfo(value); }
-    }
-    [JsonIgnore]
-    public string? AppPath { get; set; } = Path.GetDirectoryName(Environment.ProcessPath);
 
     public ClassSettings()
     {

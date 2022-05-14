@@ -21,7 +21,7 @@ public partial class FrmMain : Form
     public FrmMain()
     {
         // Set form icon
-        if (File.Exists(_settings.AppPath + @"\images\logo.ico")) this.Icon = new Icon(_settings.AppPath + @"\images\logo.ico");
+        this.Icon = GraphicsResources.Load<Icon>(GraphicsResources.AppLogo);
 
         // Initialize components
         InitializeComponent();
@@ -71,20 +71,17 @@ public partial class FrmMain : Form
     /// </summary>
     private void InitializeToolStrip()
     {
-
         //ToolStripNumericUpDown c = new ToolStripNumericUpDown();
         //this.toolStripMain.Items.Add((ToolStripItem)c);
-
         toolStripMain.Renderer = new customRenderer(Brushes.SteelBlue, Brushes.LightSkyBlue);
 
-        if (File.Exists(_settings.AppPath + @"\images\exit.ico")) this.toolStripMain_Exit.Image = new Icon(_settings.AppPath + @"\images\exit.ico", 48, 48).ToBitmap();
-        if (File.Exists(_settings.AppPath + @"\images\start.ico")) this.toolStripMain_Start.Image = new Icon(_settings.AppPath + @"\images\start.ico", 48, 48).ToBitmap();
-        if (File.Exists(_settings.AppPath + @"\images\stop.ico")) this.toolStripMain_Stop.Image = new Icon(_settings.AppPath + @"\images\stop.ico", 48, 48).ToBitmap();
-        if (File.Exists(_settings.AppPath + @"\images\soundoff.ico")) this.toolStripMain_Sound.Image = new Icon(_settings.AppPath + @"\images\soundoff.ico", 48, 48).ToBitmap();
-        if (File.Exists(_settings.AppPath + @"\images\graph.ico")) this.toolStripMain_Stats.Image = new Icon(_settings.AppPath + @"\images\graph.ico", 48, 48).ToBitmap();
-        if (File.Exists(_settings.AppPath + @"\images\settings.ico")) this.toolStripMain_Settings.Image = new Icon(_settings.AppPath + @"\images\settings.ico", 48, 48).ToBitmap();
-        if (File.Exists(_settings.AppPath + @"\images\about.ico")) this.toolStripMain_About.Image = new Icon(_settings.AppPath + @"\images\about.ico", 48, 48).ToBitmap();
-
+        this.toolStripMain_Exit.Image = new Icon(GraphicsResources.IconExit, 48, 48).ToBitmap();
+        this.toolStripMain_Start.Image = new Icon(GraphicsResources.IconStart, 48, 48).ToBitmap();
+        this.toolStripMain_Stop.Image = new Icon(GraphicsResources.IconStop, 48, 48).ToBitmap();
+        this.toolStripMain_Sound.Image = new Icon(GraphicsResources.IconSound, 48, 48).ToBitmap();
+        this.toolStripMain_Stats.Image = new Icon(GraphicsResources.IconStats, 48, 48).ToBitmap();
+        this.toolStripMain_Settings.Image = new Icon(GraphicsResources.IconSettings, 48, 48).ToBitmap();
+        this.toolStripMain_About.Image = new Icon(GraphicsResources.IconAbout, 48, 48).ToBitmap();
     }
 
     /// <summary>
@@ -107,7 +104,7 @@ public partial class FrmMain : Form
 
     #region Form events
 
-    private void Form1_Load(object sender, EventArgs e)
+    private void Form1_Load(object? sender, EventArgs e)
     {
         // https://stackoverflow.com/questions/21632642/label-without-padding-and-margin
         
@@ -115,14 +112,14 @@ public partial class FrmMain : Form
         //Win32.Win32API.AnimateWindow(this.Handle, 200, Win32.Win32API.AnimateWindowFlags.AW_BLEND | Win32.Win32API.AnimateWindowFlags.AW_CENTER);
     }
 
-    private void Form1_Shown(object sender, EventArgs e)
+    private void Form1_Shown(object? sender, EventArgs e)
     {
         // Send Close event
         using var closeSplashEvent = new System.Threading.EventWaitHandle(false, System.Threading.EventResetMode.ManualReset, "CloseSplashScreenEvent");
         closeSplashEvent.Set();
     }
 
-    private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+    private void Form1_FormClosing(object? sender, FormClosingEventArgs e)
     {
         using (new CenterWinDialog(this))
         {
@@ -162,13 +159,13 @@ public partial class FrmMain : Form
 
     #region Events subscription
 
-    private void OnButtonClick(object sender, Board.ButtonClickEventArgs e)
+    private void OnButtonClick(object? sender, Board.ButtonClickEventArgs e)
     {
         if (_game.Check(e.ButtonValue, e.Seconds))
             board1.ButtonRight();
     }
 
-    private async void OnCorrectSequence(object sender, Game.CorrectEventArgs e)
+    private async void OnCorrectSequence(object? sender, Game.CorrectEventArgs e)
     {
         // Perform the GUI tasks corresponding to a right sequence (sounds, images, buttons, etc)
         Task t = board1.SequenceRight();
@@ -198,7 +195,7 @@ public partial class FrmMain : Form
         }
 
     }
-    private async void OnWrongSequence(object sender, Game.WrongEventArgs e)
+    private async void OnWrongSequence(object? sender, Game.WrongEventArgs e)
     {
         // Perform the GUI tasks corresponding to a wrong sequence (sounds, images, buttons, etc)
         Task t = board1.ButtonWrong();
@@ -219,7 +216,7 @@ public partial class FrmMain : Form
         {
             if (await board1.Start(_game.GetSequence, _game.TimeTotal) == false)
             {
-                Stop_Click(null, null);
+                Stop_Click(null, EventArgs.Empty);
                 using (new CenterWinDialog(this))
                     MessageBox.Show("Could not place the buttons on the screen.\nPlease, try reducing the 'numbers ratio' paremeter in\nthe Settings (between 0.25 - 0.30).", "Error placing numbers", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -227,7 +224,7 @@ public partial class FrmMain : Form
 
     }
 
-    private void OnGameOver(object sender, Game.OverEventArgs e)
+    private void OnGameOver(object? sender, Game.OverEventArgs e)
     {
         //System.Diagnostics.Debug.WriteLine("OnGameOver subscription event");
         using (new CenterWinDialog(this))
@@ -249,6 +246,4 @@ public partial class FrmMain : Form
     }
 
     #endregion Events subscription
-
-    
 }

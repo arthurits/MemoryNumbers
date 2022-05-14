@@ -15,8 +15,7 @@ public partial class FrmSettings : Form
         InitializeComponent();
 
         // Set form icons and images
-        var path = System.IO.Path.GetDirectoryName(Environment.ProcessPath);
-        if (System.IO.File.Exists(path + @"\images\settings.ico")) this.Icon = new(path + @"\images\settings.ico");
+        this.Icon = GraphicsResources.Load<Icon>(GraphicsResources.IconSettings);
     }
 
     public FrmSettings(ClassSettings settings)
