@@ -18,7 +18,7 @@ public class Resources
 	public static string SVGCorrect { get; set; } = @"images\Sequence correct.svg";
 	public static string SVGWrong { get; set; } = @"images\Sequence wrong.svg";
 
-	public static string WavCorrectNum { get; set; } = @"audio\Correct number.wav";
+	public static string WavCorrectNum { get; set; } = @"audio\Correct number0.wav";
 	public static string WavWrongNum { get; set; } = @"audio\Wrong number.wav";
 	public static string WavCorrectSeq { get; set; } = @"audio\Correct sequence.wav";
 	public static string WavWrongSeq { get; set; } = @"audio\Wrong sequence.wav";
@@ -44,6 +44,8 @@ public class Resources
 					resource = (T)(object)new Icon(fileName);
 				else if (typeof(T).Equals(typeof(Cursor)))
 					resource = (T)(object)new Cursor(fileName);
+				else if (typeof(T).Equals(typeof(String)))
+					resource = (T)(object)fileName;
 			}
 		}
 		catch (Exception ex)
