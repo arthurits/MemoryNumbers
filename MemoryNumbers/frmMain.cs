@@ -21,7 +21,7 @@ public partial class FrmMain : Form
     public FrmMain()
     {
         // Set form icon
-        this.Icon = GraphicsResources.Load<Icon>(GraphicsResources.AppLogo);
+        this.Icon = Resources.Load<Icon>(Resources.AppLogo);
 
         // Initialize components
         InitializeComponent();
@@ -75,13 +75,13 @@ public partial class FrmMain : Form
         //this.toolStripMain.Items.Add((ToolStripItem)c);
         toolStripMain.Renderer = new customRenderer(Brushes.SteelBlue, Brushes.LightSkyBlue);
 
-        this.toolStripMain_Exit.Image = new Icon(GraphicsResources.IconExit, 48, 48).ToBitmap();
-        this.toolStripMain_Start.Image = new Icon(GraphicsResources.IconStart, 48, 48).ToBitmap();
-        this.toolStripMain_Stop.Image = new Icon(GraphicsResources.IconStop, 48, 48).ToBitmap();
-        this.toolStripMain_Sound.Image = new Icon(GraphicsResources.IconSound, 48, 48).ToBitmap();
-        this.toolStripMain_Stats.Image = new Icon(GraphicsResources.IconStats, 48, 48).ToBitmap();
-        this.toolStripMain_Settings.Image = new Icon(GraphicsResources.IconSettings, 48, 48).ToBitmap();
-        this.toolStripMain_About.Image = new Icon(GraphicsResources.IconAbout, 48, 48).ToBitmap();
+        this.toolStripMain_Exit.Image = new Icon(Resources.IconExit, 48, 48).ToBitmap();
+        this.toolStripMain_Start.Image = new Icon(Resources.IconStart, 48, 48).ToBitmap();
+        this.toolStripMain_Stop.Image = new Icon(Resources.IconStop, 48, 48).ToBitmap();
+        this.toolStripMain_Sound.Image = new Icon(Resources.IconSound, 48, 48).ToBitmap();
+        this.toolStripMain_Stats.Image = new Icon(Resources.IconStats, 48, 48).ToBitmap();
+        this.toolStripMain_Settings.Image = new Icon(Resources.IconSettings, 48, 48).ToBitmap();
+        this.toolStripMain_About.Image = new Icon(Resources.IconAbout, 48, 48).ToBitmap();
     }
 
     /// <summary>

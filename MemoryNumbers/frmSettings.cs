@@ -15,7 +15,7 @@ public partial class FrmSettings : Form
         InitializeComponent();
 
         // Set form icons and images
-        this.Icon = GraphicsResources.Load<Icon>(GraphicsResources.IconSettings);
+        this.Icon = Resources.Load<Icon>(Resources.IconSettings);
     }
 
     public FrmSettings(ClassSettings settings)

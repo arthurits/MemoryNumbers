@@ -103,7 +103,7 @@ partial class FrmAbout : Form
         //if (System.IO.File.Exists(@"images\about.ico")) this.Icon = new Icon(@"images\about.ico");
 
         //Bitmap image = new Icon(@"images\logo.ico", 256, 256).ToBitmap();
-        this.logoPictureBox.Image = GraphicsResources.Load<Image>(GraphicsResources.AppLogo256);
+        this.logoPictureBox.Image = Resources.Load<Image>(Resources.AppLogo256);
     }
 
     //[System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]

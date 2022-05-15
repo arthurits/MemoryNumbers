@@ -3,27 +3,27 @@ namespace MemoryNumbers;
 /// <summary>
 /// Load graphics resources from disk
 /// </summary>
-public class GraphicsResources
+public class Resources
 {
-	public const string AppLogo = @"images\logo.ico";
-	public const string AppLogo256 = @"images\logo@256.png";
-	public const string IconExit = @"images\exit.ico";
-	public const string IconStart = @"images\start.ico";
-	public const string IconStop = @"images\stop.ico";
-	public const string IconSound = @"images\soundoff.ico";
-	public const string IconStats = @"images\graph.ico";
-	public const string IconSettings = @"images\settings.ico";
-	public const string IconAbout = @"images\about.ico";
+	public static string AppLogo { get; set; } = @"images\logo.ico";
+	public static string AppLogo256 { get; set; } = @"images\logo@256.png";
+	public static string IconExit { get; set; } = @"images\exit.ico";
+	public static string IconStart { get; set; } = @"images\start.ico";
+	public static string IconStop { get; set; } = @"images\stop.ico";
+	public static string IconSound { get; set; } = @"images\soundoff.ico";
+	public static string IconStats { get; set; } = @"images\graph.ico";
+	public static string IconSettings { get; set; } = @"images\settings.ico";
+	public static string IconAbout { get; set; } = @"images\about.ico";
 
-	public const string SVGCorrect = @"images\Sequence correct.svg";
-	public const string SVGWrong = @"images\Sequence wrong.svg";
+	public static string SVGCorrect { get; set; } = @"images\Sequence correct.svg";
+	public static string SVGWrong { get; set; } = @"images\Sequence wrong.svg";
 
-	public const string WavCorrectNum = @"audio\Correct number.wav";
-	public const string WavWrongNum = @"audio\Wrong number.wav";
-	public const string WavCorrectSeq = @"audio\Correct sequence.wav";
-	public const string WavWrongSeq = @"audio\Wrong sequence.wav";
-	public const string WavCountDown = @"audio\Count down.wav";
-	public const string WavEnd = @"audio\End game.wav";
+	public static string WavCorrectNum { get; set; } = @"audio\Correct number.wav";
+	public static string WavWrongNum { get; set; } = @"audio\Wrong number.wav";
+	public static string WavCorrectSeq { get; set; } = @"audio\Correct sequence.wav";
+	public static string WavWrongSeq { get; set; } = @"audio\Wrong sequence.wav";
+	public static string WavCountDown { get; set; } = @"audio\Count down.wav";
+	public static string WavEnd { get; set; } = @"audio\End game.wav";
 
 	/// <summary>
 	/// Loads a graphics resource from a disk location

@@ -271,15 +271,15 @@ public partial class Board : PictureBox
         this.DoubleBuffered = true;
         //this.ResizeRedraw = true;
         this.BorderStyle = BorderStyle.FixedSingle;
-        
+
         // Load the sounds
         _soundPlayer = new System.Media.SoundPlayer[Enum.GetNames(typeof(AudioSoundType)).Length];  // https://stackoverflow.com/questions/856154/total-number-of-items-defined-in-an-enum
-        _soundPlayer[0] = System.IO.File.Exists(MemoryNumbers.GraphicsResources.WavCorrectNum) ? new(MemoryNumbers.GraphicsResources.WavCorrectNum) : null;
-        _soundPlayer[1] = System.IO.File.Exists(MemoryNumbers.GraphicsResources.WavWrongNum) ? new(MemoryNumbers.GraphicsResources.WavWrongNum) : null;
-        _soundPlayer[2] = System.IO.File.Exists(MemoryNumbers.GraphicsResources.WavCorrectSeq) ? new(MemoryNumbers.GraphicsResources.WavCorrectSeq) : null;
-        _soundPlayer[3] = System.IO.File.Exists(MemoryNumbers.GraphicsResources.WavWrongSeq) ? new(MemoryNumbers.GraphicsResources.WavWrongSeq) : null;
-        _soundPlayer[4] = System.IO.File.Exists(MemoryNumbers.GraphicsResources.WavCountDown) ? new(MemoryNumbers.GraphicsResources.WavCountDown) : null;
-        _soundPlayer[5] = System.IO.File.Exists(MemoryNumbers.GraphicsResources.WavEnd) ? new(MemoryNumbers.GraphicsResources.WavEnd) : null;
+        _soundPlayer[0] = System.IO.File.Exists(MemoryNumbers.Resources.WavCorrectNum) ? new(MemoryNumbers.Resources.WavCorrectNum) : null;
+        _soundPlayer[1] = System.IO.File.Exists(MemoryNumbers.Resources.WavWrongNum) ? new(MemoryNumbers.Resources.WavWrongNum) : null;
+        _soundPlayer[2] = System.IO.File.Exists(MemoryNumbers.Resources.WavCorrectSeq) ? new(MemoryNumbers.Resources.WavCorrectSeq) : null;
+        _soundPlayer[3] = System.IO.File.Exists(MemoryNumbers.Resources.WavWrongSeq) ? new(MemoryNumbers.Resources.WavWrongSeq) : null;
+        _soundPlayer[4] = System.IO.File.Exists(MemoryNumbers.Resources.WavCountDown) ? new(MemoryNumbers.Resources.WavCountDown) : null;
+        _soundPlayer[5] = System.IO.File.Exists(MemoryNumbers.Resources.WavEnd) ? new(MemoryNumbers.Resources.WavEnd) : null;
 
         // Set the array of buttons to 0 elements
         _roundButton = Array.Empty<Controls.RoundButton>();
@@ -337,10 +337,10 @@ public partial class Board : PictureBox
 
         // Read the SVG files. This is done here because it takes some 0.2 - 0.3 seconds each to read
         // This way we avoid any possible bottle neck when overriding OnResize
-        if (System.IO.File.Exists(MemoryNumbers.GraphicsResources.SVGCorrect))
-            _svgCorrect = SvgDocument.Open(MemoryNumbers.GraphicsResources.SVGCorrect);
-        if (System.IO.File.Exists(MemoryNumbers.GraphicsResources.SVGWrong))
-            _svgWrong = SvgDocument.Open(MemoryNumbers.GraphicsResources.SVGWrong);
+        if (System.IO.File.Exists(MemoryNumbers.Resources.SVGCorrect))
+            _svgCorrect = SvgDocument.Open(MemoryNumbers.Resources.SVGCorrect);
+        if (System.IO.File.Exists(MemoryNumbers.Resources.SVGWrong))
+            _svgWrong = SvgDocument.Open(MemoryNumbers.Resources.SVGWrong);
     }
     
     // https://stackoverflow.com/questions/4446478/how-do-i-create-a-colored-border-on-a-picturebox-control
