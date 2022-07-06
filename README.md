@@ -1,4 +1,4 @@
-# MemoryNumbers
+# <img src="MemoryNumbers/images/logo@256.png?raw=true" height="24" width="24"> MemoryNumbers
 A short-term memory game.
 
 This is a custom-built game (.NET C# WinForms) to train your short-term memory. It was inspired by this video:
