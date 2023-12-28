@@ -5,7 +5,7 @@ This is a custom-built game (.NET C# WinForms) to train your short-term memory. 
 
 [![Counting monkey video](https://img.youtube.com/vi/zsXP8qeFF6A/0.jpg)](https://www.youtube.com/watch?v=zsXP8qeFF6A)
 
-Copyright © 2021-2023 by Arthurits Ltd. No commercial nor profit use allowed. This software is provided only for personal and not-for-profit use.
+Copyright © 2021-2024 by Arthurits Ltd. No commercial nor profit use allowed. This software is provided only for personal and not-for-profit use.
 Download latest release: [![GitHub release (latest by date)](https://img.shields.io/github/v/release/arthurits/MemoryNumbers)](https://github.com/arthurits/MemoryNumbers/releases)
 
 ## How to play
